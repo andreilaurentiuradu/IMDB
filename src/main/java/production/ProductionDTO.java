@@ -1,7 +1,5 @@
 package production;
 
-import production.details.Actor;
-import production.details.ActorsDTO;
 import production.details.Genre;
 import production.details.Rating;
 
@@ -41,12 +39,12 @@ public class ProductionDTO {
         production.setDirectorsName(directors);
         production.setGenres(genres);
 
-        List<Rating> ratings = new ArrayList<>();
-        for (RatingDTO rd : this.ratings) {
-            ratings.add(rd.toRating());
-        }
+//        List<Rating> ratings = new ArrayList<>();
+//        for (RatingDTO rd : this.ratings) {
+//            ratings.add(rd.toRating());
+//        }
 
-        production.setRatings(ratings);
+//        production.setRatings(ratings);
         production.setPlot(plot);
         production.setAverageRating(averageRating);
         production.setDuration(duration);

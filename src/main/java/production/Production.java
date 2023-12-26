@@ -130,7 +130,19 @@ public abstract class Production implements Comparable<Production> {
 
     @Override
     public String toString() {
-        return title + type;
+        return "Production{" +
+                "title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", actorsNames=" + actorsNames +
+                ", directorsName=" + directorsName +
+                ", genres=" + genres +
+                ", subject='" + subject + '\'' +
+                ", grade=" + grade +
+                ", plot='" + plot + '\'' +
+                ", duration='" + duration + '\'' +
+                ", averageRating=" + averageRating +
+                ", releaseYear=" + releaseYear +
+                '}';
     }
 
     public int compareTo (Production production) {
