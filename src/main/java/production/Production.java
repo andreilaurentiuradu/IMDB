@@ -6,14 +6,61 @@ import production.details.Rating;
 import java.util.List;
 
 public abstract class Production implements Comparable<Production> {
-    String title;
-    String type;
+    private String title;
+    private String type;
     private List<String> actorsNames;
     private List<String> directorsName;
     private List<Genre> genres;
-    public List<Rating> ratings;
+    private List<Rating> ratings;
     private String subject;
     private Double grade;
+    private String plot;
+    private String duration;
+    private Double averageRating;
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public Integer getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public Integer getNumSeasons() {
+        return numSeasons;
+    }
+
+    public void setNumSeasons(Integer numSeasons) {
+        this.numSeasons = numSeasons;
+    }
+
+    private Integer releaseYear;
+    private Integer numSeasons;
+//    private sezoanele;
 
     public String getTitle() {
         return title;
@@ -83,12 +130,7 @@ public abstract class Production implements Comparable<Production> {
 
     @Override
     public String toString() {
-        return "Production{" +
-                "title='" + title + '\'' +
-                ", type='" + type + '\'' +
-                ", subject='" + subject + '\'' +
-                ", grade=" + grade +
-                '}';
+        return title + type;
     }
 
     public int compareTo (Production production) {

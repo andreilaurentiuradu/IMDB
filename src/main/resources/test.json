@@ -1,0 +1,47 @@
+[
+  {
+    "title": "The Shawshank Redemption",
+    "type": "Movie",
+    "directors": [
+      "Frank Darabont"
+    ],
+    "actors": [
+      "Tim Robbins",
+      "Morgan Freeman"
+    ],
+    "genres": [
+      "Drama"
+    ],
+    "ratings": [
+      {
+        "username": "ava_brown_3233",
+        "rating": 10,
+        "comment": "A true masterpiece!"
+      },
+      {
+        "username": "benjamin_taylor_3435",
+        "rating": 9,
+        "comment": "A tale of hope and friendship."
+      },
+      {
+        "username": "jessica_miller_1213",
+        "rating": 9,
+        "comment": "Touching and beautifully acted."
+      },
+      {
+        "username": "olivia_taylor_2425",
+        "rating": 8,
+        "comment": "Emotionally powerful."
+      },
+      {
+        "username": "peter_jones_1415",
+        "rating": 10,
+        "comment": "One of my all-time favorites!"
+      }
+    ],
+    "plot": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "averageRating": 9.2,
+    "duration": "142 minutes",
+    "releaseYear": 1994
+  }
+]

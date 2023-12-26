@@ -23,7 +23,7 @@ public class IMDB {
         );
         requests = JsonParser.parseRequest(fileRequests);
 
-        requests.forEach(System.out::println);
+//        requests.forEach(System.out::println);
 
 
         File fileActors = new File(
@@ -31,11 +31,11 @@ public class IMDB {
         );
 
         actors = JsonParser.parseActors(fileActors);
-        actors.forEach(System.out::println);
+//        actors.forEach(System.out::println);
 
 
         File fileProduction = new File(
-                this.getClass().getClassLoader().getResource("production.json").getFile()
+                this.getClass().getClassLoader().getResource("test.json").getFile()
         );
 
         productions = JsonParser.parseProduction(fileProduction);

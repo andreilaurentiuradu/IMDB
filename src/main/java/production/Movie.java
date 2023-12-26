@@ -6,6 +6,6 @@ public class Movie extends Production {
 
     @Override
     public void displayInfo() {
-        System.out.println("Movie: " + title + " ");
+        System.out.println("Movie: " + getTitle() + " ");
     }
 }

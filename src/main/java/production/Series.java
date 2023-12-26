@@ -11,6 +11,6 @@ public class Series extends Production {
 
     @Override
     public void displayInfo() {
-        System.out.println("Series:" + title);
+        System.out.println("Series:" + getTitle());
     }
 }

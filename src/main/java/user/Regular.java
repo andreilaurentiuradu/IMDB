@@ -18,7 +18,7 @@ public class Regular extends User implements RequestsManager {
 
     public void addReview (Production production, Rating rating) {
 
-        production.ratings.add(rating);
+        production.getRatings().add(rating);
     }
 
 

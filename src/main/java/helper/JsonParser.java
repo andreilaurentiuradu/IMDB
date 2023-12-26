@@ -1,6 +1,7 @@
 package helper;
 
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -29,7 +30,6 @@ public class JsonParser {
                 requests.add(rv.toRequest());
             }
             return requests;
-//            return mapper.readValue(filename, new TypeReference<List<Request>>() {});
         } catch (JsonGenerationException e) {
             e.printStackTrace();
         } catch (JsonMappingException e) {
@@ -55,31 +55,27 @@ public class JsonParser {
             }
 
             return actors;
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("File cannot be parsed: " , e);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found: " , e);
-
         } catch (IOException e) {
             throw new RuntimeException("Unable to read from ", e);
         }
-        return null;
     }
     public static List<Production> parseProduction(File file) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
 
         try {
-            List<ProductionDTO> productionDTOs = objectMapper.readValue(file, new TypeReference<List<ProductionDTO>>() {});
+            List<ProductionDTO> productionDTOs = mapper.readValue(file, new TypeReference<List<ProductionDTO>>() {});
             List<Production> productions = new ArrayList<>();
             for(ProductionDTO pd : productionDTOs) {
                 productions.add(pd.toProduction());
             }
+            return productions;
         }
         catch (IOException e) {
-            throw new RuntimeException("Unable to read from file", e);
+            throw new RuntimeException("Unable to parse", e);
         }
-        return null;
     }
 }
