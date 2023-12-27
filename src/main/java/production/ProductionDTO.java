@@ -1,26 +1,28 @@
 package production;
 
+import production.details.Episode;
 import production.details.Genre;
 import production.details.Rating;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductionDTO {
     public String title;
     public String type;
     public List<String> actors;
     public List<String> directors;
-    public List<Genre> genres;
+    public List<String> genres;
     public List<RatingDTO> ratings;
-    public String subject;
-    public Double grade;
     public String plot;
-    public Double averageRating;
     public String duration;
+    public Double averageRating;
     public Integer releaseYear;
     public Integer numSeasons;
-//    public sezoanele;
+    public Map<String, List<EpisodeDTO>> seasons;
+
 
     public Production toProduction() {
         Production production;
@@ -32,39 +34,70 @@ public class ProductionDTO {
             production = new Series();
         }
 
-        production.setGrade(grade);
         production.setType(type);
         production.setTitle(title);
         production.setActorsNames(actors);
         production.setDirectorsName(directors);
+
+        List<Genre> genres = new ArrayList<>();
+        for (String g : this.genres) {
+            genres.add(Genre.valueOf(g));
+        }
         production.setGenres(genres);
 
-//        List<Rating> ratings = new ArrayList<>();
-//        for (RatingDTO rd : this.ratings) {
-//            ratings.add(rd.toRating());
-//        }
+        List<Rating> ratingsList = new ArrayList<>();
+        for (RatingDTO rd : this.ratings) {
+            ratingsList.add(rd.toRating());
+        }
 
-//        production.setRatings(ratings);
+        production.setRatings(ratingsList);
         production.setPlot(plot);
-        production.setAverageRating(averageRating);
         production.setDuration(duration);
+        production.setAverageRating(averageRating);
         production.setReleaseYear(releaseYear);
+        production.setNumSeasons(numSeasons);
+//        for (Map.Entry<String, List<EpisodeDTO>> entry : seasons.entrySet()) {
+//            System.out.println(entry.getKey());
+//        }
+//        System.out.println(this.seasons.keySet());
+//        Map<String, List<Episode>> seasons = new HashMap<>();
+//        for (Map.Entry<String, List<EpisodeDTO>> entry : this.seasons.entrySet()) {
+//            List<Episode> episodes = new ArrayList<>();
+//            for (EpisodeDTO ed : entry.getValue()) {
+//                episodes.add(ed.toEpisode());
+//            }
+//            seasons.put(entry.getKey(), episodes);
+//        }
+//
+//        production.setSeasons(seasons);
 
         return production;
     }
 
     public static class RatingDTO {
         public String username;
-        public Integer grade;
+        public Integer rating;
         public String comment;
 
         public Rating toRating() {
             Rating rating = new Rating();
             rating.setUsername(username);
-            rating.setGrade(grade);
+            rating.setRating(this.rating);
             rating.setComment(comment);
 
             return rating;
+        }
+    }
+
+    public static class EpisodeDTO {
+        public String episodeName;
+        public String duration;
+
+        public Episode toEpisode() {
+            Episode episode = new Episode();
+            episode.setName(episodeName);
+            episode.setDuration(duration);
+            return episode;
         }
     }
 }

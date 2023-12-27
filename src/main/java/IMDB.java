@@ -2,6 +2,7 @@ import helper.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import production.Production;
+import production.ProductionDTO;
 import request.Request;
 import user.AccountType;
 import production.details.Actor;
@@ -18,6 +19,7 @@ public class IMDB {
     List<Production> productions;
 
     public void run() {
+        // incarcarea datelor in fielduri
         File fileRequests= new File(
                 this.getClass().getClassLoader().getResource("requests.json").getFile()
         );
@@ -35,11 +37,14 @@ public class IMDB {
 
 
         File fileProduction = new File(
-                this.getClass().getClassLoader().getResource("test.json").getFile()
+                this.getClass().getClassLoader().getResource("production.json").getFile()
         );
 
         productions = JsonParser.parseProduction(fileProduction);
         productions.forEach(System.out::println);
+
+        // autentificarea utilizatorului
+        // flowul aplicatiei in functie de rolul utilizatorului
     }
 
     public static void main(String[] args) {

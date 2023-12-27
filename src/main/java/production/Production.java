@@ -1,9 +1,11 @@
 package production;
 
+import production.details.Episode;
 import production.details.Genre;
 import production.details.Rating;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class Production implements Comparable<Production> {
     private String title;
@@ -12,11 +14,20 @@ public abstract class Production implements Comparable<Production> {
     private List<String> directorsName;
     private List<Genre> genres;
     private List<Rating> ratings;
-    private String subject;
-    private Double grade;
     private String plot;
     private String duration;
     private Double averageRating;
+    private Integer releaseYear;
+    private Integer numSeasons;
+    private Map<String, List<Episode>> seasons;
+
+    public Map<String, List<Episode>> getSeasons() {
+        return seasons;
+    }
+
+    public void setSeasons(Map<String, List<Episode>> seasons) {
+        this.seasons = seasons;
+    }
 
     public Double getAverageRating() {
         return averageRating;
@@ -57,10 +68,6 @@ public abstract class Production implements Comparable<Production> {
     public void setNumSeasons(Integer numSeasons) {
         this.numSeasons = numSeasons;
     }
-
-    private Integer releaseYear;
-    private Integer numSeasons;
-//    private sezoanele;
 
     public String getTitle() {
         return title;
@@ -110,38 +117,40 @@ public abstract class Production implements Comparable<Production> {
         this.ratings = ratings;
     }
 
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public Double getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Double grade) {
-        this.grade = grade;
-    }
-
     public abstract void displayInfo();
+
+//    @Override
+//    public String toString() {
+//        return "Production{" +
+//                "title='" + title + '\'' +
+//                ", type='" + type + '\'' +
+//                ", actorsNames=" + actorsNames +
+//                ", directorsName=" + directorsName +
+//                ", genres=" + genres +
+//                ", plot='" + plot + '\'' +
+//                ", duration='" + duration + '\'' +
+//                ", averageRating=" + averageRating +
+//                ", releaseYear=" + releaseYear +
+//                '}';
+//    }
 
     @Override
     public String toString() {
+
+
         return "Production{" +
                 "title='" + title + '\'' +
-                ", type='" + type + '\'' +
-                ", actorsNames=" + actorsNames +
-                ", directorsName=" + directorsName +
-                ", genres=" + genres +
-                ", subject='" + subject + '\'' +
-                ", grade=" + grade +
-                ", plot='" + plot + '\'' +
-                ", duration='" + duration + '\'' +
-                ", averageRating=" + averageRating +
-                ", releaseYear=" + releaseYear +
+//                ", type='" + type + '\'' +
+//                ", actorsNames=" + actorsNames +
+//                ", directorsName=" + directorsName +
+//                ", genres=" + genres +
+//                ", ratings=" + ratings +
+//                ", plot='" + plot + '\'' +
+//                ", duration='" + duration + '\'' +
+//                ", averageRating=" + averageRating +
+//                ", releaseYear=" + releaseYear +
+                ", numSeasons=" + numSeasons +
+                ", seasons="+
                 '}';
     }
 

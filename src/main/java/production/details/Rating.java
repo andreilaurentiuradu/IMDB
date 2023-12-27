@@ -2,7 +2,7 @@ package production.details;
 
 public class Rating {
     private String username;
-    private Integer grade;
+    private Integer rating;
     private String comment;
 
     public String getUsername() {
@@ -13,12 +13,12 @@ public class Rating {
         this.username = username;
     }
 
-    public Integer getGrade() {
-        return grade;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setGrade(Integer grade) {
-        this.grade = grade;
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
     public String getComment() {
@@ -27,5 +27,14 @@ public class Rating {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "username='" + username + '\'' +
+                ", rating=" + rating +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

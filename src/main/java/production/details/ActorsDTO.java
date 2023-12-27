@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ActorsDTO {
     public String name;
-    public List<PerformanceVo> performances;
+    public List<PerformanceDTO> performances;
     public String biography;
 
     public Actor toActor() {
@@ -26,13 +26,13 @@ public class ActorsDTO {
     private List<Pair<String, Production>> getPerformances() {
         List<Pair<String, Production>> performances = new ArrayList<>();
 
-        for (PerformanceVo pv : this.performances) {
+        for (PerformanceDTO pv : this.performances) {
             performances.add(pv.toPair());
         }
         return performances;
     }
 
-    public static class PerformanceVo {
+    public static class PerformanceDTO {
         public String title;
         public String type;
 
