@@ -119,25 +119,8 @@ public abstract class Production implements Comparable<Production> {
 
     public abstract void displayInfo();
 
-//    @Override
-//    public String toString() {
-//        return "Production{" +
-//                "title='" + title + '\'' +
-//                ", type='" + type + '\'' +
-//                ", actorsNames=" + actorsNames +
-//                ", directorsName=" + directorsName +
-//                ", genres=" + genres +
-//                ", plot='" + plot + '\'' +
-//                ", duration='" + duration + '\'' +
-//                ", averageRating=" + averageRating +
-//                ", releaseYear=" + releaseYear +
-//                '}';
-//    }
-
     @Override
     public String toString() {
-
-
         return "Production{" +
                 "title='" + title + '\'' +
 //                ", type='" + type + '\'' +
@@ -150,7 +133,7 @@ public abstract class Production implements Comparable<Production> {
 //                ", averageRating=" + averageRating +
 //                ", releaseYear=" + releaseYear +
                 ", numSeasons=" + numSeasons +
-                ", seasons="+
+                ", seasons=" + seasons +
                 '}';
     }
 
@@ -158,3 +141,10 @@ public abstract class Production implements Comparable<Production> {
         return title.compareTo(production.title);
     }
 }
+//
+//    Nota filmului, egală media aritmetică a tuturor evaluărilor primite de la utilizatori -
+//        Double;
+//        • public abstract void displayInfo();
+//        Metodă pentru afis,area informat, iilor specifice fiecărei subclase
+//        • public int compareTo(Object o);
+//        Metodă necesară sortării filmelor s, i serialelor în funct, ie de titlu

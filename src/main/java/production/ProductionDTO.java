@@ -55,21 +55,21 @@ public class ProductionDTO {
         production.setDuration(duration);
         production.setAverageRating(averageRating);
         production.setReleaseYear(releaseYear);
-        production.setNumSeasons(numSeasons);
-//        for (Map.Entry<String, List<EpisodeDTO>> entry : seasons.entrySet()) {
-//            System.out.println(entry.getKey());
-//        }
-//        System.out.println(this.seasons.keySet());
-//        Map<String, List<Episode>> seasons = new HashMap<>();
-//        for (Map.Entry<String, List<EpisodeDTO>> entry : this.seasons.entrySet()) {
-//            List<Episode> episodes = new ArrayList<>();
-//            for (EpisodeDTO ed : entry.getValue()) {
-//                episodes.add(ed.toEpisode());
-//            }
-//            seasons.put(entry.getKey(), episodes);
-//        }
-//
-//        production.setSeasons(seasons);
+        if (type.equals("Series")) {
+            production.setNumSeasons(numSeasons);
+            Map<String, List<Episode>> seasons = new HashMap<>();
+
+            for (Map.Entry<String, List<EpisodeDTO>> entry : this.seasons.entrySet()) {
+                List<Episode> episodes = new ArrayList<>();
+                for (EpisodeDTO ed : entry.getValue()) {
+                    episodes.add(ed.toEpisode());
+                }
+                seasons.put(entry.getKey(), episodes);
+            }
+
+            production.setSeasons(seasons);
+        }
+
 
         return production;
     }
