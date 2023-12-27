@@ -1,20 +1,39 @@
 [
   {
-    "title": "The Shawshank Redemption",
-    "type": "Movie",
-    "directors": [
-      "Frank Darabont"
+    "username": "emily_wilson_789",
+    "experience": "8",
+    "information": {
+      "credentials": {
+        "email": "emily.wilson@example.com",
+        "password": "P@ssw0rd!23"
+      },
+      "name": "Emily Wilson",
+      "country": "UK",
+      "age": 32,
+      "gender": "Female",
+      "birthDate": "1991-03-17"
+    },
+    "userType": "Contributor",
+    "productionsContribution": [
+      "The Shawshank Redemption",
+      "The Godfather",
+      "Schindler's List"
     ],
-    "actors": [
-      "Tim Robbins",
-      "Morgan Freeman"
+    "actorsContribution": [
+      "Viola Davis",
+      "Brad Pitt"
     ],
-    "genres": [
-      "Drama"
+    "favoriteProductions": [
+      "The Shawshank Redemption",
+      "Schindler's List",
+      "The Lord of the Rings: The Return of the King",
+      "The Departed",
+      "The Pianist"
     ],
-    "plot": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-    "averageRating": 9.2,
-    "duration": "142 minutes",
-    "releaseYear": 1994
+    "favoriteActors": [
+      "Viola Davis",
+      "Brad Pitt",
+      "Meryl Streep"
+    ]
   }
 ]

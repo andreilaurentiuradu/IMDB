@@ -14,10 +14,9 @@ public class ActorsDTO {
     public String biography;
 
     public Actor toActor() {
-        Actor actor = new Actor();
+        Actor actor = new Actor(name);
 
         actor.setBiography(biography);
-        actor.setName(name);
         actor.setPerformances(getPerformances());
 
         return actor;
@@ -40,9 +39,9 @@ public class ActorsDTO {
             Production production;
 
             if (type.equals("Movie")) {
-                production = new Movie();
+                production = new Movie(title);
             } else {
-                production = new Series();
+                production = new Series(title);
             }
             return new Pair<>(title, production);
         }

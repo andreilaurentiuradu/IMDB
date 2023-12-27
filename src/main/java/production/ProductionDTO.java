@@ -28,14 +28,13 @@ public class ProductionDTO {
         Production production;
 
         if (type.equals("Movie")) {
-            production = new Movie();
+            production = new Movie(title);
         }
         else {
-            production = new Series();
+            production = new Series(title);
         }
 
         production.setType(type);
-        production.setTitle(title);
         production.setActorsNames(actors);
         production.setDirectorsName(directors);
 
@@ -69,7 +68,6 @@ public class ProductionDTO {
 
             production.setSeasons(seasons);
         }
-
 
         return production;
     }

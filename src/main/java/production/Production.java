@@ -1,5 +1,6 @@
 package production;
 
+import production.details.Actor;
 import production.details.Episode;
 import production.details.Genre;
 import production.details.Rating;
@@ -7,8 +8,8 @@ import production.details.Rating;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Production implements Comparable<Production> {
-    private String title;
+public abstract class Production extends MediaIndustry {
+    String title;
     private String type;
     private List<String> actorsNames;
     private List<String> directorsName;
@@ -20,6 +21,21 @@ public abstract class Production implements Comparable<Production> {
     private Integer releaseYear;
     private Integer numSeasons;
     private Map<String, List<Episode>> seasons;
+
+    public Production(String title) {
+        super(title);
+        this.title = title;
+    }
+
+    public static Production getProductionByTitle(List<Production> productions, String title) {
+        for (Production p : productions) {
+            if (p.title.equals(title)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
 
     public Map<String, List<Episode>> getSeasons() {
         return seasons;
@@ -135,10 +151,6 @@ public abstract class Production implements Comparable<Production> {
                 ", numSeasons=" + numSeasons +
                 ", seasons=" + seasons +
                 '}';
-    }
-
-    public int compareTo (Production production) {
-        return title.compareTo(production.title);
     }
 }
 //

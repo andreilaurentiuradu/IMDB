@@ -9,6 +9,10 @@ public class Series extends Production {
     private Integer seasonsNumber;
     private Map<String, List<Episode>> episodesBySeason;
 
+    public Series(String title) {
+        super(title);
+    }
+
     @Override
     public void displayInfo() {
         System.out.println("Series:" + getTitle());

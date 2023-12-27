@@ -1,5 +1,6 @@
 package user.staff;
 
+import production.MediaIndustry;
 import request.Request;
 import production.details.Actor;
 import production.Production;
@@ -11,7 +12,7 @@ import java.util.SortedSet;
 public abstract class Staff extends User implements StaffInterface {
 
     private List<Request> requests;
-    private SortedSet<MediaIndustry> mediaIndustries;
+    private SortedSet<MediaIndustry> addedIndustries;
 
     @Override
     public void addProductionSystem(Production p) {
@@ -41,10 +42,5 @@ public abstract class Staff extends User implements StaffInterface {
     @Override
     public void updateActor(Actor a) {
 
-    }
-
-    private static class MediaIndustry {
-        Production production;
-        Actor actor;
     }
 }

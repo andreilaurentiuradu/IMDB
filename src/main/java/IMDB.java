@@ -1,50 +1,48 @@
 import helper.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import production.MediaIndustry;
 import production.Production;
-import production.ProductionDTO;
 import request.Request;
-import user.AccountType;
 import production.details.Actor;
+import user.User;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public class IMDB {
-    List<AccountType> accountTypes;
+    List<User> users;
     List<Actor> actors;
     List<Request> requests;
     List<Production> productions;
 
     public void run() {
         // incarcarea datelor in fielduri
-        File fileRequests= new File(
-                this.getClass().getClassLoader().getResource("requests.json").getFile()
-        );
-        requests = JsonParser.parseRequest(fileRequests);
+
+        requests = JsonParser.parseRequest(getFile("requests.json"));
 
 //        requests.forEach(System.out::println);
 
-
-        File fileActors = new File(
-                this.getClass().getClassLoader().getResource("actors.json").getFile()
-        );
-
-        actors = JsonParser.parseActors(fileActors);
+        actors = JsonParser.parseActors(getFile("actors.json"));
 //        actors.forEach(System.out::println);
 
+        productions = JsonParser.parseProduction(getFile("production.json"));
+//        productions.forEach(System.out::println);
 
-        File fileProduction = new File(
-                this.getClass().getClassLoader().getResource("production.json").getFile()
-        );
+        users = JsonParser.parseAccounts(getFile("accounts.json"));
 
-        productions = JsonParser.parseProduction(fileProduction);
-        productions.forEach(System.out::println);
+        for (User user : users) {
+            user.createFavorites(actors, productions);
+        }
 
+        users.forEach(System.out::println);
         // autentificarea utilizatorului
         // flowul aplicatiei in functie de rolul utilizatorului
+    }
+
+    private File getFile(String filename) {
+        return new File(
+                this.getClass().getClassLoader().getResource(filename).getFile()
+        );
     }
 
     public static void main(String[] args) {

@@ -11,6 +11,9 @@ import production.details.Actor;
 import production.details.ActorsDTO;
 import request.Request;
 import request.RequestDTO;
+import user.AccountType;
+import user.User;
+import user.UserDTO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,10 +50,10 @@ public class JsonParser {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            List<ActorsDTO> actorsVos = mapper.readValue(file, new TypeReference<List<ActorsDTO>>() {});
+            List<ActorsDTO> actorsDTOs = mapper.readValue(file, new TypeReference<List<ActorsDTO>>() {});
             List<Actor> actors = new ArrayList<>();
 
-            for (ActorsDTO av: actorsVos) {
+            for (ActorsDTO av: actorsDTOs) {
                 actors.add(av.toActor());
             }
 
@@ -76,6 +79,20 @@ public class JsonParser {
         }
         catch (IOException e) {
             throw new RuntimeException("Unable to parse", e);
+        }
+    }
+
+    public static List<User> parseAccounts(File file) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            List<UserDTO> userDTOS = mapper.readValue(file, new TypeReference<List<UserDTO>>() {});
+            List<User> users = new ArrayList<>();
+            for (UserDTO ud : userDTOS) {
+                users.add(ud.toUser());
+            }
+            return users;
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to read from ", e);
         }
     }
 }
