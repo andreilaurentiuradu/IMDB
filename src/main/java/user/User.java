@@ -93,11 +93,11 @@ public abstract class User {
     @Override
     public String toString() {
         return "User{" +
-//                "information=" + information +
-//                ", accountType=" + accountType +
+                "information=" + information +
+                ", accountType=" + accountType +
                 ", username='" + username + '\'' +
-//                ", experience=" + experience +
-//                ", notifications=" + notifications +
+                ", experience=" + experience +
+                ", notifications=" + notifications +
                 ", favorites=" + favorites +
                 '}';
     }

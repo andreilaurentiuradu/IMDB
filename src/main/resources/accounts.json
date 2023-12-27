@@ -453,7 +453,7 @@
   },
   {
     "username": "testRegular",
-    "experience": 100,
+    "experience": "100",
     "information": {
       "credentials": {
         "email": "reg@ular.ro",
@@ -481,7 +481,7 @@
   },
   {
     "username": "testContributor",
-    "experience": 100,
+    "experience": "100",
     "information": {
       "credentials": {
         "email": "cont@tributor.ro",

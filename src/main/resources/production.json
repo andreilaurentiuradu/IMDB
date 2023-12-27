@@ -2064,7 +2064,7 @@
       }
     ],
     "plot": "Cel mai bun pregaratar pregateste uorez cu lapte pentru mafia uorezului si toti nepotii lui.",
-    "averageRating": 10,
+    "averageRating": 10.0,
     "duration": "2 minutes",
     "releaseYear": 2017
   },
@@ -2089,7 +2089,7 @@
       }
     ],
     "plot": "Bahoi sare de pe pod. Titlul e un bun rezumat al filmului.",
-    "averageRating": 10,
+    "averageRating": 10.0,
     "duration": "3 minute",
     "releaseYear": 2009
   },
@@ -2113,7 +2113,7 @@
       }
     ],
     "plot": "Test Plot",
-    "averageRating": 6,
+    "averageRating": 6.0,
     "duration": "1 minute"
   },
   {
@@ -2136,7 +2136,7 @@
       }
     ],
     "plot": "Test Plot",
-    "averageRating": 9,
+    "averageRating": 9.0,
     "releaseYear": 2021,
     "numSeasons": 1,
     "seasons": {

@@ -20,13 +20,13 @@ public class IMDB {
 
         requests = JsonParser.parseRequest(getFile("requests.json"));
 
-//        requests.forEach(System.out::println);
+        requests.forEach(System.out::println);
 
         actors = JsonParser.parseActors(getFile("actors.json"));
-//        actors.forEach(System.out::println);
+        actors.forEach(System.out::println);
 
         productions = JsonParser.parseProduction(getFile("production.json"));
-//        productions.forEach(System.out::println);
+        productions.forEach(System.out::println);
 
         users = JsonParser.parseAccounts(getFile("accounts.json"));
 

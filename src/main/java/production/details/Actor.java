@@ -50,7 +50,12 @@ public class Actor extends MediaIndustry {
         this.biography = biography;
     }
 
+    @Override
     public String toString() {
-       return name + " " + biography;
+        return "Actor{" +
+                "name='" + name + '\'' +
+                ", performances=" + performances +
+                ", biography='" + biography + '\'' +
+                '}';
     }
 }

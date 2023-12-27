@@ -15,8 +15,17 @@ public class Request {
     private String requesterUsername;
     private String solverUsername;
 
+    @Override
     public String toString() {
-        return type.name();
+        return "Request{" +
+                "type=" + type +
+                ", creationDate=" + creationDate +
+                ", productionName='" + productionName + '\'' +
+                ", actorName='" + actorName + '\'' +
+                ", description='" + description + '\'' +
+                ", requesterUsername='" + requesterUsername + '\'' +
+                ", solverUsername='" + solverUsername + '\'' +
+                '}';
     }
 
     public RequestType getType() {
