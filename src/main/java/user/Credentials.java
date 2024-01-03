@@ -20,6 +20,10 @@ public class Credentials {
         this.password = password;
     }
 
+    public boolean validateCredentials(Credentials credentials) {
+        return email.equals(credentials.email) && password.equals(credentials.password);
+    }
+
     @Override
     public String toString() {
         return "Credentials{" +
