@@ -47,8 +47,8 @@ public class IMDB {
         // autentificarea utilizatorului
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         ManageUsers manageUsers = new ManageUsers();
-        Credentials credentials;
-        User user;
+        Credentials credentials = new Credentials();
+        User currentUser;
         manageUsers.users = users;
 
         // citim credentialele
@@ -56,7 +56,6 @@ public class IMDB {
             System.out.println("Welcome back! Enter your credentials!");
             System.out.print("email: ");
             String email, password;
-            credentials = new Credentials();
 
             try {
                 email = reader.readLine();
@@ -74,16 +73,20 @@ public class IMDB {
 
             credentials.setEmail(email);
             credentials.setPassword(password);
-            user = manageUsers.findUserByCredentials(credentials);
+            currentUser = manageUsers.findUserByCredentials(credentials);
 
-        }while(user == null);
+        }while(currentUser == null);
 
-        System.out.println("Welcome back user" + user.getUsername());
-        System.out.println("User experience: " + user.getExperience());
-        System.out.println(user.getAccountType());
+        // datele utilizatorului
+        System.out.println("Welcome back user" + currentUser.getUsername());
+        System.out.println("User experience: " + currentUser.getExperience());
+        System.out.println(currentUser.getAccountType());
+
+        // actiuni generale(nu depind de tipul de user)
         System.out.println("Choose action by pressing the correspondent number:");
         System.out.println("1) View productions details");
         System.out.println("2) View actors details");
+        System.out.println("3) View notifications");
         String action;
 
         try{
@@ -165,14 +168,16 @@ public class IMDB {
                 ManageActors manageActors = new ManageActors();
                 manageActors.actors = actors;
                 manageActors.printActorDetails(answer);
-
+                break;
+            case "3":
+                System.out.println(currentUser.getNotifications());
                 break;
             default:
                 throw new RuntimeException("this action doesn't exist");
         }
 
         // flowul aplicatiei in functie de rolul utilizatorului
-        switch (user.getAccountType()) {
+        switch (currentUser.getAccountType()) {
             case REGULAR:
                 break;
             case ADMIN:

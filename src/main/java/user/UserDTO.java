@@ -28,6 +28,7 @@ public class UserDTO {
 
         user.setUsername(username);
         user.setExperience(experience);
+        user.setNotifications(notifications);
         user.setInformation(information.toInformation());
         user.setAccountType(accountType);
 
