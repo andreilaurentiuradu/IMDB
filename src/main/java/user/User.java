@@ -124,6 +124,18 @@ public abstract class User {
         private Gender gender;
         private LocalDateTime birthday;
 
+        public Information() {
+        }
+
+        private Information(InformationBuilder informationBuilder) {
+            this.credentials = informationBuilder.credentials;
+            this.name = informationBuilder.name;
+            this.country = informationBuilder.country;
+            this.age = informationBuilder.age;
+            this.gender = informationBuilder.gender;
+            this.birthday = informationBuilder.birthday;
+        }
+
         public Credentials getCredentials() {
             return credentials;
         }
@@ -184,5 +196,48 @@ public abstract class User {
                     ", birthday=" + birthday.format(formatter) +
                     '}';
         }
+
+        public static class InformationBuilder {
+            private Credentials credentials;
+            private String name;
+            private String country;
+            private Integer age;
+            private Gender gender;
+            private LocalDateTime birthday;
+
+            public InformationBuilder(Credentials credentials) {
+                this.credentials = credentials;
+            }
+
+            public InformationBuilder setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            public InformationBuilder setCountry(String country) {
+                this.country = country;
+                return this;
+            }
+
+            public InformationBuilder setAge(Integer age) {
+                this.age = age;
+                return this;
+            }
+
+            public InformationBuilder setGender(Gender gender) {
+                this.gender = gender;
+                return this;
+            }
+
+            public InformationBuilder setBirthday(LocalDateTime birthday) {
+                this.birthday = birthday;
+                return this;
+            }
+
+            public Information build() {
+                return new Information(this);
+            }
+        }
+
     }
 }

@@ -16,22 +16,30 @@ public abstract class Staff extends User implements StaffInterface {
 
     @Override
     public void addProductionSystem(Production p) {
-
+        addedIndustries.add(p);
     }
 
     @Override
     public void addActorSystem(Actor a) {
-
+        addedIndustries.add(a);
     }
 
     @Override
-    public void removeProductionSystem(String name) {
-
+    public void removeProductionSystem(String title) {
+        for (MediaIndustry mediaIndustry : addedIndustries) {
+            if (((Production)(mediaIndustry)).getTitle().equals(title)) {
+                addedIndustries.remove(mediaIndustry);
+            }
+        }
     }
 
     @Override
     public void removeActorSystem(String name) {
-
+        for (MediaIndustry mediaIndustry : addedIndustries) {
+            if (((Actor)(mediaIndustry)).getName().equals(name)) {
+                addedIndustries.remove(mediaIndustry);
+            }
+        }
     }
 
     @Override

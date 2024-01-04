@@ -23,10 +23,20 @@ import java.util.Scanner;
 import java.util.TreeSet;
 
 public class IMDB {
+    private static IMDB instance;
     List<User> users;
     List<Actor> actors;
     List<Request> requests;
     List<Production> productions;
+
+    private IMDB() {}
+
+    public IMDB getInstance() {
+        if (instance == null) {
+            instance = new IMDB();
+        }
+        return instance;
+    }
 
     public void run() {
         // incarcarea datelor in fielduri
@@ -98,14 +108,14 @@ public class IMDB {
         ManageProduction manageProduction = new ManageProduction();
         manageProduction.productions = productions;
         manageActors.actors = actors;
-
+        IMDB imdb = getInstance();
 
         Request request = new Request();
         // flowul aplicatiei in functie de rolul utilizatorului
         switch (currentUser.getAccountType()) {
             case REGULAR:
                 System.out.println("6) Create/Discard a request");
-
+                System.out.println("7) Add/Delete review");
                 try{
                     action = reader.readLine();
                 } catch (IOException e) {
@@ -114,7 +124,7 @@ public class IMDB {
 
                 System.out.println("action: " + action);
                 if(Integer.parseInt(action) < 6){
-                    new IMDB().generalActions(action, manageActors, manageProduction, currentUser);
+                    imdb.generalActions(action, manageActors, manageProduction, currentUser);
                 } else {
                     switch (action) {
                         case "6":
@@ -169,7 +179,7 @@ public class IMDB {
 
                 System.out.println("action: " + action);
                 if(Integer.parseInt(action) < 6){
-                    new IMDB().generalActions(action, manageActors, manageProduction, currentUser);
+                    imdb.generalActions(action, manageActors, manageProduction, currentUser);
                 } else {
                     switch (action) {
                         case "6":
@@ -221,7 +231,7 @@ public class IMDB {
                 }
 
                 System.out.println("action: " + action);
-                new IMDB().generalActions(action, manageActors, manageProduction, currentUser);
+                imdb.generalActions(action, manageActors, manageProduction, currentUser);
                 break;
             default:
                 throw new RuntimeException("AccountType not specified");
