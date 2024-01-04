@@ -87,6 +87,7 @@ public class IMDB {
         System.out.println("1) View productions details");
         System.out.println("2) View actors details");
         System.out.println("3) View notifications");
+        System.out.println("4) Search for Actor/Movie/Series");
         String action;
 
         try{
@@ -96,6 +97,13 @@ public class IMDB {
         }
 
         System.out.println("action: " + action);
+
+
+        ManageActors manageActors = new ManageActors();
+        ManageProduction manageProduction = new ManageProduction();
+        manageProduction.productions = productions;
+        manageActors.actors = actors;
+
         switch (action) {
             case "1":
                 System.out.println("Filter results by:");
@@ -108,9 +116,6 @@ public class IMDB {
                 } catch (IOException e) {
                     throw new RuntimeException("can't read the action from terminal", e);
                 }
-
-                ManageProduction manageProduction = new ManageProduction();
-                manageProduction.productions = productions;
 
                 switch (action) {
                     case "1":
@@ -165,12 +170,24 @@ public class IMDB {
                     throw new RuntimeException("can't read the answer from terminal", e);
                 }
 
-                ManageActors manageActors = new ManageActors();
-                manageActors.actors = actors;
                 manageActors.printActorDetails(answer);
                 break;
             case "3":
                 System.out.println(currentUser.getNotifications());
+                break;
+            case "4":
+                System.out.println("What title/name do you want to search for?");
+                String title;
+                try{
+                    title = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException("can't read the title/name from terminal", e);
+                }
+
+                System.out.println("Possible answers could be: ");
+                manageActors.searchByName(title);
+                manageProduction.searchByTitle(title);
+
                 break;
             default:
                 throw new RuntimeException("this action doesn't exist");

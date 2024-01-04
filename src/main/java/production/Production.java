@@ -153,10 +153,4 @@ public abstract class Production extends MediaIndustry {
                 '}';
     }
 }
-//
-//    Nota filmului, egală media aritmetică a tuturor evaluărilor primite de la utilizatori -
-//        Double;
-//        • public abstract void displayInfo();
-//        Metodă pentru afis,area informat, iilor specifice fiecărei subclase
-//        • public int compareTo(Object o);
-//        Metodă necesară sortării filmelor s, i serialelor în funct, ie de titlu
+

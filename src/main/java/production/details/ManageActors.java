@@ -1,5 +1,7 @@
 package production.details;
 
+import production.Production;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,5 +20,13 @@ public class ManageActors {
             });
         }
         actors.forEach(System.out::println);
+    }
+
+    public void searchByName(String name) {
+        for (Actor a : actors) {
+            if (a.getName().contains(name)) {
+                System.out.println(a);
+            }
+        }
     }
 }

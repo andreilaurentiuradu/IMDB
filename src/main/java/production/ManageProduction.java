@@ -10,7 +10,7 @@ public class ManageProduction {
 
     public void printByGenre(Genre genre) {
         for (Production p : productions) {
-            if(p.getGenres().contains(genre)) {
+            if (p.getGenres().contains(genre)) {
                 System.out.println(p);
             }
         }
@@ -36,6 +36,14 @@ public class ManageProduction {
                         System.out.println(p);
                     }
                 }
+            }
+        }
+    }
+
+    public void searchByTitle(String title) {
+        for (Production p : productions) {
+            if (p.getTitle().contains(title)) {
+                System.out.println(p);
             }
         }
     }
