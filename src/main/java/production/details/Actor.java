@@ -54,8 +54,8 @@ public class Actor extends MediaIndustry {
     public String toString() {
         return "Actor{" +
                 "name='" + name + '\'' +
-                ", performances=" + performances +
-                ", biography='" + biography + '\'' +
+//                ", performances=" + performances +
+//                ", biography='" + biography + '\'' +
                 '}';
     }
 }

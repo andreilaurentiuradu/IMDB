@@ -88,6 +88,7 @@ public class IMDB {
         System.out.println("2) View actors details");
         System.out.println("3) View notifications");
         System.out.println("4) Search for Actor/Movie/Series");
+        System.out.println("5) Remove/Add Production/Actor from favorites List");
         String action;
 
         try{
@@ -167,7 +168,7 @@ public class IMDB {
                 try{
                     answer = reader.readLine();
                 } catch (IOException e) {
-                    throw new RuntimeException("can't read the answer from terminal", e);
+                    throw new RuntimeException("Can't read the answer from terminal", e);
                 }
 
                 manageActors.printActorDetails(answer);
@@ -181,16 +182,43 @@ public class IMDB {
                 try{
                     title = reader.readLine();
                 } catch (IOException e) {
-                    throw new RuntimeException("can't read the title/name from terminal", e);
+                    throw new RuntimeException("Can't read the title/name from terminal", e);
                 }
 
                 System.out.println("Possible answers could be: ");
                 manageActors.searchByName(title);
                 manageProduction.searchByTitle(title);
-
                 break;
+            case "5":
+                System.out.println("Remove/Add");
+                try{
+                    action = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException("Can't read the action from terminal", e);
+                }
+
+                System.out.println("What actor/production?");
+                try{
+                    title = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException("Can't read the name/title from terminal", e);
+                }
+
+                if (action.equals("Add")) {
+                    currentUser.addMediaIndustry(new MediaIndustry(title));
+                } else {
+                    if (action.equals("Remove")) {
+                        currentUser.removeMediaIndustry(new MediaIndustry(title));
+                    } else {
+                        throw new RuntimeException("Action not found");
+                    }
+                }
+                System.out.println("The new favorite list is:");
+                System.out.println(currentUser.getFavorites());
+                break;
+
             default:
-                throw new RuntimeException("this action doesn't exist");
+                throw new RuntimeException("This action doesn't exist");
         }
 
         // flowul aplicatiei in functie de rolul utilizatorului

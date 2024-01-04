@@ -139,17 +139,17 @@ public abstract class Production extends MediaIndustry {
     public String toString() {
         return "Production{" +
                 "title='" + title + '\'' +
-                ", type='" + type + '\'' +
-                ", actorsNames=" + actorsNames +
-                ", directorsName=" + directorsName +
-                ", genres=" + genres +
-                ", ratings=" + ratings +
-                ", plot='" + plot + '\'' +
-                ", duration='" + duration + '\'' +
-                ", averageRating=" + averageRating +
-                ", releaseYear=" + releaseYear +
-                ", numSeasons=" + numSeasons +
-                ", seasons=" + seasons +
+//                ", type='" + type + '\'' +
+//                ", actorsNames=" + actorsNames +
+//                ", directorsName=" + directorsName +
+//                ", genres=" + genres +
+//                ", ratings=" + ratings +
+//                ", plot='" + plot + '\'' +
+//                ", duration='" + duration + '\'' +
+//                ", averageRating=" + averageRating +
+//                ", releaseYear=" + releaseYear +
+//                ", numSeasons=" + numSeasons +
+//                ", seasons=" + seasons +
                 '}';
     }
 }

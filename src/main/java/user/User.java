@@ -16,7 +16,7 @@ public abstract class User {
     private List<String> notifications;
     private final List<MediaIndustry> favoriteActors = new ArrayList<>();
     private final List<MediaIndustry> favoriteProductions = new ArrayList<>();
-    public SortedSet<MediaIndustry> favorites = new TreeSet<>(new Comparator<MediaIndustry>() {
+    private SortedSet<MediaIndustry> favorites = new TreeSet<>(new Comparator<MediaIndustry>() {
         @Override
         public int compare(MediaIndustry o1, MediaIndustry o2) {
             return o1.value.compareTo(o2.value);
@@ -102,12 +102,12 @@ public abstract class User {
                 '}';
     }
 
-    public void addProduction(MediaIndustry production) {
-        favorites.add(production);
+    public void addMediaIndustry(MediaIndustry media) {
+        favorites.add(media);
     }
 
-    public void removeProduction(Production production) {
-        favorites.remove(production);
+    public void removeMediaIndustry(MediaIndustry media) {
+        favorites.remove(media);
     }
 
     public void updateUserExperience(int userExperience) {
