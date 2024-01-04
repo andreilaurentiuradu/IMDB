@@ -5,10 +5,13 @@ import request.RequestsManager;
 import production.Production;
 import production.details.Rating;
 
+import java.time.LocalDateTime;
+import java.util.Locale;
+
 public class Regular extends User implements RequestsManager {
     @Override
     public void createRequest(Request r) {
-
+        r.setCreationDate(LocalDateTime.now());
     }
 
     @Override

@@ -6,6 +6,7 @@ import production.details.Genre;
 import production.details.ManageActors;
 import request.Request;
 import production.details.Actor;
+import request.RequestType;
 import user.Credentials;
 import user.ManageUsers;
 import user.User;
@@ -14,7 +15,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -88,23 +92,145 @@ public class IMDB {
         System.out.println("2) View actors details");
         System.out.println("3) View notifications");
         System.out.println("4) Search for Actor/Movie/Series");
-        System.out.println("5) Remove/Add Production/Actor from favorites List");
+        System.out.println("5) Remove/Add Production/Actor from/to favorites List");
         String action;
-
-        try{
-            action = reader.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException("can't read the action from terminal", e);
-        }
-
-        System.out.println("action: " + action);
-
-
         ManageActors manageActors = new ManageActors();
         ManageProduction manageProduction = new ManageProduction();
         manageProduction.productions = productions;
         manageActors.actors = actors;
 
+
+        Request request = new Request();
+        // flowul aplicatiei in functie de rolul utilizatorului
+        switch (currentUser.getAccountType()) {
+            case REGULAR:
+                System.out.println("6) Create/Discard a request");
+
+                try{
+                    action = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException("can't read the action from terminal", e);
+                }
+
+                System.out.println("action: " + action);
+                if(Integer.parseInt(action) < 6){
+                    new IMDB().generalActions(action, manageActors, manageProduction, currentUser);
+                } else {
+                    switch (action) {
+                        case "6":
+                            System.out.println("Create/Discard?");
+
+                            try{
+                                action = reader.readLine();
+                            } catch (IOException e) {
+                                throw new RuntimeException("can't read the action from terminal", e);
+                            }
+
+                            if (action.equals("Create")) {
+                                System.out.println("What kind of request?");
+                                Request r = new Request();
+                                try{
+                                    r.setType(RequestType.valueOf(reader.readLine()));
+                                } catch (IOException e) {
+                                    throw new RuntimeException("can't read the type from terminal", e);
+                                }
+
+                                System.out.println("Please describe the issue!");
+                                try{
+                                    r.setDescription(reader.readLine());
+                                } catch (IOException e) {
+                                    throw new RuntimeException("can't read the description from terminal", e);
+                                }
+                                r.setCreationDate(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+                                r.setRequesterUsername(currentUser.getUsername());
+                                requests.forEach(System.out::println);
+                                System.out.println("After");
+                                requests.add(r);
+                                requests.forEach(System.out::println);
+                            }
+                            break;
+                        case "7":
+                            break;
+                        default:
+                            throw new RuntimeException("Action not found");
+                    }
+                }
+
+
+                break;
+            case CONTRIBUTOR:
+                System.out.println("6) Create/Discard a request");
+
+                try{
+                    action = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException("can't read the action from terminal", e);
+                }
+
+                System.out.println("action: " + action);
+                if(Integer.parseInt(action) < 6){
+                    new IMDB().generalActions(action, manageActors, manageProduction, currentUser);
+                } else {
+                    switch (action) {
+                        case "6":
+                            System.out.println("Create/Discard?");
+
+                            try{
+                                action = reader.readLine();
+                            } catch (IOException e) {
+                                throw new RuntimeException("can't read the action from terminal", e);
+                            }
+
+                            if (action.equals("Create")) {
+                                System.out.println("What kind of request?");
+                                Request r = new Request();
+                                try{
+                                    r.setType(RequestType.valueOf(reader.readLine()));
+                                } catch (IOException e) {
+                                    throw new RuntimeException("can't read the type from terminal", e);
+                                }
+
+                                System.out.println("Please describe the issue!");
+                                try{
+                                    r.setDescription(reader.readLine());
+                                } catch (IOException e) {
+                                    throw new RuntimeException("can't read the description from terminal", e);
+                                }
+                                r.setCreationDate(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+                                r.setRequesterUsername(currentUser.getUsername());
+                                requests.forEach(System.out::println);
+                                System.out.println("After");
+                                requests.add(r);
+                                requests.forEach(System.out::println);
+                            }
+                            break;
+                        case "7":
+                            break;
+                        case "8":
+                            break;
+                        default:
+                            throw new RuntimeException("Action not found");
+                    }
+                }
+                break;
+            case ADMIN:
+                try{
+                    action = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException("can't read the action from terminal", e);
+                }
+
+                System.out.println("action: " + action);
+                new IMDB().generalActions(action, manageActors, manageProduction, currentUser);
+                break;
+            default:
+                throw new RuntimeException("AccountType not specified");
+        }
+    }
+
+    public void generalActions(String action, ManageActors manageActors, ManageProduction manageProduction,
+                               User currentUser) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         switch (action) {
             case "1":
                 System.out.println("Filter results by:");
@@ -219,18 +345,6 @@ public class IMDB {
 
             default:
                 throw new RuntimeException("This action doesn't exist");
-        }
-
-        // flowul aplicatiei in functie de rolul utilizatorului
-        switch (currentUser.getAccountType()) {
-            case REGULAR:
-                break;
-            case ADMIN:
-                break;
-            case CONTRIBUTOR:
-                break;
-            default:
-                throw new RuntimeException("AccountType not specified");
         }
     }
 
