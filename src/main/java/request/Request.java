@@ -38,14 +38,6 @@ public class Request {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Request request = (Request) o;
-        return solved == request.solved && type == request.type && Objects.equals(productionName, request.productionName) && Objects.equals(actorName, request.actorName) && Objects.equals(description, request.description) && Objects.equals(requesterUsername, request.requesterUsername) && Objects.equals(solverUsername, request.solverUsername);
-    }
-
-    @Override
     public String toString() {
         return "Request: " +
                 "type=" + type +

@@ -25,6 +25,11 @@ public class RequestService {
     }
 
     public void removeAdminRequest(Request request) {
+        System.out.println("Before");
+        requestsHolder.getAdminRequests().forEach(System.out::println);
         requestsHolder.getAdminRequests().remove(request);
+
+        System.out.println("After");
+        requestsHolder.getAdminRequests().forEach(System.out::println);
     }
 }

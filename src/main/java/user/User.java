@@ -140,6 +140,7 @@ public abstract class User {
                 "information=" + information +
                 ", accountType=" + accountType +
                 ", username='" + username + '\'' +
+                ", createdRequest" + createdRequests +
 //                ", experience=" + experience +
 //                ", notifications=" + notifications +
 //                ", favorites=" + favorites +

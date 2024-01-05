@@ -84,6 +84,7 @@ public abstract class Staff extends User implements StaffInterface {
                 "type=" + getAccountType() +
                 " requests=" + requests +
                 ", contributions=" + contributions +
+                ", createdRequest=" + getCreatedRequests() +
 //                ", addedIndustries=" + addedIndustries +
                 '}';
     }

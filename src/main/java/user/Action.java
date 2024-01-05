@@ -228,9 +228,13 @@ public class Action {
         userService.removeRequestFromResolverRequests(requestToCancel);
         requestService.removeAdminRequest(requestToCancel);
 
+        System.out.println("Before in currentUser");
+        System.out.println(currentUser);
         currentUser.removeCreatedRequest(requestToCancel);
-
-        userService.printAllUsers();
+        System.out.println("After in currentUser");
+        System.out.println(currentUser);
+//        userService.printAllUsers();
+//        requestService.getAdminRequests().forEach(System.out::println);
     }
 
     private Request getCurrentRequest(List<Request> availableRequests, String action) {

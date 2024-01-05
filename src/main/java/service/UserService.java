@@ -123,6 +123,8 @@ public class UserService {
 
     public void removeRequestFromResolverRequests(Request requestToCancel) {
         Staff staff = findStaffByUsername(requestToCancel.getSolverUsername());
+        if (staff == null)
+            return;
         staff.requests.remove(requestToCancel);
     }
 }
