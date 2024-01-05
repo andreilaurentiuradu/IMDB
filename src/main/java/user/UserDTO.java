@@ -36,20 +36,20 @@ public class UserDTO {
     }
 
     private User createUserWithType(AccountType accountType) {
-        User user;
 
         switch (accountType) {
             case CONTRIBUTOR: {
-                user = new Contributor();
-                user.addFavoriteProductions(productionsContribution);
+                Contributor user = new Contributor();
+
+                user.addContributions(productionsContribution, actorsContribution);
+
                 user.addFavoriteProductions(favoriteProductions);
-                user.addFavoriteActors(actorsContribution);
                 user.addFavoriteActors(favoriteActors);
 
                 return user;
             }
             case ADMIN: {
-                user = new Admin();
+                Admin user = new Admin();
 
                 user.addFavoriteProductions(productionsContribution);
                 user.addFavoriteActors(actorsContribution);
@@ -57,7 +57,7 @@ public class UserDTO {
                 return user;
             }
             case REGULAR: {
-                user = new Regular();
+                Regular user = new Regular();
 
                 user.addFavoriteProductions(favoriteProductions);
                 user.addFavoriteActors(favoriteActors);

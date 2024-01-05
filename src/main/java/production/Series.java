@@ -17,4 +17,9 @@ public class Series extends Production {
     public void displayInfo() {
         System.out.println("Series:" + getTitle());
     }
+
+    @Override
+    public int compareTo(Production o) {
+        return title.compareTo(o.title);
+    }
 }

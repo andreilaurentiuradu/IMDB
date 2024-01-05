@@ -1,10 +1,17 @@
 package user;
 
-import java.util.ArrayList;
+import production.MediaIndustry;
+import production.Production;
+import user.staff.Contributor;
+
 import java.util.List;
 
 public class ManageUsers {
-    public List<User> users = new ArrayList<>();
+    public List<User> users;
+
+    public ManageUsers (List<User> users) {
+        this.users = users;
+    }
 
     public User findUserByCredentials(Credentials credentials) {
         for (User u : users) {
@@ -15,4 +22,25 @@ public class ManageUsers {
         return null;
     }
 
+    public String findResolverByMediaTypeValue(List<User> users, String value) {
+        for (User user : users) {
+            if (user.getAccountType() == AccountType.CONTRIBUTOR) {
+                Contributor contributor = (Contributor) user;
+                for (MediaIndustry mediaIndustry : contributor.contributions) {
+                    if (mediaIndustry.value.equals(value))
+                        return contributor.getUsername();
+                }
+            }
+        }
+
+        throw new RuntimeException("Can not find the owner of the resource");
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+    }
 }

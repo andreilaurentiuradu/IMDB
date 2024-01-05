@@ -1,6 +1,7 @@
 package user;
 
 import request.Request;
+import request.RequestType;
 import request.RequestsManager;
 import production.Production;
 import production.details.Rating;
@@ -9,9 +10,18 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class Regular extends User implements RequestsManager {
+
+    public Regular() {
+
+    }
+    public Regular(User user) {
+        super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
+    }
     @Override
-    public void createRequest(Request r) {
-        r.setCreationDate(LocalDateTime.now());
+    public Request createRequest(String type, String description, LocalDateTime currentDate, String username) {
+        RequestType requestType = RequestType.valueOf(type);
+
+        return new Request(requestType, description, currentDate, username);
     }
 
     @Override

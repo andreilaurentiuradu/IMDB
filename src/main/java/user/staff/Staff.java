@@ -6,14 +6,21 @@ import production.details.Actor;
 import production.Production;
 import user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
 public abstract class Staff extends User implements StaffInterface {
 
-    private List<Request> requests;
+    public List<Request> requests = new ArrayList<>();
     private SortedSet<MediaIndustry> addedIndustries;
 
+    public Staff() {
+
+    }
+    public Staff(User user) {
+        super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
+    }
     @Override
     public void addProductionSystem(Production p) {
         addedIndustries.add(p);

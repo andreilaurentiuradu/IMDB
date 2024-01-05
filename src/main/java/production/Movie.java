@@ -13,4 +13,9 @@ public class Movie extends Production {
         System.out.println("Movie: " + getTitle()+ "duration: " +
                 duration + " " + "releaseYear: " + releaseYear);
     }
+
+    @Override
+    public int compareTo(Production o) {
+        return title.compareTo(o.title);
+    }
 }

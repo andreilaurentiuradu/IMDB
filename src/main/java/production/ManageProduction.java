@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageProduction {
-    public List<Production> productions = new ArrayList<>();
+    public List<Production> productions;
+
+    public ManageProduction(List<Production> productions) {
+        this.productions = productions;
+    }
 
     public void printByGenre(Genre genre) {
         for (Production p : productions) {

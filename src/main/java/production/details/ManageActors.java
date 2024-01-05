@@ -8,13 +8,18 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ManageActors {
-    public List<Actor> actors = new ArrayList<>();
+    public List<Actor> actors;
 
-    public void printActorDetails(String wantedSorted) {
-        if (wantedSorted.equals("Yes")) {
+    public ManageActors (List<Actor> actors) {
+       this.actors = actors;
+    }
+
+    public void printActorDetails(String sorted) {
+        if (sorted.equals("Yes")) {
             actors.sort(new Comparator<Actor>() {
                 @Override
                 public int compare(Actor actor1, Actor actor2) {
+
                     return actor1.getName().compareTo(actor2.getName());
                 }
             });

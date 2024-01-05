@@ -13,17 +13,15 @@ public class RequestDTO {
     public String to;
 
     public Request toRequest() {
-        Request request = new Request();
-        request.setType(type);
-        request.setProductionName(movieTitle);
-        request.setActorName(actorName);
-        request.setDescription(description);
-        request.setRequesterUsername(username);
-        request.setSolverUsername(to);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.parse(createdDate, formatter);
-        request.setCreationDate(localDateTime);
+
+        Request request = new Request(type, description, localDateTime, username);
+        request.setProductionName(movieTitle);
+        request.setActorName(actorName);
+        request.setSolverUsername(to);
+
+
 
         return request;
     }

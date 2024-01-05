@@ -15,6 +15,17 @@ public class Request {
     private String requesterUsername;
     private String solverUsername;
 
+    public Request (RequestType type, String description, LocalDateTime currentDate, String username) {
+        this.type = type;
+        this.description = description;
+        this.requesterUsername = username;
+        this.creationDate = currentDate;
+
+        if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
+            this.solverUsername = "ADMIN";
+        }
+    }
+
     @Override
     public String toString() {
         return "Request{" +

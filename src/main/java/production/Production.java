@@ -8,7 +8,7 @@ import production.details.Rating;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Production extends MediaIndustry {
+public abstract class Production extends MediaIndustry implements Comparable<Production> {
     String title;
     private String type;
     private List<String> actorsNames;
@@ -37,10 +37,6 @@ public abstract class Production extends MediaIndustry {
         return null;
     }
 
-    public Map<String, List<Episode>> getSeasons() {
-        return seasons;
-    }
-
     public void setSeasons(Map<String, List<Episode>> seasons) {
         this.seasons = seasons;
     }
@@ -53,32 +49,16 @@ public abstract class Production extends MediaIndustry {
         this.averageRating = averageRating;
     }
 
-    public String getPlot() {
-        return plot;
-    }
-
     public void setPlot(String plot) {
         this.plot = plot;
-    }
-
-    public String getDuration() {
-        return duration;
     }
 
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public Integer getReleaseYear() {
-        return releaseYear;
-    }
-
     public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
-    }
-
-    public Integer getNumSeasons() {
-        return numSeasons;
     }
 
     public void setNumSeasons(Integer numSeasons) {
@@ -89,10 +69,6 @@ public abstract class Production extends MediaIndustry {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getType() {
         return type;
     }
@@ -101,16 +77,8 @@ public abstract class Production extends MediaIndustry {
         this.type = type;
     }
 
-    public List<String> getActorsNames() {
-        return actorsNames;
-    }
-
     public void setActorsNames(List<String> actorsNames) {
         this.actorsNames = actorsNames;
-    }
-
-    public List<String> getDirectorsName() {
-        return directorsName;
     }
 
     public void setDirectorsName(List<String> directorsName) {

@@ -23,6 +23,18 @@ public abstract class User {
         }
     });
 
+    public User() {
+    }
+
+    public User(Information information, AccountType accountType, String username, int experience, List<String> notifications, SortedSet<MediaIndustry> favorites) {
+        this.information = information;
+        this.accountType = accountType;
+        this.username = username;
+        this.experience = experience;
+        this.notifications = notifications;
+        this.favorites = favorites;
+    }
+
     public Information getInformation() {
         return information;
     }
