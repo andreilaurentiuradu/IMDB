@@ -1,16 +1,14 @@
-package production.details;
+package service;
 
-import production.Production;
+import production.details.Actor;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ManageActors {
-    public List<Actor> actors;
+public class ActorService {
+    private final List<Actor> actors;
 
-    public ManageActors (List<Actor> actors) {
+    public ActorService(List<Actor> actors) {
        this.actors = actors;
     }
 

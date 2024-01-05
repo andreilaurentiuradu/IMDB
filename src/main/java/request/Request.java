@@ -5,15 +5,26 @@ import user.staff.Admin;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Request {
     private RequestType type;
     private LocalDateTime creationDate;
     private String productionName;
+
+    public String getRequesterUsername() {
+        return requesterUsername;
+    }
+
+    public void setRequesterUsername(String requesterUsername) {
+        this.requesterUsername = requesterUsername;
+    }
+
     private String actorName;
     private String description;
     private String requesterUsername;
     private String solverUsername;
+     public boolean solved;
 
     public Request (RequestType type, String description, LocalDateTime currentDate, String username) {
         this.type = type;
@@ -27,16 +38,23 @@ public class Request {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Request request = (Request) o;
+        return solved == request.solved && type == request.type && Objects.equals(productionName, request.productionName) && Objects.equals(actorName, request.actorName) && Objects.equals(description, request.description) && Objects.equals(requesterUsername, request.requesterUsername) && Objects.equals(solverUsername, request.solverUsername);
+    }
+
+    @Override
     public String toString() {
-        return "Request{" +
+        return "Request: " +
                 "type=" + type +
-                ", creationDate=" + creationDate +
+//                ", creationDate=" + creationDate +
                 ", productionName='" + productionName + '\'' +
                 ", actorName='" + actorName + '\'' +
                 ", description='" + description + '\'' +
                 ", requesterUsername='" + requesterUsername + '\'' +
-                ", solverUsername='" + solverUsername + '\'' +
-                '}';
+                ", solverUsername='" + solverUsername;
     }
 
     public RequestType getType() {
@@ -47,44 +65,12 @@ public class Request {
         this.type = type;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getProductionName() {
-        return productionName;
-    }
-
     public void setProductionName(String productionName) {
         this.productionName = productionName;
     }
 
-    public String getActorName() {
-        return actorName;
-    }
-
     public void setActorName(String actorName) {
         this.actorName = actorName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getRequesterUsername() {
-        return requesterUsername;
-    }
-
-    public void setRequesterUsername(String requesterUsername) {
-        this.requesterUsername = requesterUsername;
     }
 
     public String getSolverUsername() {
@@ -95,20 +81,19 @@ public class Request {
         this.solverUsername = solverUsername;
     }
 
-    //    public LocalDateTime getCreationDate
     public static class RequestsHolder {
-        private final List<Admin> admins = new ArrayList<>();
+        private final List<Request> adminRequests = new ArrayList<>();
 
-        public void addAdmin(Admin admin) {
-            admins.add(admin);
+        public void addAdminRequest(Request request) {
+            adminRequests.add(request);
         }
 
-        public void removeAdmin(Admin admin) {
-            admins.remove(admin);
+        public void removeAdminRequest(Request request) {
+            adminRequests.remove(request);
         }
 
-        public List<Admin> getAdmins() {
-            return new ArrayList<>(admins);
+        public List<Request> getAdminRequests() {
+            return adminRequests;
         }
     }
 }

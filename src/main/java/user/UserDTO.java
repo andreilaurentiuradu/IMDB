@@ -51,6 +51,8 @@ public class UserDTO {
             case ADMIN: {
                 Admin user = new Admin();
 
+                user.addContributions(productionsContribution, actorsContribution);
+
                 user.addFavoriteProductions(productionsContribution);
                 user.addFavoriteActors(actorsContribution);
 

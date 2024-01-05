@@ -13,6 +13,8 @@ import java.util.SortedSet;
 public abstract class Staff extends User implements StaffInterface {
 
     public List<Request> requests = new ArrayList<>();
+    public final List<MediaIndustry> contributions = new ArrayList<>();
+
     private SortedSet<MediaIndustry> addedIndustries;
 
     public Staff() {
@@ -21,6 +23,7 @@ public abstract class Staff extends User implements StaffInterface {
     public Staff(User user) {
         super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
     }
+
     @Override
     public void addProductionSystem(Production p) {
         addedIndustries.add(p);
@@ -40,6 +43,7 @@ public abstract class Staff extends User implements StaffInterface {
         }
     }
 
+
     @Override
     public void removeActorSystem(String name) {
         for (MediaIndustry mediaIndustry : addedIndustries) {
@@ -57,5 +61,30 @@ public abstract class Staff extends User implements StaffInterface {
     @Override
     public void updateActor(Actor a) {
 
+    }
+
+    public void addContributions(List<String> actorsName, List<String> productionTitles) {
+        for (String s : actorsName) {
+            contributions.add(new MediaIndustry(s));
+        }
+
+        for (String s : productionTitles) {
+            contributions.add(new MediaIndustry(s));
+        }
+    }
+
+    public void addRequest(Request request) {
+        requests.add(request);
+    }
+
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "username=" + getUsername() +
+                "type=" + getAccountType() +
+                " requests=" + requests +
+                ", contributions=" + contributions +
+//                ", addedIndustries=" + addedIndustries +
+                '}';
     }
 }

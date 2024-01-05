@@ -3,6 +3,7 @@ package user;
 import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
+import request.Request;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +23,7 @@ public abstract class User {
             return o1.value.compareTo(o2.value);
         }
     });
+    private final List<Request> createdRequests = new ArrayList<>();
 
     public User() {
     }
@@ -38,6 +40,27 @@ public abstract class User {
         this.experience = experience;
         this.notifications = notifications;
         this.favorites = favorites;
+    }
+
+    public void printAllRequestsMadeByUser() {
+        System.out.println("printAllRequestsMadeByUser");
+        this.getCreatedRequests().forEach(System.out::println);
+    }
+
+    public boolean isStaff() {
+        return accountType == AccountType.CONTRIBUTOR || accountType == AccountType.ADMIN;
+    }
+
+    public List<Request> getCreatedRequests() {
+        return createdRequests;
+    }
+
+    public void addCreatedRequest(Request request) {
+        this.createdRequests.add(request);
+    }
+
+    public void removeCreatedRequest(Request request) {
+        this.createdRequests.remove(request);
     }
 
     public void setCredentials(String email, String password) {
@@ -117,9 +140,9 @@ public abstract class User {
                 "information=" + information +
                 ", accountType=" + accountType +
                 ", username='" + username + '\'' +
-                ", experience=" + experience +
-                ", notifications=" + notifications +
-                ", favorites=" + favorites +
+//                ", experience=" + experience +
+//                ", notifications=" + notifications +
+//                ", favorites=" + favorites +
                 '}';
     }
 
@@ -210,10 +233,10 @@ public abstract class User {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             return "Information{" +
                     "credentials=" + credentials +
-                    ", name='" + name + '\'' +
-                    ", country='" + country + '\'' +
-                    ", age=" + age +
-                    ", gender=" + gender +
+//                    ", name='" + name + '\'' +
+//                    ", country='" + country + '\'' +
+//                    ", age=" + age +
+//                    ", gender=" + gender +
 //                    ", birthday=" + birthday.format(formatter) +
                     '}';
         }

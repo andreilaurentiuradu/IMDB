@@ -7,7 +7,7 @@ public class UserFactory {
     public User createUser(User user) {
         switch (user.getAccountType()) {
             case ADMIN:
-                return new Admin();
+                return new Admin(user);
             case REGULAR:
                 return new Regular(user);
             case CONTRIBUTOR:

@@ -18,10 +18,9 @@ public class Regular extends User implements RequestsManager {
         super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
     }
     @Override
-    public Request createRequest(String type, String description, LocalDateTime currentDate, String username) {
-        RequestType requestType = RequestType.valueOf(type);
+    public Request createRequest(RequestType type, String description, LocalDateTime currentDate, String username) {
 
-        return new Request(requestType, description, currentDate, username);
+        return new Request(type, description, currentDate, username);
     }
 
     @Override

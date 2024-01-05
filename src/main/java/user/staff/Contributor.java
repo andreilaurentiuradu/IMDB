@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Contributor extends Staff implements RequestsManager {
-
-    public final List<MediaIndustry> contributions = new ArrayList<>();
-
     public Contributor() {
     }
 
@@ -28,25 +25,13 @@ public class Contributor extends Staff implements RequestsManager {
     }
 
     @Override
-    public Request createRequest(String type, String description, LocalDateTime currentDate, String username) {
-        RequestType requestType = RequestType.valueOf(type);
+    public Request createRequest(RequestType type, String description, LocalDateTime currentDate, String username) {
 
-        return new Request(requestType, description, currentDate, username);
+        return new Request(type, description, currentDate, username);
     }
 
     @Override
     public void removeRequest(Request r) {
 
-    }
-
-
-    public void addContributions(List<String> actorsName, List<String> productionTitles) {
-        for (String s : actorsName) {
-            contributions.add(new MediaIndustry(s));
-        }
-
-        for (String s : productionTitles) {
-            contributions.add(new MediaIndustry(s));
-        }
     }
 }

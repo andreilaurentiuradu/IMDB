@@ -1,14 +1,14 @@
-package production;
+package service;
 
+import production.Production;
 import production.details.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ManageProduction {
-    public List<Production> productions;
+public class ProductionService {
+    private final List<Production> productions;
 
-    public ManageProduction(List<Production> productions) {
+    public ProductionService(List<Production> productions) {
         this.productions = productions;
     }
 
