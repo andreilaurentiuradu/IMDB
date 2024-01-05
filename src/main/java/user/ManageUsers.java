@@ -13,6 +13,16 @@ public class ManageUsers {
         this.users = users;
     }
 
+    public User findUserByUsername(String username) {
+        for (User u : users) {
+            if (u.getUsername().equals(username)) {
+                return u;
+            }
+        }
+
+        return null;
+    }
+
     public User findUserByCredentials(Credentials credentials) {
         for (User u : users) {
             if (credentials.validateCredentials(u.getInformation().getCredentials())) {

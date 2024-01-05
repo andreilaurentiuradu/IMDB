@@ -16,4 +16,17 @@ public class UserFactory {
                 throw new RuntimeException("Invalid AccountType");
         }
     }
+
+    public User createUser(AccountType accountType) {
+        switch (accountType) {
+            case ADMIN:
+                return new Admin();
+            case REGULAR:
+                return new Regular();
+            case CONTRIBUTOR:
+                return new Contributor();
+            default:
+                throw new RuntimeException("Invalid AccountType");
+        }
+    }
 }

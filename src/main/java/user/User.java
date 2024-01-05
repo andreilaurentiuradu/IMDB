@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public abstract class User {
-    private Information information;
+    private Information information = new Information();
     private AccountType accountType;
     private String username;
     private int experience;
@@ -26,6 +26,11 @@ public abstract class User {
     public User() {
     }
 
+    public User(String username, String email, String password, String accountType) {
+        this.username = username;
+        this.setAccountType(AccountType.fromLabel(accountType));
+    }
+
     public User(Information information, AccountType accountType, String username, int experience, List<String> notifications, SortedSet<MediaIndustry> favorites) {
         this.information = information;
         this.accountType = accountType;
@@ -33,6 +38,10 @@ public abstract class User {
         this.experience = experience;
         this.notifications = notifications;
         this.favorites = favorites;
+    }
+
+    public void setCredentials(String email, String password) {
+        this.information.setCredentials(new Credentials(email, password));
     }
 
     public Information getInformation() {
@@ -205,7 +214,7 @@ public abstract class User {
                     ", country='" + country + '\'' +
                     ", age=" + age +
                     ", gender=" + gender +
-                    ", birthday=" + birthday.format(formatter) +
+//                    ", birthday=" + birthday.format(formatter) +
                     '}';
         }
 

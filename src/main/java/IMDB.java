@@ -9,6 +9,7 @@ import request.Request;
 import request.RequestType;
 import request.RequestsManager;
 import user.*;
+import user.staff.Admin;
 import user.staff.Contributor;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,9 @@ public class IMDB {
     ManageActors manageActors;
     ManageProduction manageProduction;
     ManageUsers manageUsers;
+
+    UserFactory userFactory = new UserFactory();
+
 
     private IMDB() {
         requests = LoadData.loadRequests();
@@ -55,7 +59,6 @@ public class IMDB {
     public void run() {
 
         // autentificarea utilizatorului
-        UserFactory userFactory = new UserFactory();
 
         User currentUser;
 
@@ -79,33 +82,82 @@ public class IMDB {
                 break;
             case CONTRIBUTOR:
                 Contributor contributor = (Contributor) userFactory.createUser(currentUser);
-                manageContributorUser(manageActors, manageProduction, contributor);
+                manageContributorUser(contributor);
                 break;
             case ADMIN:
-                manageAdminUser(currentUser);
+                Admin admin = (Admin) userFactory.createUser(currentUser);
+                manageAdminUser(admin);
                 break;
             default:
                 throw new RuntimeException("AccountType not specified");
         }
     }
 
-    private void manageAdminUser(User currentUser) {
+    private void manageAdminUser(Admin currentUser) {
+        System.out.println("6) Add/Delete production/actor");
+        System.out.println("7) Solve a request");
+        System.out.println("8) Update production/actor info");
+        System.out.println("9) Add/Delete user");
+
         String action = terminalInteraction.readString("action");
         System.out.println("action: " + action);
 
-        generalActions(action, manageActors, manageProduction, currentUser);
+        if(Integer.parseInt(action) < 6){
+            generalActions(action, currentUser);
+        } else {
+            switch (action) {
+                case "9":
+                    User user = createOrRemoveUserFromTerminal();
+                    manageUsers.addUser(user);
+
+                    users.forEach(System.out::println);
+                    System.out.println();
+                    manageUsers.users.forEach(System.out::println);
+                    break;
+                default:
+                    throw new RuntimeException("Action not found");
+            }
+        }
     }
 
-    private void manageContributorUser(ManageActors manageActors,
-                                       ManageProduction manageProduction,
-                                       Contributor currentUser) {
+    private User createOrRemoveUserFromTerminal() {
+        System.out.println("Introduce username");
+
+        String username = terminalInteraction.readString("username");
+        User user = manageUsers.findUserByUsername(username);
+
+        if (user == null) {
+            System.out.println("Creating user");
+
+            System.out.println("Please introduce account type: Regular/Contributor/Admin");
+            String accountTypeLabel = terminalInteraction.readString("accountType");
+            AccountType accountType = AccountType.fromLabel(accountTypeLabel);
+            user = userFactory.createUser(accountType);
+
+            System.out.println("Please introduce email: ");
+            String email = terminalInteraction.readString("email");
+            System.out.println("Please introduce password: ");
+            String password = terminalInteraction.readString("password");
+
+            user.setCredentials(email, password);
+            user.setUsername(username);
+            user.setAccountType(accountType);
+
+        } else {
+            System.out.println("Deleting user");
+        }
+
+        return user;
+    }
+
+    private void manageContributorUser(Contributor currentUser) {
         System.out.println("6) Create/Discard a request");
 
         String action = terminalInteraction.readString("action");
         System.out.println("action: " + action);
 
         if(Integer.parseInt(action) < 6){
-            generalActions(action, manageActors, manageProduction, currentUser);
+            generalActions(action, currentUser);
         } else {
             switch (action) {
                 case "6":
@@ -129,7 +181,7 @@ public class IMDB {
         System.out.println("action: " + action);
 
         if(Integer.parseInt(action) < 6){
-            generalActions(action, manageActors, manageProduction, currentUser);
+            generalActions(action, currentUser);
         } else {
             switch (action) {
                 case "6":
@@ -213,8 +265,6 @@ public class IMDB {
     }
 
     public void generalActions(String action,
-                               ManageActors manageActors,
-                               ManageProduction manageProduction,
                                User currentUser) {
         switch (action) {
             case "1": {
