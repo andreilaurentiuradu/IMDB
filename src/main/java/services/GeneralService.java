@@ -6,6 +6,7 @@ import production.details.Actor;
 import production.details.Genre;
 import repository.ActorRepository;
 import repository.ProductionRepository;
+import repository.UserRepository;
 import user.User;
 
 import static services.ActionsService.terminalInteraction;
@@ -17,24 +18,6 @@ public class GeneralService {
     public GeneralService(ActorRepository actorRepository, ProductionRepository productionRepository) {
         this.actorRepository = actorRepository;
         this.productionRepository = productionRepository;
-    }
-
-    public void manageFavorites(User currentUser) {
-        String action;
-        action = terminalInteraction.readString("Remove/Add", "services");
-        String title = terminalInteraction.readString("What actor/production?", "name/title");
-
-//        TODO: daca vrei sa faci modificarile asa, trebuie sa iei current user DIN BAZA DE DATE(findUserByUsername)
-        if (action.equals("Add")) {
-            currentUser.addMediaIndustry(new MediaIndustry(title));
-        } else if (action.equals("Remove")) {
-            currentUser.removeMediaIndustry(new MediaIndustry(title));
-        } else {
-            throw new RuntimeException("Action not found");
-        }
-
-        System.out.println("The new favorite list is:");
-        System.out.println(currentUser.getFavorites());
     }
 
     public void search() {

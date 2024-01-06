@@ -151,7 +151,7 @@ public class ActionsService {
                 break;
             }
             case 5: {
-                generalService.manageFavorites(currentUser);
+                userService.manageFavorites(currentUser);
                 break;
             }
             default:

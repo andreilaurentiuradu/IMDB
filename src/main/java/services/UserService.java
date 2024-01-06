@@ -1,5 +1,6 @@
 package services;
 
+import production.MediaIndustry;
 import repository.UserRepository;
 import user.AccountType;
 import user.Credentials;
@@ -48,5 +49,31 @@ public class UserService {
 
     public User identifyUser(Credentials credentials) {
         return userRepository.findUserByCredentials(credentials);
+    }
+
+    public void printFavorites(User user) {
+        System.out.println("The favorites list:");
+        for (MediaIndustry mediaIndustry : user.getFavorites()) {
+            System.out.println(mediaIndustry.value);
+        }
+    }
+
+    public void manageFavorites(User currentUser) {
+        String action;
+        printFavorites(currentUser);
+        System.out.println();
+        action = terminalInteraction.readString("Remove/Add", "services");
+        String title = terminalInteraction.readString("What actor/production?", "name/title");
+
+        if (action.equals("Add")) {
+            currentUser.addMediaIndustry(new MediaIndustry(title));
+        } else if (action.equals("Remove")) {
+            currentUser.removeMediaIndustry(new MediaIndustry(title));
+        } else {
+            throw new RuntimeException("Action not found");
+        }
+
+        System.out.println("The new favorite list is:");
+        printFavorites(currentUser);
     }
 }
