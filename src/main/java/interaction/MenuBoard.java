@@ -39,6 +39,5 @@ public class MenuBoard {
         System.out.println("1) Genre");
         System.out.println("2) Ratings");
         System.out.println("3) Don't filter");
-
     }
 }

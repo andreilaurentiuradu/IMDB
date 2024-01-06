@@ -52,10 +52,21 @@ public class Actor extends MediaIndustry {
 
     @Override
     public String toString() {
-        return "Actor{" +
-                "name='" + name + '\'' +
-//                ", performances=" + performances +
-//                ", biography='" + biography + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder("Actor{");
+
+        if (name != null)
+            sb.append("name='").append(name).append('\'').append(", ");
+        if (performances != null)
+            sb.append("performances=").append(performances).append(", ");
+        if (biography != null)
+            sb.append("biography='").append(biography).append('\'').append(", ");
+
+        if (sb.length() > 7) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+
+        sb.append('}');
+        return sb.toString();
     }
+
 }

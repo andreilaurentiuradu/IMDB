@@ -2,6 +2,7 @@ package services;
 
 import interaction.MenuBoard;
 import production.MediaIndustry;
+import production.details.Actor;
 import production.details.Genre;
 import repository.ActorRepository;
 import repository.ProductionRepository;
@@ -42,7 +43,10 @@ public class GeneralService {
                 "title/name");
 
         System.out.println("Possible answers could be: ");
-        System.out.println(actorRepository.searchByName(title));
+
+        Actor actor = actorRepository.searchByName(title);
+        if (actor != null)
+            System.out.println(actor);
 
         productionRepository.searchByTitle(title);
     }
@@ -71,7 +75,8 @@ public class GeneralService {
     public void filterProductions(String action) {
         switch (action) {
             case "1":
-                String genre = terminalInteraction.readString("What genre do you want?", "genre");
+                String genre = terminalInteraction.readString("What genre do you want?\nAction, Adventure, Comedy, Drama, Horror, SF, " +
+                        "Fantasy,\nRomance, Mystery, Thriller, Crime, Biography, War, Cooking", "genre");
 
                 productionRepository.printByGenre(Genre.valueOf(genre));
                 break;

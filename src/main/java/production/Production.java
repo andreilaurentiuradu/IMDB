@@ -5,6 +5,7 @@ import production.details.Episode;
 import production.details.Genre;
 import production.details.Rating;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -105,20 +106,40 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
 
     @Override
     public String toString() {
-        return "Production{" +
-                "title='" + title + '\'' +
-//                ", type='" + type + '\'' +
-//                ", actorsNames=" + actorsNames +
-//                ", directorsName=" + directorsName +
-//                ", genres=" + genres +
-//                ", ratings=" + ratings +
-//                ", plot='" + plot + '\'' +
-//                ", duration='" + duration + '\'' +
-//                ", averageRating=" + averageRating +
-//                ", releaseYear=" + releaseYear +
-//                ", numSeasons=" + numSeasons +
-//                ", seasons=" + seasons +
-                '}';
+        StringBuilder sb = new StringBuilder("Production{");
+
+        if (title != null)
+            sb.append("title='").append(title).append('\'').append(", ");
+        if (type != null)
+            sb.append("type='").append(type).append('\'').append(", ");
+        if (actorsNames != null)
+            sb.append("actorsNames=").append(actorsNames).append(", ");
+        if (directorsName != null)
+            sb.append("directorsName=").append(directorsName).append(", ");
+        if (genres != null)
+            sb.append("genres=").append(genres).append(", ");
+        if (ratings != null)
+            sb.append("ratings=").append(ratings).append(", ");
+        if (plot != null)
+            sb.append("plot='").append(plot).append('\'').append(", ");
+        if (duration != null)
+            sb.append("duration='").append(duration).append('\'').append(", ");
+        if (averageRating != null)
+            sb.append("averageRating=").append(averageRating).append(", ");
+        if (releaseYear != null)
+            sb.append("releaseYear=").append(releaseYear).append(", ");
+        if (numSeasons != null)
+            sb.append("numSeasons=").append(numSeasons).append(", ");
+        if (seasons != null)
+            sb.append("seasons=").append(seasons).append(", ");
+
+        if (sb.length() > 12) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+
+        sb.append('}');
+
+        return sb.toString();
     }
 }
 
