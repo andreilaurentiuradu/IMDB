@@ -147,7 +147,8 @@ public class RequestService {
 
 
     private void createRequest(RequestsManager requestsManager, String username) {
-        String readType = terminalInteraction.readString("What kind of request?", "type");
+        String readType = terminalInteraction.readString("What kind of request? " +
+                "DELETE_ACCOUNT/ACTOR_ISSUE/MOVIE_ISSUE/OTHERS", "type");
         RequestType type = RequestType.getRequestType(readType);
 
         String readDescription = terminalInteraction.readString("Please describe the issue", "description");

@@ -123,7 +123,7 @@ public class ActionsService {
                     break;
                 case 7:
                     break;
-                case 10:
+                case 8:
                     login = false;
                     break;
                 default:

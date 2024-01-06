@@ -21,7 +21,7 @@ public class Request {
     }
 
     private String actorName;
-    private String description;
+    private final String description;
     private String requesterUsername;
     private String solverUsername;
      public boolean solved;
@@ -39,15 +39,31 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request: " +
-                "type=" + type +
-//                ", creationDate=" + creationDate +
-                ", productionName='" + productionName + '\'' +
-                ", actorName='" + actorName + '\'' +
-                ", description='" + description + '\'' +
-                ", requesterUsername='" + requesterUsername + '\'' +
-                ", solverUsername='" + solverUsername;
+        StringBuilder sb = new StringBuilder("Request: ");
+
+        if (type != null)
+            sb.append("type=").append(type).append(", ");
+        if (creationDate != null)
+            sb.append("creationDate=").append(creationDate).append(", ");
+        if (productionName != null)
+            sb.append("productionName='").append(productionName).append('\'').append(", ");
+        if (actorName != null)
+            sb.append("actorName='").append(actorName).append('\'').append(", ");
+        if (description != null)
+            sb.append("description='").append(description).append('\'').append(", ");
+        if (requesterUsername != null)
+            sb.append("requesterUsername='").append(requesterUsername).append('\'').append(", ");
+        if (solverUsername != null)
+            sb.append("solverUsername='").append(solverUsername).append('\'');
+
+        int length = sb.length();
+        if (length > 10 && sb.charAt(length - 2) == ',') {
+            sb.delete(length - 2, length);
+        }
+
+        return sb.toString();
     }
+
 
     public RequestType getType() {
         return type;
