@@ -74,17 +74,17 @@ public class Request {
     }
 
     public static class RequestsHolder {
-        private final List<Request> adminRequests = new ArrayList<>();
+        private static final List<Request> adminRequests = new ArrayList<>();
 
-        public void addAdminRequest(Request request) {
+        public static void addAdminRequest(Request request) {
             adminRequests.add(request);
         }
 
-        public void removeAdminRequest(Request request) {
+        public static void removeAdminRequest(Request request) {
             adminRequests.remove(request);
         }
 
-        public List<Request> getAdminRequests() {
+        public static List<Request> getAdminRequests() {
             return adminRequests;
         }
     }

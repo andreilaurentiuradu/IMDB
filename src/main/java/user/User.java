@@ -28,11 +28,6 @@ public abstract class User {
     public User() {
     }
 
-    public User(String username, String email, String password, String accountType) {
-        this.username = username;
-        this.setAccountType(AccountType.fromLabel(accountType));
-    }
-
     public User(Information information, AccountType accountType, String username, int experience, List<String> notifications, SortedSet<MediaIndustry> favorites) {
         this.information = information;
         this.accountType = accountType;
@@ -40,11 +35,6 @@ public abstract class User {
         this.experience = experience;
         this.notifications = notifications;
         this.favorites = favorites;
-    }
-
-    public void printAllRequestsMadeByUser() {
-        System.out.println("printAllRequestsMadeByUser");
-        this.getCreatedRequests().forEach(System.out::println);
     }
 
     public boolean isStaff() {
@@ -71,7 +61,7 @@ public abstract class User {
         return information;
     }
 
-    public void createFavorites(List<Actor> actors, List<Production> productions) {
+    public void createMediaIndustryFavorites(List<Actor> actors, List<Production> productions) {
 
         for (MediaIndustry mediaIndustry : favoriteActors) {
             favorites.add(Actor.getActorByName(actors, mediaIndustry.value));
@@ -82,13 +72,11 @@ public abstract class User {
         }
     }
 
-    public void addFavoriteActors(List<String> actors) {
+    public void addFavorites( List<String> productions, List<String> actors) {
         for (String s : actors) {
             favoriteActors.add(new MediaIndustry(s));
         }
-    }
 
-    public void addFavoriteProductions(List<String> productions) {
         for (String s : productions) {
             favoriteProductions.add(new MediaIndustry(s));
         }

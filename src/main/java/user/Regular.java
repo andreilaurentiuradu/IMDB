@@ -18,7 +18,7 @@ public class Regular extends User implements RequestsManager {
         super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
     }
     @Override
-    public Request createRequest(RequestType type, String description, LocalDateTime currentDate, String username) {
+    public Request createRequest(RequestType type, String description, LocalDateTime currentDate, String username, String value) {
 
         return new Request(type, description, currentDate, username);
     }
@@ -32,8 +32,4 @@ public class Regular extends User implements RequestsManager {
 
         production.getRatings().add(rating);
     }
-
-
-//    Adăugarea unei recenzii (element de tip Rating) pentru o product, ie (va nota cu puncte
-//    de la 1 la 10 s, i va adăuga un comentariu).
 }

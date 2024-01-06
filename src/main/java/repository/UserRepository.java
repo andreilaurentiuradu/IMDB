@@ -1,6 +1,8 @@
-package service;
+package repository;
 
 import production.MediaIndustry;
+import production.Production;
+import production.details.Actor;
 import request.Request;
 import user.Credentials;
 import user.User;
@@ -10,13 +12,13 @@ import user.staff.Staff;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService {
+public class UserRepository {
     private final List<User> users;
     private final List<Staff> staffList;
 
     public static final Admin SUPREME = new Admin("SUPREME_ADMIN");
 
-    public UserService(List<User> users, List<Request> requests) {
+    public UserRepository(List<User> users, List<Request> requests, List<Production> productions, List<Actor> actors) {
 
         this.users = users;
         this.staffList = new ArrayList<>();
@@ -27,6 +29,8 @@ public class UserService {
             if (user.isStaff()) {
                 staffList.add((Staff) user);
             }
+
+            user.createMediaIndustryFavorites(actors, productions);
         }
 
         for (Request request : requests) {

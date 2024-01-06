@@ -25,13 +25,20 @@ public class Contributor extends Staff implements RequestsManager {
     }
 
     @Override
-    public Request createRequest(RequestType type, String description, LocalDateTime currentDate, String username) {
+    public Request createRequest(RequestType type, String description, LocalDateTime currentDate, String username, String value) {
+        Request request = new Request(type, description, currentDate, username);
+        if (type == RequestType.MOVIE_ISSUE) {
+            request.setProductionName(value);
 
-        return new Request(type, description, currentDate, username);
+        } else if (type == RequestType.ACTOR_ISSUE) {
+            request.setActorName(value);
+        }
+
+        return request;
     }
 
     @Override
     public void removeRequest(Request r) {
-
+        requests.remove(r);
     }
 }

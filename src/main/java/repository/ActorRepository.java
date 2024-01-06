@@ -1,14 +1,14 @@
-package service;
+package repository;
 
 import production.details.Actor;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class ActorService {
+public class ActorRepository {
     private final List<Actor> actors;
 
-    public ActorService(List<Actor> actors) {
+    public ActorRepository(List<Actor> actors) {
        this.actors = actors;
     }
 
@@ -25,11 +25,13 @@ public class ActorService {
         actors.forEach(System.out::println);
     }
 
-    public void searchByName(String name) {
+    public Actor searchByName(String name) {
         for (Actor a : actors) {
             if (a.getName().contains(name)) {
-                System.out.println(a);
+                return a;
             }
         }
+
+        return null;
     }
 }

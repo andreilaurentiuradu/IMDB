@@ -17,6 +17,7 @@ public class RequestDTO {
         LocalDateTime localDateTime = LocalDateTime.parse(createdDate, formatter);
 
         Request request = new Request(type, description, localDateTime, username);
+
         request.setProductionName(movieTitle);
         request.setActorName(actorName);
         request.setSolverUsername(to);

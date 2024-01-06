@@ -37,14 +37,13 @@ public class UserDTO {
 
     private User createUserWithType(AccountType accountType) {
 
+//        TODO: check all accountType has favorites
         switch (accountType) {
             case CONTRIBUTOR: {
                 Contributor user = new Contributor();
 
                 user.addContributions(productionsContribution, actorsContribution);
-
-                user.addFavoriteProductions(favoriteProductions);
-                user.addFavoriteActors(favoriteActors);
+                user.addFavorites(favoriteProductions, favoriteActors);
 
                 return user;
             }
@@ -52,17 +51,14 @@ public class UserDTO {
                 Admin user = new Admin();
 
                 user.addContributions(productionsContribution, actorsContribution);
-
-                user.addFavoriteProductions(productionsContribution);
-                user.addFavoriteActors(actorsContribution);
+                user.addFavorites(favoriteProductions, favoriteActors);
 
                 return user;
             }
             case REGULAR: {
                 Regular user = new Regular();
 
-                user.addFavoriteProductions(favoriteProductions);
-                user.addFavoriteActors(favoriteActors);
+                user.addFavorites(favoriteProductions, favoriteActors);
 
                 return user;
             }
