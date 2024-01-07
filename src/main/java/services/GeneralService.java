@@ -7,6 +7,7 @@ import production.Production;
 import production.Series;
 import production.details.Actor;
 import production.details.Genre;
+import production.details.Rating;
 import repository.ActorRepository;
 import repository.ProductionRepository;
 import user.AccountType;
@@ -112,8 +113,7 @@ public class GeneralService {
                 throw new RuntimeException("Invalid input");
             }
 
-        }
-        else {
+        } else {
             String value;
             value = terminalInteraction.readString("Introduce title/name for removing", "type");
             productionRepository.removeProduction(value);
@@ -129,9 +129,9 @@ public class GeneralService {
 
         if (type.equals("Movie")) {
             productionRepository.addProduction(new Movie(value));
-        } else if (type.equals("Series")){
+        } else if (type.equals("Series")) {
             productionRepository.addProduction(new Series(value));
-        } else if (type.equals("Actor")){
+        } else if (type.equals("Actor")) {
             actorRepository.addActor(new Actor(value));
         } else {
             throw new RuntimeException("Invalid input");
@@ -142,7 +142,7 @@ public class GeneralService {
         String type = terminalInteraction.readString("Production/Actor", "type");
         if (type.equals("Production")) {
             updateJustProduction(currentUser);
-        } else if(type.equals("Actor")){
+        } else if (type.equals("Actor")) {
             updateJustActor(currentUser);
         }
     }
@@ -207,5 +207,22 @@ public class GeneralService {
             System.out.println("You can't update this production");
             throw new RuntimeException("Invalid production");
         }
+    }
+
+    public void addProductionRating(User user) {
+        Rating rating = new Rating();
+        rating.setUsername(user.getUsername());
+
+        String title = terminalInteraction.readString("Which title do you want to rate", "title");
+        String grade = terminalInteraction.readString("Rate this production from 1 to 10", "grade");
+
+        if (Integer.parseInt(grade) < 1 || Integer.parseInt(grade) > 10) {
+            throw new RuntimeException("Invalid rating");
+        }
+
+        String comment = terminalInteraction.readString("Add a comment", "comment");
+        rating.setRating(Integer.parseInt(grade));
+        rating.setComment(comment);
+        productionRepository.addRating(title, user.getUsername(), rating);
     }
 }

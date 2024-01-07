@@ -61,6 +61,7 @@ public class ActionsService {
                     requestService.resolveRequest(currentUser);
                     break;
                 case 8:
+                    generalService.updateProductionOrActor(currentUser);
                     break;
                 case 9:
                     userService.createOrRemoveUser();
@@ -96,9 +97,10 @@ public class ActionsService {
                     generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
                     break;
                 case 8:
-                    generalService.updateProductionOrActor(currentUser);
+                    // solve a request
                     break;
                 case 9:
+                    generalService.updateProductionOrActor(currentUser);
                     break;
                 case 10:
                     login = false;
@@ -129,6 +131,7 @@ public class ActionsService {
                     requestService.createOrDiscardRequest(currentUser, currentUser.getUsername());
                     break;
                 case 7:
+                    generalService.addProductionRating(currentUser);
                     break;
                 case 8:
                     login = false;

@@ -2,7 +2,9 @@ package repository;
 
 import production.Production;
 import production.details.Genre;
+import production.details.Rating;
 import user.AccountType;
+import user.Regular;
 import user.User;
 import user.staff.Contributor;
 import user.staff.Staff;
@@ -82,4 +84,13 @@ public class ProductionRepository {
         productions.remove(searchByTitle(title));
     }
 
+    public void addRating(String title, String username, Rating rating) {
+        Production production = searchByTitle(title);
+        for (Rating r : production.getRatings()) {
+            if (r.getUsername().equals(username)) {
+                return;
+            }
+        }
+        production.getRatings().add(rating);
+    }
 }
