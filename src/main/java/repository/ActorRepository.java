@@ -1,5 +1,6 @@
 package repository;
 
+import production.Production;
 import production.details.Actor;
 
 import java.util.Comparator;
@@ -33,5 +34,13 @@ public class ActorRepository {
         }
 
         return null;
+    }
+
+    public void addActor(Actor actor) {
+        actors.add(actor);
+    }
+
+    public void removeActor(String name) {
+        actors.remove(searchByName(name));
     }
 }

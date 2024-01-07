@@ -55,7 +55,7 @@ public class IMDB {
                     throw new RuntimeException("AccountType not specified");
             }
 
-            switch (action.exitOrRelogin(currentUser)) {
+            switch (action.exitOrLogout()) {
                 case "Exit":
                     currentUser = null;
                     break;

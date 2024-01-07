@@ -1,6 +1,5 @@
 package services;
 
-import commander.IMDB;
 import exceptions.InvalidCommandException;
 import interaction.MenuBoard;
 import interaction.TerminalInteraction;
@@ -55,12 +54,16 @@ public class ActionsService {
                 case 5:
                     generalActions(action, currentUser);
                     break;
+                case 6:
+                    generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
+                    break;
                 case 7:
                     requestService.resolveRequest(currentUser);
                     break;
+                case 8:
+                    break;
                 case 9:
                     userService.createOrRemoveUser();
-
                     break;
                 case 10:
                     login = false;
@@ -90,8 +93,11 @@ public class ActionsService {
                     requestService.createOrDiscardRequest(currentUser, currentUser.getUsername());
                     break;
                 case 7:
+                    generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
                     break;
                 case 8:
+                    break;
+                case 9:
                     break;
                 case 10:
                     login = false;
@@ -174,7 +180,7 @@ public class ActionsService {
         return userService.identifyUser(credentials);
     }
 
-    public String exitOrRelogin(User currentUser) {
+    public String exitOrLogout() {
         return terminalInteraction.readString("Exit/Logout?", "services");
     }
 }

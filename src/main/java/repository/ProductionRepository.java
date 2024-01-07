@@ -2,6 +2,10 @@ package repository;
 
 import production.Production;
 import production.details.Genre;
+import user.AccountType;
+import user.User;
+import user.staff.Contributor;
+import user.staff.Staff;
 
 import java.util.List;
 
@@ -54,7 +58,7 @@ public class ProductionRepository {
         }
     }
 
-    public void searchByTitle(String title) {
+    public void printByTitle(String title) {
         for (Production p : productions) {
             if (p.getTitle().contains(title)) {
                 System.out.println(p);
@@ -62,4 +66,19 @@ public class ProductionRepository {
         }
     }
 
+    public Production searchByTitle(String title) {
+        for (Production p : productions) {
+            if(p.getTitle().equals(title))
+                return p;
+        }
+        return null;
+    }
+
+    public void addProduction(Production production) {
+        productions.add(production);
+    }
+
+    public void removeProduction(String title) {
+        productions.remove(searchByTitle(title));
+    }
 }

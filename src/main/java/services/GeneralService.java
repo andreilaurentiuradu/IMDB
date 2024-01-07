@@ -2,12 +2,15 @@ package services;
 
 import interaction.MenuBoard;
 import production.MediaIndustry;
+import production.Movie;
+import production.Series;
 import production.details.Actor;
 import production.details.Genre;
 import repository.ActorRepository;
 import repository.ProductionRepository;
-import repository.UserRepository;
+import user.AccountType;
 import user.User;
+import user.staff.Staff;
 
 import static services.ActionsService.terminalInteraction;
 
@@ -31,7 +34,7 @@ public class GeneralService {
         if (actor != null)
             System.out.println(actor);
 
-        productionRepository.searchByTitle(title);
+        productionRepository.printByTitle(title);
     }
 
     public void viewNotifications(User currentUser) {
@@ -77,6 +80,52 @@ public class GeneralService {
 
             default:
                 throw new RuntimeException("Invalid input");
+        }
+    }
+
+    public void addOrRemoveMediaIndustryFromSystem(User currentUser) {
+        String action;
+        action = terminalInteraction.readString("Add/Remove", "action");
+
+        if (action.equals("Remove")) {
+            if (currentUser.getAccountType() == AccountType.CONTRIBUTOR) {
+                Staff staff = (Staff) currentUser;
+                System.out.println("Remove one from the list:");
+                System.out.println(staff.getContributions());
+                String value;
+                value = terminalInteraction.readString("Introduce title/name for removing", "type");
+
+                if (staff.isContribution(value)) {
+                    productionRepository.removeProduction(value);
+                    actorRepository.removeActor(value);
+                } else {
+                    System.out.println("You can't remove this production");
+                    throw new RuntimeException("Invalid input");
+                }
+
+            }
+            else {
+                String value;
+                value = terminalInteraction.readString("Introduce title/name for removing", "type");
+                productionRepository.removeProduction(value);
+                actorRepository.removeActor(value);
+            }
+
+        } else if (action.equals("Add")) {
+            String type;
+            type = terminalInteraction.readString("Actor/Movie/Series", "type");
+            String value;
+            value = terminalInteraction.readString("Introduce title/name for adding", "type");
+
+            if (type.equals("Movie")) {
+                productionRepository.addProduction(new Movie(value));
+            } else if (type.equals("Series")){
+                productionRepository.addProduction(new Series(value));
+            } else if (type.equals("Actor")){
+                actorRepository.addActor(new Actor(value));
+            } else {
+                throw new RuntimeException("Invalid input");
+            }
         }
     }
 }

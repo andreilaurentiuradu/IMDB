@@ -15,7 +15,7 @@ public abstract class Staff extends User implements StaffInterface {
     public List<Request> requests = new ArrayList<>();
     public final List<MediaIndustry> contributions = new ArrayList<>();
 
-    private SortedSet<MediaIndustry> addedIndustries;
+    private SortedSet<MediaIndustry> addedIndustries; // ???????????????????????
 
     public Staff() {
 
@@ -24,6 +24,18 @@ public abstract class Staff extends User implements StaffInterface {
         super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
     }
 
+    public List<MediaIndustry> getContributions() {
+        return contributions;
+    }
+
+    public boolean isContribution(String contribution) {
+        for (MediaIndustry mediaIndustry : contributions) {
+            if (mediaIndustry.value.equals(contribution))
+                return true;
+        }
+        return false;
+    }
+    // CU ASTEA DE MAI JOS CE FAC????
     @Override
     public void addProductionSystem(Production p) {
         addedIndustries.add(p);
@@ -42,7 +54,6 @@ public abstract class Staff extends User implements StaffInterface {
             }
         }
     }
-
 
     @Override
     public void removeActorSystem(String name) {
