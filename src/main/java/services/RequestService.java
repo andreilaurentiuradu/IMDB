@@ -11,11 +11,12 @@ import user.User;
 import user.staff.Admin;
 import user.staff.Staff;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static interaction.MenuBoard.showResolveOthersOptions;
 import static services.ActionsService.terminalInteraction;
 
 public class RequestService {
@@ -28,44 +29,121 @@ public class RequestService {
     }
 
     public void resolveRequest(Admin currentUser) {
-        List<Request> availableRequests = visualizeResolvableRequests(currentUser.getUsername());
+        List<Request> availableRequests = getResolvableRequests(currentUser.getUsername());
 
         Request requestToSolve = getCurrentRequest(availableRequests, "resolve");
         if (requestToSolve == null) {
             return;
         }
 
-        System.out.println(requestToSolve);
+        System.out.println(requestToSolve); // DEBUG
 
-        if (requestToSolve.getType() == RequestType.DELETE_ACCOUNT) {
-            String deletedUsername = requestToSolve.getRequesterUsername();
-            userRepository.printAllUsers();
-            System.out.println();
-            User deletedUser = userRepository.removeUser(deletedUsername);
-            System.out.println("Removed user:" + deletedUser);
-            requestToSolve.solved = true;
+        String option = terminalInteraction.readString("Resolve/Delete", "option");
 
-            if (deletedUser.getAccountType() == AccountType.REGULAR)
-                return;
+        switch (option) {
+            case "Resolve":
+                resolveByType(requestToSolve);
+                requestToSolve.solved = true;
+                break;
+            case "Delete":
+                ((RequestsManager) currentUser).removeRequest(requestToSolve);
+                break;
+            default:
+                throw new InvalidCommandException("Invalid option");
 
-            Staff deletedStaff = (Staff) deletedUser;
-
-            for (Request request : deletedStaff.requests) {
-                requestRepository.addRequestForAdmin(request);
-            }
-
-            if (deletedUser.getAccountType() == AccountType.CONTRIBUTOR) {
-                UserRepository.SUPREME.contributions.addAll(deletedStaff.contributions);
-            }
-            userRepository.printAllUsers();
-            System.out.println();
-
-            requestRepository.getAdminRequests();
         }
-
     }
 
-    private List<Request> visualizeResolvableRequests(String adminName) {
+    private void resolveByType(Request requestToSolve) {
+        switch (requestToSolve.getType()) {
+            case DELETE_ACCOUNT:
+                rezolveDeleteAccountRequest(requestToSolve);
+                break;
+            case OTHERS:
+                showResolveOthersOptions();
+                int option = terminalInteraction.chosenOperation();
+                if (option > 0 && option <= 3) {
+                    rezolveOthersRequestForUser(requestToSolve, option);
+                } else if (option > 3 && option < 6) {
+                    rezolveOthersRequestForProduction(requestToSolve, option);
+                } else {
+                    throw new InvalidCommandException("Invalid resolve OTHERS option");
+                }
+        }
+    }
+
+    private void rezolveOthersRequestForProduction(Request requestToSolve, int option) {
+        switch (option) {
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+    }
+
+    private void rezolveOthersRequestForUser(Request requestToSolve, int option) {
+        User userToUpdate = userRepository.findUserByUsername(requestToSolve.getRequesterUsername());
+        if (userToUpdate == null) {
+            System.out.println("User does not exist");
+            return;
+        }
+
+        userToUpdate.displayInfo();
+        switch (option) {
+            case 1:
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String birthDate = terminalInteraction.readString("Introduce birthday(yyyy-MM-dd)");
+                LocalDate localDate = LocalDate.parse(birthDate, formatter);
+
+                userToUpdate.updateBirthday(localDate);
+                break;
+            case 2:
+                int age = terminalInteraction.readInt("Introduce age");
+                userToUpdate.updateAge(age);
+                break;
+            case 3:
+                String country = terminalInteraction.readString("Introduce country");
+                userToUpdate.updateCountry(country);
+                break;
+        }
+        System.out.println("After update: ");
+        userToUpdate.displayInfo();
+    }
+
+    private void rezolveDeleteAccountRequest(Request requestToSolve) {
+        String deletedUsername = requestToSolve.getRequesterUsername();
+        userRepository.printAllUsernames();
+
+        User deletedUser = userRepository.removeUser(deletedUsername);
+
+        deleteUserDetails(deletedUser);
+    }
+
+    //    TODO delete
+    private void deleteUserDetails(User deletedUser) {
+        userRepository.removeUser(deletedUser);
+
+        for (Request createdRequest : deletedUser.getCreatedRequests()) {
+            createdRequest.canceled = true;
+        }
+
+        userRepository.printAllUsernames();
+
+        if (deletedUser.getAccountType() == AccountType.REGULAR) {
+            return;
+        }
+
+        Staff deletedStaff = (Staff) deletedUser;
+
+        for (Request request : deletedStaff.requests) {
+            requestRepository.addRequestForAdmin(request);
+        }
+
+        UserRepository.SUPREME.getContributions().addAll(deletedStaff.getContributions());
+        requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
+    }
+
+    private List<Request> getResolvableRequests(String adminName) {
         List<Request> availableRequests = new ArrayList<>();
         List<Request> adminRequests = requestRepository.getAdminRequests();
         List<Request> currentUserRequests = userRepository.findStaffByUsername(adminName).requests;
@@ -85,8 +163,9 @@ public class RequestService {
     private List<Request> printRequestsList(List<Request> deletableRequests) {
         for (int i = 0; i < deletableRequests.size(); i++) {
             Request request = deletableRequests.get(i);
-            if (!request.solved) {
-                System.out.println(i + 1 + ")" + request);
+            if (!request.solved && !request.canceled) {
+                System.out.print(i + 1 + ")");
+                request.displayRequest();
             }
         }
         System.out.println();
@@ -94,23 +173,22 @@ public class RequestService {
         return deletableRequests;
     }
 
-    public void createOrDiscardRequest(RequestsManager currentUser, String username) {
+    public void createOrDiscardRequest(User currentUser) {
         String operation = terminalInteraction.readString("Create/Discard request?", "services");
 
         switch (operation) {
             case "Create":
-                createRequest(currentUser, username);
+                createRequest(currentUser);
                 break;
             case "Discard":
-                cancelRequest(username);
+                discardRequest(currentUser);
                 break;
             default:
                 throw new InvalidCommandException("Invalid operation");
         }
     }
 
-    private void cancelRequest(String username) {
-        User currentUser = userRepository.findUserByUsername(username);
+    private void discardRequest(User currentUser) {
         List<Request> availableRequests = visualizeDeletableRequests(currentUser);
         Request requestToCancel = getCurrentRequest(availableRequests, "discard");
 
@@ -118,10 +196,12 @@ public class RequestService {
             return;
         }
 
-        System.out.println(requestToCancel);
+        requestToCancel.displayRequest();
 
-        userRepository.removeRequestFromResolverRequests(requestToCancel);
-        requestRepository.removeAdminRequest(requestToCancel);
+        ((RequestsManager) currentUser).removeRequest(requestToCancel);
+
+        if (requestToCancel.getSolverUsername().equals("ADMIN"))
+            requestRepository.removeAdminRequest(requestToCancel);
 
         currentUser.removeCreatedRequest(requestToCancel);
     }
@@ -146,31 +226,44 @@ public class RequestService {
     }
 
 
-    private void createRequest(RequestsManager requestsManager, String username) {
+    private void createRequest(User currentUser) {
         String readType = terminalInteraction.readString("What kind of request? " +
                 "DELETE_ACCOUNT/ACTOR_ISSUE/MOVIE_ISSUE/OTHERS", "type");
         RequestType type = RequestType.getRequestType(readType);
 
         String readDescription = terminalInteraction.readString("Please describe the issue", "description");
 
-        LocalDateTime currentDate = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        Request createdRequest = null;
+        String value = null;
+        String username = currentUser.getUsername();
 
-        Request createdRequest;
+        switch (type) {
+            case DELETE_ACCOUNT:
+            case OTHERS:
+                createdRequest = ((RequestsManager) currentUser).createRequest(type, readDescription, username, null);
+                requestRepository.addRequestForAdmin(createdRequest);
+                userRepository.addRequestToUserCreatedRequestList(username, createdRequest);
+                break;
+            case ACTOR_ISSUE:
+                value = terminalInteraction.readString("Introduce Actor name", "actor name");
+            case MOVIE_ISSUE:
+                if (value == null) {
+                    value = terminalInteraction.readString("Introduce Movie title", "movie title");
+                }
 
-        if (requestsManager instanceof Admin) {
-            createdRequest = requestsManager.createRequest(type, readDescription, currentDate, username, null);
-            requestRepository.addRequestForAdmin(createdRequest);
-        } else {
-            String value =  terminalInteraction.readString("Introduce Movie title/ Actor name", "movie title");
-            createdRequest = requestsManager.createRequest(type, readDescription, currentDate, username, value);
+                createdRequest = ((RequestsManager) currentUser).createRequest(type, readDescription, username, value);
 
-            String resolverUsername = userRepository.findResolverByMediaTypeValue(value);
-            createdRequest.setSolverUsername(resolverUsername);
-            userRepository.addRequestToSolverRequestList(createdRequest);
+                Staff resolver = userRepository.findResolverByMediaTypeValue(value);
+
+                if (resolver.getUsername().equals(username)) {
+                    throw new RuntimeException("Can't request to yourself!");
+                }
+
+                createdRequest.setSolverUsername(resolver.getUsername());
+                resolver.addRequest(createdRequest);
+                currentUser.addCreatedRequest(createdRequest);
         }
 
-        userRepository.addRequest(username, createdRequest);
-        System.out.println(createdRequest);
+        createdRequest.displayRequest();
     }
-
 }

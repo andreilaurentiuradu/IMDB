@@ -1,6 +1,5 @@
 package user;
 
-import production.MediaIndustry;
 import user.staff.Admin;
 import user.staff.Contributor;
 
@@ -37,7 +36,6 @@ public class UserDTO {
 
     private User createUserWithType(AccountType accountType) {
 
-//        TODO: check all accountType has favorites
         switch (accountType) {
             case CONTRIBUTOR: {
                 Contributor user = new Contributor();

@@ -1,13 +1,9 @@
 package production;
 
-import production.details.Actor;
-import production.details.Episode;
 import production.details.Genre;
 import production.details.Rating;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Production extends MediaIndustry implements Comparable<Production> {
     String title;
@@ -17,11 +13,8 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
     private List<Genre> genres;
     private List<Rating> ratings;
     private String plot;
-    private String duration;
     private Double averageRating;
     private Integer releaseYear;
-    private Integer numSeasons;
-    private Map<String, List<Episode>> seasons;
 
     public Production(String title) {
         super(title);
@@ -38,9 +31,6 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
         return null;
     }
 
-    public void setSeasons(Map<String, List<Episode>> seasons) {
-        this.seasons = seasons;
-    }
 
     public Double getAverageRating() {
         return averageRating;
@@ -54,16 +44,8 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
         this.plot = plot;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
     public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
-    }
-
-    public void setNumSeasons(Integer numSeasons) {
-        this.numSeasons = numSeasons;
     }
 
     public String getTitle() {
@@ -81,11 +63,25 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
     public void setActorsNames(List<String> actorsNames) {
         this.actorsNames = actorsNames;
     }
+    public List<String> getActorsNames() {
+        return this.actorsNames;
+    }
 
     public void setDirectorsName(List<String> directorsName) {
         this.directorsName = directorsName;
     }
 
+    public String getPlot() {
+        return plot;
+    }
+
+    public Integer getReleaseYear() {
+        return releaseYear;
+    }
+
+    public List<String> getDirectorsName() {
+        return this.directorsName;
+    }
     public List<Genre> getGenres() {
         return genres;
     }
@@ -104,43 +100,31 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
 
     public abstract void displayInfo();
 
+    void displayCommonInfo() {
+        printIfNotNull("\tType:", getType());
+        printIfNotNull("\tReleaseYear:", String.valueOf(getReleaseYear()));
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("Production{");
-
-        if (title != null)
-            sb.append("title='").append(title).append('\'').append(", ");
-        if (type != null)
-            sb.append("type='").append(type).append('\'').append(", ");
-        if (actorsNames != null)
-            sb.append("actorsNames=").append(actorsNames).append(", ");
-        if (directorsName != null)
-            sb.append("directorsName=").append(directorsName).append(", ");
-        if (genres != null)
-            sb.append("genres=").append(genres).append(", ");
-        if (ratings != null)
-            sb.append("ratings=").append(ratings).append(", ");
-        if (plot != null)
-            sb.append("plot='").append(plot).append('\'').append(", ");
-        if (duration != null)
-            sb.append("duration='").append(duration).append('\'').append(", ");
-        if (averageRating != null)
-            sb.append("averageRating=").append(averageRating).append(", ");
-        if (releaseYear != null)
-            sb.append("releaseYear=").append(releaseYear).append(", ");
-        if (numSeasons != null)
-            sb.append("numSeasons=").append(numSeasons).append(", ");
-        if (seasons != null)
-            sb.append("seasons=").append(seasons).append(", ");
-
-        if (sb.length() > 12) {
-            sb.delete(sb.length() - 2, sb.length());
+        if (getActorsNames() != null) {
+            System.out.println("\tActor's name:");
+            for (String name : getActorsNames()) {
+                System.out.println("\t\t" + name);
+            }
         }
 
-        sb.append('}');
+        if (getDirectorsName() != null) {
+            System.out.println("\tDirector's names:");
+            for (String name : getDirectorsName()) {
+                System.out.println("\t\t" + name);
+            }
+        }
+        printIfNotNull("\tAverage rating:", String.valueOf(getAverageRating()));
+        printIfNotNull("\tMovie:", getTitle());
+        printIfNotNull("\tPlot:", getPlot());
+    }
 
-        return sb.toString();
+    public void printIfNotNull(String message, String value) {
+        if (value != null)
+            System.out.println(message + " " + value);
     }
 }
 

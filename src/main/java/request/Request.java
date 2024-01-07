@@ -1,11 +1,9 @@
 package request;
 
-import user.staff.Admin;
-
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Request {
     private RequestType type;
@@ -21,16 +19,45 @@ public class Request {
     }
 
     private String actorName;
-    private final String description;
+    private String description;
     private String requesterUsername;
     private String solverUsername;
      public boolean solved;
 
-    public Request (RequestType type, String description, LocalDateTime currentDate, String username) {
+     public boolean canceled;
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getProductionName() {
+        return productionName;
+    }
+
+    public String getActorName() {
+        return actorName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Request() {
+     }
+
+    public Request (RequestType type, String description, String username) {
         this.type = type;
         this.description = description;
         this.requesterUsername = username;
-        this.creationDate = currentDate;
+        this.creationDate = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);;
 
         if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
             this.solverUsername = "ADMIN";
@@ -39,31 +66,33 @@ public class Request {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Request: ");
-
-        if (type != null)
-            sb.append("type=").append(type).append(", ");
-        if (creationDate != null)
-            sb.append("creationDate=").append(creationDate).append(", ");
-        if (productionName != null)
-            sb.append("productionName='").append(productionName).append('\'').append(", ");
-        if (actorName != null)
-            sb.append("actorName='").append(actorName).append('\'').append(", ");
-        if (description != null)
-            sb.append("description='").append(description).append('\'').append(", ");
-        if (requesterUsername != null)
-            sb.append("requesterUsername='").append(requesterUsername).append('\'').append(", ");
-        if (solverUsername != null)
-            sb.append("solverUsername='").append(solverUsername).append('\'');
-
-        int length = sb.length();
-        if (length > 10 && sb.charAt(length - 2) == ',') {
-            sb.delete(length - 2, length);
-        }
-
-        return sb.toString();
+        return "Request{" +
+                "type=" + type +
+                ", creationDate=" + creationDate +
+                ", productionName='" + productionName + '\'' +
+                ", actorName='" + actorName + '\'' +
+                ", description='" + description + '\'' +
+                ", requesterUsername='" + requesterUsername + '\'' +
+                ", solverUsername='" + solverUsername + '\'' +
+                ", solved=" + solved +
+                ", canceled=" + canceled +
+                '}';
     }
 
+    public void displayRequest() {
+        printIfNotNull("Type", String.valueOf(type));
+        printIfNotNull("\tDescription", description);
+        printIfNotNull("\tProduction name", productionName);
+        printIfNotNull("\tActor name", actorName);
+        printIfNotNull("\tRequester username", requesterUsername);
+        printIfNotNull("\tSolver username", solverUsername);
+        printIfNotNull("\tCreation date", String.valueOf(type));
+    }
+
+    private void printIfNotNull(String message, String value) {
+        if (value != null)
+            System.out.println(message + " " + value);
+    }
 
     public RequestType getType() {
         return type;

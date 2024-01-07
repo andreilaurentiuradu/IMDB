@@ -2,13 +2,13 @@ package production.details;
 
 import javafx.util.Pair;
 import production.MediaIndustry;
-import production.Production;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Actor extends MediaIndustry {
     private String name;
-    private List<Pair<String, Production>> performances;
+    private final List<Pair<String, String>> performances = new ArrayList<>();
     private String biography;
 
     public Actor (String name) {
@@ -34,13 +34,10 @@ public class Actor extends MediaIndustry {
         this.name = name;
     }
 
-    public List<Pair<String, Production>> getPerformances() {
+    public List<Pair<String, String>> getPerformances() {
         return performances;
     }
 
-    public void setPerformances(List<Pair<String, Production>> performances) {
-        this.performances = performances;
-    }
 
     public String getBiography() {
         return biography;
@@ -50,30 +47,25 @@ public class Actor extends MediaIndustry {
         this.biography = biography;
     }
 
-    public void addPerformances(Pair<String, Production> performance) {
-        performances.add(performance);
+    public void addPerformances(String key, String value) {
+        performances.add(new Pair<>(key, value));
     }
 
     public void addToBiography(String biography) {
         this.biography = this.biography + " " + biography;
     }
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("Actor{");
 
-        if (name != null)
-            sb.append("name='").append(name).append('\'').append(", ");
-        if (performances != null)
-            sb.append("performances=").append(performances).append(", ");
+    public void displayActorInfo() {
+        System.out.println(name);
+
         if (biography != null)
-            sb.append("biography='").append(biography).append('\'').append(", ");
+            System.out.println("\tBiography" + biography);
 
-        if (sb.length() > 7) {
-            sb.delete(sb.length() - 2, sb.length());
+        if (!performances.isEmpty()) {
+            System.out.println("\tPerformances");
+            for (Pair<String, String> pair : performances) {
+                System.out.println("\t\t" + pair.getValue() + " " + pair.getKey());
+            }
         }
-
-        sb.append('}');
-        return sb.toString();
     }
-
 }

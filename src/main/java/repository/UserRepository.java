@@ -1,10 +1,10 @@
 package repository;
 
-import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
 import request.Request;
 import user.Credentials;
+import user.Regular;
 import user.User;
 import user.staff.Admin;
 import user.staff.Staff;
@@ -48,16 +48,23 @@ public class UserRepository {
 
     public void printAllUsers() {
         System.out.println("My users list");
-        users.forEach(System.out::println);
+        users.stream().filter(u -> u instanceof Staff).map(u -> (Staff) u).forEach(System.out::println);
+        users.stream().filter(u -> u instanceof Regular).map(u -> (Regular) u).forEach(System.out::println);
         System.out.println("-----");
     }
 
-    public void addRequestToSolverRequestList(Request request) {
-        Staff staffResolver = (Staff) findUserByUsername(request.getSolverUsername());
-        staffResolver.addRequest(request);
+    public void printAllUsernames() {
+        System.out.println("Users list:");
+
+        for (User user: users) {
+            System.out.println(user.getUsername() + " " +
+                    user.getInformation().getCredentials().getEmail() + " " +
+                    user.getAccountType());
+        }
+        System.out.println();
     }
 
-    public void addRequest(String username, Request request) {
+    public void addRequestToUserCreatedRequestList(String username, Request request) {
         User user = findUserByUsername(username);
         user.addCreatedRequest(request);
     }
@@ -91,18 +98,17 @@ public class UserRepository {
         return null;
     }
 
-    public String findResolverByMediaTypeValue(String value) {
-        for (User user : users) {
-            if (user.isStaff()) {
-                Staff staff = (Staff) user;
-                for (MediaIndustry mediaIndustry : staff.contributions) {
-                    if (mediaIndustry.value.equals(value))
-                        return staff.getUsername();
+    public Staff findResolverByMediaTypeValue(String value) {
+            for (User user : users) {
+                if (user.isStaff()) {
+                    Staff staff = (Staff) user;
+                    if (staff.isContributorToMediaIndustry(value)) {
+                        return staff;
+                    }
                 }
             }
-        }
 
-        throw new RuntimeException("Can not find the owner of the resource");
+            throw new RuntimeException("Can not find the owner of the resource");
     }
 
     public void addUser(User user) {
@@ -111,6 +117,14 @@ public class UserRepository {
         }
 
         users.add(user);
+    }
+
+    public void removeUser(User user) {
+        if (user.isStaff()) {
+            staffList.remove((Staff) user);
+        }
+
+        users.remove(user);
     }
 
     public User removeUser(String username) {
@@ -123,12 +137,5 @@ public class UserRepository {
         users.remove(user);
 
         return user;
-    }
-
-    public void removeRequestFromResolverRequests(Request requestToCancel) {
-        Staff staff = findStaffByUsername(requestToCancel.getSolverUsername());
-        if (staff == null)
-            return;
-        staff.requests.remove(requestToCancel);
     }
 }

@@ -42,7 +42,17 @@ public class MenuBoard {
     public static void showFilterOptions() {
         System.out.println("Filter results by:");
         System.out.println("1) Genre");
-        System.out.println("2) Ratings");
-        System.out.println("3) Don't filter");
+        System.out.println("2) Number of ratings");
+        System.out.println("3) Average grade");
+        System.out.println("4) Don't filter");
+    }
+
+    public static void showResolveOthersOptions() {
+        System.out.println("Choose action:");
+        System.out.println("1) Update birthday");
+        System.out.println("2) Update age");
+        System.out.println("3) Update country");
+        System.out.println("4) Add movie");
+        System.out.println("5) Add Actor");
     }
 }

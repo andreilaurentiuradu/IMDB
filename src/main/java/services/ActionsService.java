@@ -35,7 +35,7 @@ public class ActionsService {
 
         generalService = new GeneralService(actorRepository, productionRepository);
         requestService = new RequestService(userRepository, requestRepository);
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, requestRepository);
     }
 
     public void manageAdminUser(Admin currentUser) {
@@ -71,8 +71,8 @@ public class ActionsService {
                     break;
                 default:
                     throw new RuntimeException("Action not found");
-
             }
+
         } while (login);
     }
 
@@ -91,13 +91,15 @@ public class ActionsService {
                     generalActions(action, currentUser);
                     break;
                 case 6:
-                    requestService.createOrDiscardRequest(currentUser, currentUser.getUsername());
+                    requestService.createOrDiscardRequest(currentUser);
+                    userService.userRepository.printAllUsers();
+
                     break;
                 case 7:
                     generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
                     break;
                 case 8:
-                    // solve a request
+//                    requestService.resolveRequest(currentUser);
                     break;
                 case 9:
                     generalService.updateProductionOrActor(currentUser);
@@ -128,7 +130,8 @@ public class ActionsService {
                     generalActions(action, currentUser);
                     break;
                 case 6:
-                    requestService.createOrDiscardRequest(currentUser, currentUser.getUsername());
+                    requestService.createOrDiscardRequest(currentUser);
+                    userService.userRepository.printAllUsers();
                     break;
                 case 7:
                     generalService.addProductionRating(currentUser);
@@ -165,7 +168,7 @@ public class ActionsService {
                 break;
             }
             default:
-                throw new RuntimeException("This action doesn't exist");
+                throw new InvalidCommandException("This action doesn't exist");
         }
     }
     

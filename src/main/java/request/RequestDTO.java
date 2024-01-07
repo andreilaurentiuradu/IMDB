@@ -16,13 +16,15 @@ public class RequestDTO {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.parse(createdDate, formatter);
 
-        Request request = new Request(type, description, localDateTime, username);
+        Request request = new Request();
 
+        request.setRequesterUsername(username);
+        request.setType(type);
+        request.setDescription(description);
+        request.setCreationDate(localDateTime);
         request.setProductionName(movieTitle);
         request.setActorName(actorName);
         request.setSolverUsername(to);
-
-
 
         return request;
     }

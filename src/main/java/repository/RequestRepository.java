@@ -25,9 +25,8 @@ public class RequestRepository {
 
     public void removeAdminRequest(Request request) {
         System.out.println("Before");
-        Request.RequestsHolder.getAdminRequests().forEach(System.out::println);
-        Request.RequestsHolder.getAdminRequests().remove(request);
-//        TODO can we replace with Request.RequestsHolder.removeAdminRequest(request); ?
+        Request.RequestsHolder.getAdminRequests().forEach(System.out::println); // TODO debug
+        Request.RequestsHolder.removeAdminRequest(request);
 
         System.out.println("After");
         Request.RequestsHolder.getAdminRequests().forEach(System.out::println);

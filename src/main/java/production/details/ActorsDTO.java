@@ -17,18 +17,14 @@ public class ActorsDTO {
         Actor actor = new Actor(name);
 
         actor.setBiography(biography);
-        actor.setPerformances(getPerformances());
+
+        List<Pair<String, String>> performances = new ArrayList<>();
+        for (PerformanceDTO pv : this.performances) {
+            actor.addPerformances(pv.title, pv.type);
+        }
+
 
         return actor;
-    }
-
-    private List<Pair<String, Production>> getPerformances() {
-        List<Pair<String, Production>> performances = new ArrayList<>();
-
-        for (PerformanceDTO pv : this.performances) {
-            performances.add(pv.toPair());
-        }
-        return performances;
     }
 
     public static class PerformanceDTO {

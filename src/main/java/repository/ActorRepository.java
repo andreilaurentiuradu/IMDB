@@ -1,6 +1,5 @@
 package repository;
 
-import production.Production;
 import production.details.Actor;
 
 import java.util.Comparator;
@@ -23,7 +22,10 @@ public class ActorRepository {
                 }
             });
         }
-        actors.forEach(System.out::println);
+
+        for (Actor actor : actors) {
+            actor.displayActorInfo();
+        }
     }
 
     public Actor searchByName(String name) {

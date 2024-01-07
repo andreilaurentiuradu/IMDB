@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.InvalidCommandException;
 import interaction.MenuBoard;
 import javafx.util.Pair;
 import production.Movie;
@@ -34,7 +35,7 @@ public class GeneralService {
 
         Actor actor = actorRepository.searchByName(title);
         if (actor != null)
-            System.out.println(actor);
+            actor.displayActorInfo();
 
         productionRepository.printByTitle(title);
     }
@@ -52,36 +53,40 @@ public class GeneralService {
     }
 
     public void viewProductionDetails() {
-        String action;
         MenuBoard.showFilterOptions();
 
-        action = terminalInteraction.readString("Choose filter options", "services");
+        int action = terminalInteraction.readInt("Choose filter options");
 
         filterProductions(action);
     }
 
-    public void filterProductions(String action) {
+    public void filterProductions(int action) {
         switch (action) {
-            case "1":
-                String genre = terminalInteraction.readString("What genre do you want?\nAction, Adventure, Comedy, Drama, Horror, SF, " +
-                        "Fantasy,\nRomance, Mystery, Thriller, Crime, Biography, War, Cooking", "genre");
+            case 1:
+                String genre = terminalInteraction.readString("What genre do you want to filter by?\n" +
+                        "Action, Adventure, Comedy, Drama, Horror, SF, Fantasy,\n" +
+                        "Romance, Mystery, Thriller, Crime, Biography, War, Cooking",
+                        "genre");
 
-                productionRepository.printByGenre(Genre.valueOf(genre));
+                productionRepository.printByGenre(Genre.getGenreType(genre));
                 break;
-
-            case "2":
+            case 2:
                 String type = terminalInteraction.readString("Under/Over/Equal?", "type");
-                String number = terminalInteraction.readString(type + " which number?", "number");
+                int number = terminalInteraction.readInt(type + " which number?");
 
-                productionRepository.printByRating(Double.valueOf(number), type);
+                productionRepository.printByNumberOfRatings(number, type);
                 break;
+            case 3:
+                String ratingType = terminalInteraction.readString("Under/Over/Equal?", "type");
+                String ratingGrade = terminalInteraction.readString(ratingType + " which number?", "ratingGrade");
 
-            case "3":
+                productionRepository.printByAverageRating(Double.valueOf(ratingGrade), ratingType);
+                break;
+            case 4:
                 productionRepository.printAll();
                 break;
-
             default:
-                throw new RuntimeException("Invalid input");
+                throw new InvalidCommandException("Invalid filter option");
         }
     }
 
@@ -94,6 +99,8 @@ public class GeneralService {
 
         } else if (action.equals("Add")) {
             addMediaIndustryToSystem();
+        } else {
+            throw new InvalidCommandException("Invalid operation");
         }
     }
 
@@ -127,23 +134,29 @@ public class GeneralService {
         String value;
         value = terminalInteraction.readString("Introduce title/name for adding", "type");
 
-        if (type.equals("Movie")) {
-            productionRepository.addProduction(new Movie(value));
-        } else if (type.equals("Series")) {
-            productionRepository.addProduction(new Series(value));
-        } else if (type.equals("Actor")) {
-            actorRepository.addActor(new Actor(value));
-        } else {
-            throw new RuntimeException("Invalid input");
+        switch (type) {
+            case "Movie":
+                productionRepository.addProduction(new Movie(value));
+                break;
+            case "Series":
+                productionRepository.addProduction(new Series(value));
+                break;
+            case "Actor":
+                actorRepository.addActor(new Actor(value));
+                break;
+            default:
+                throw new RuntimeException("Invalid input");
         }
     }
 
     public void updateProductionOrActor(User currentUser) {
         String type = terminalInteraction.readString("Production/Actor", "type");
         if (type.equals("Production")) {
-            updateJustProduction(currentUser);
+            updateProduction(currentUser);
         } else if (type.equals("Actor")) {
             updateJustActor(currentUser);
+        } else {
+            throw new InvalidCommandException("Invalid operation");
         }
     }
 
@@ -165,7 +178,8 @@ public class GeneralService {
                 case "Performances":
                     Production production = productionRepository.searchByTitle(updateField);
                     Pair<String, Production> performance = new Pair<>(production.getType(), production);
-                    actor.addPerformances(performance);
+//                    actor.addPerformances(performance);
+//                    TODO fix
                     break;
                 case "Biography":
                     actor.addToBiography(updateField);
@@ -179,7 +193,7 @@ public class GeneralService {
         }
     }
 
-    public void updateJustProduction(User currentUser) {
+    public void updateProduction(User currentUser) {
         String title = terminalInteraction.readString("Which title do you want to update?", "title");
         System.out.println("Update one from the list:");
         Staff staff = (Staff) currentUser;
@@ -195,7 +209,7 @@ public class GeneralService {
             String updateField = terminalInteraction.readString("What is the new value?", "field");
             switch (whichField) {
                 case "Duration":
-                    production.setDuration(updateField);
+//                    production.setDuration(updateField);
                     break;
                 case "ReleaseYear":
                     production.setReleaseYear(Integer.parseInt(updateField));

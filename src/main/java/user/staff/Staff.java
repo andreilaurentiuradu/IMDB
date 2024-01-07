@@ -6,25 +6,20 @@ import production.details.Actor;
 import production.Production;
 import user.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
+import java.util.*;
 
 public abstract class Staff extends User implements StaffInterface {
 
     public List<Request> requests = new ArrayList<>();
-    public List<MediaIndustry> contributions = new ArrayList<>();
 
-    public SortedSet<MediaIndustry> addedIndustries; // ???????????????????????
+    private final SortedSet<MediaIndustry> contributions = new TreeSet<>(new Comparator<MediaIndustry>() {
+        @Override
+        public int compare(MediaIndustry o1, MediaIndustry o2) {
+            return o1.value.compareTo(o2.value);
+        }
+    });
 
-    public Staff() {
-
-    }
-    public Staff(User user) {
-        super(user.getInformation(), user.getAccountType(), user.getUsername(), user.getExperience(), user.getNotifications(), user.getFavorites());
-    }
-
-    public List<MediaIndustry> getContributions() {
+    public Set<MediaIndustry> getContributions() {
         return contributions;
     }
 
@@ -35,33 +30,45 @@ public abstract class Staff extends User implements StaffInterface {
         }
         return false;
     }
-    // CU ASTEA DE MAI JOS CE FAC????
+
     @Override
     public void addProductionSystem(Production p) {
-        addedIndustries.add(p);
+        contributions.add(p);
     }
 
     @Override
     public void addActorSystem(Actor a) {
-        addedIndustries.add(a);
+        contributions.add(a);
     }
 
     @Override
     public void removeProductionSystem(String title) {
-        for (MediaIndustry mediaIndustry : addedIndustries) {
+        for (MediaIndustry mediaIndustry : contributions) {
             if (((Production)(mediaIndustry)).getTitle().equals(title)) {
-                addedIndustries.remove(mediaIndustry);
+                contributions.remove(mediaIndustry);
+                return;
             }
         }
     }
 
     @Override
     public void removeActorSystem(String name) {
-        for (MediaIndustry mediaIndustry : addedIndustries) {
+        for (MediaIndustry mediaIndustry : contributions) {
             if (((Actor)(mediaIndustry)).getName().equals(name)) {
-                addedIndustries.remove(mediaIndustry);
+                contributions.remove(mediaIndustry);
+                return;
             }
         }
+    }
+
+    public boolean isContributorToMediaIndustry(String value) {
+        for (MediaIndustry mediaIndustry : contributions) {
+            if (mediaIndustry.value.equals(value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -90,13 +97,8 @@ public abstract class Staff extends User implements StaffInterface {
 
     @Override
     public String toString() {
-        return "Staff{" +
-                "username=" + getUsername() +
-                "type=" + getAccountType() +
-                " requests=" + requests +
-                ", contributions=" + contributions +
-                ", createdRequest=" + getCreatedRequests() +
-//                ", addedIndustries=" + addedIndustries +
-                '}';
+        return "username=" + getUsername() +
+                "\n requests=" + requests +
+                "\n Created requests=" + getCreatedRequests();
     }
 }

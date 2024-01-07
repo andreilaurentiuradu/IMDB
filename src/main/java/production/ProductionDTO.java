@@ -5,7 +5,6 @@ import production.details.Genre;
 import production.details.Rating;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,22 +50,23 @@ public class ProductionDTO {
 
         production.setRatings(ratingsList);
         production.setPlot(plot);
-        production.setDuration(duration);
         production.setAverageRating(averageRating);
         production.setReleaseYear(releaseYear);
+
         if (type.equals("Series")) {
-            production.setNumSeasons(numSeasons);
-            Map<String, List<Episode>> seasons = new HashMap<>();
+            Series series = (Series) production;
+            series.setSeasonsNumber(numSeasons);
 
             for (Map.Entry<String, List<EpisodeDTO>> entry : this.seasons.entrySet()) {
                 List<Episode> episodes = new ArrayList<>();
                 for (EpisodeDTO ed : entry.getValue()) {
                     episodes.add(ed.toEpisode());
                 }
-                seasons.put(entry.getKey(), episodes);
+                series.addEpisodes(entry.getKey(), episodes);
             }
+        } else if (type.equals("Movie")) {
+            ((Movie) production).setDuration(duration);
 
-            production.setSeasons(seasons);
         }
 
         return production;

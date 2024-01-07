@@ -1,20 +1,28 @@
 package services;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import production.MediaIndustry;
+import repository.RequestRepository;
 import repository.UserRepository;
+import request.Request;
 import user.AccountType;
 import user.Credentials;
 import user.User;
 import user.UserFactory;
+import user.staff.Staff;
+
+import java.util.Random;
 
 import static services.ActionsService.terminalInteraction;
 
 public class UserService {
 
     UserRepository userRepository;
+    RequestRepository requestRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RequestRepository requestRepository) {
         this.userRepository = userRepository;
+        this.requestRepository = requestRepository;
     }
 
     public void createOrRemoveUser() {
@@ -23,11 +31,19 @@ public class UserService {
 
         if (user == null) {
             user = getDataToCreateUser(username);
+            if (userRepository.findUserByUsername(username) != null) {
+                System.out.println("Username already exists");
+                return;
+            }
+
+            userRepository.addUser(user);
         } else {
+            userRepository.printAllUsernames();
+
+            deleteUserDetails(user);
             System.out.println("Deleting user");
         }
 
-        userRepository.addUser(user);
     }
 
     private User getDataToCreateUser(String username) {
@@ -39,7 +55,9 @@ public class UserService {
         user = new UserFactory().createUser(accountType);
 
         String email = terminalInteraction.readString("Please introduce email: ", "email");
-        String password = terminalInteraction.readString("Please introduce password: ", "password");
+
+        String password = RandomStringUtils.randomAlphanumeric(20);
+        System.out.println("Generated password is: " + password);
 
         user.setCredentials(email, password);
         user.setUsername(username);
@@ -56,24 +74,48 @@ public class UserService {
         for (MediaIndustry mediaIndustry : user.getFavorites()) {
             System.out.println(mediaIndustry.value);
         }
+        System.out.println();
     }
 
     public void manageFavorites(User currentUser) {
-        String action;
         printFavorites(currentUser);
-        System.out.println();
-        action = terminalInteraction.readString("Remove/Add", "services");
-        String title = terminalInteraction.readString("What actor/production?", "name/title");
+
+        String action = terminalInteraction.readString("Remove/Add", "services");
+        String value = terminalInteraction.readString("What actor/production?", "name/value");
 
         if (action.equals("Add")) {
-            currentUser.addMediaIndustry(new MediaIndustry(title));
+            currentUser.addMediaIndustry(new MediaIndustry(value));
         } else if (action.equals("Remove")) {
-            currentUser.removeMediaIndustry(new MediaIndustry(title));
+            currentUser.removeMediaIndustry(new MediaIndustry(value));
         } else {
             throw new RuntimeException("Action not found");
         }
 
-        System.out.println("The new favorite list is:");
-        printFavorites(currentUser);
+        System.out.println("The new favorite list is:"); // TODO debug
+        printFavorites(currentUser);// TODO debug
+    }
+
+//    TODO delete
+    public void deleteUserDetails(User deletedUser) {
+        userRepository.removeUser(deletedUser);
+
+        for (Request createdRequest : deletedUser.getCreatedRequests()) {
+            createdRequest.canceled = true;
+        }
+
+        userRepository.printAllUsernames();
+
+        if (deletedUser.getAccountType() == AccountType.REGULAR) {
+            return;
+        }
+
+        Staff deletedStaff = (Staff) deletedUser;
+
+        for (Request request : deletedStaff.requests) {
+            requestRepository.addRequestForAdmin(request);
+        }
+
+        UserRepository.SUPREME.getContributions().addAll(deletedStaff.getContributions());
+        requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
     }
 }

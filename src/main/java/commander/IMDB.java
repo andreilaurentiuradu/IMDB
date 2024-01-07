@@ -65,7 +65,7 @@ public class IMDB {
                 default:
                     throw new InvalidCommandException("Invalid operation");
             }
-        }while (currentUser != null);
+        } while (currentUser != null);
     }
 
     public User login() {
@@ -76,8 +76,7 @@ public class IMDB {
 
         } while(currentUser == null);
 
-        // datele utilizatorului
-        System.out.println("Welcome back user" + currentUser.getUsername());
+        System.out.println("Welcome back " + currentUser.getUsername());
         System.out.println("User experience: " + currentUser.getExperience());
         System.out.println(currentUser.getAccountType());
         return currentUser;

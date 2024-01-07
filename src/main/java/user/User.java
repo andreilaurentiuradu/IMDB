@@ -5,7 +5,9 @@ import production.Production;
 import production.details.Actor;
 import request.Request;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -122,17 +124,8 @@ public abstract class User {
         return favorites;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "information=" + information +
-                ", accountType=" + accountType +
-                ", username='" + username + '\'' +
-                ", createdRequest" + createdRequests +
-//                ", experience=" + experience +
-//                ", notifications=" + notifications +
-//                ", favorites=" + favorites +
-                '}';
+    public void displayInfo() {
+        System.out.println(accountType + " " +  information);
     }
 
     public void addMediaIndustry(MediaIndustry media) {
@@ -143,11 +136,24 @@ public abstract class User {
         favorites.remove(media);
     }
 
+    public void updateCountry(String country) {
+        information.setCountry(country);
+    }
+
+    public void updateAge(int age) {
+        information.setAge(age);
+    }
+
+    public void updateBirthday(LocalDate localDate) {
+        LocalTime localTime = LocalTime.now();
+        LocalDateTime birthDate = LocalDateTime.of(localDate, localTime);
+        information.setBirthday(birthDate);
+
+    }
+
     public void updateUserExperience(int userExperience) {
         experience = userExperience;
     }
-
-    // delogare si revenire la pagina de logare
 
     public static class Information {
         private Credentials credentials;
@@ -220,18 +226,16 @@ public abstract class User {
         @Override
         public String toString() {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return "Information{" +
-                    "credentials=" + credentials +
-//                    ", name='" + name + '\'' +
-//                    ", country='" + country + '\'' +
-//                    ", age=" + age +
-//                    ", gender=" + gender +
-//                    ", birthday=" + birthday.format(formatter) +
-                    '}';
+            return name +
+                    "\n\t email: " + credentials.getEmail() +
+                    "\n\t country: " + country +
+                    "\n\t age: " + age +
+                    "\n\t gender: " + gender +
+                    "\n\t birthday: " + birthday.format(formatter);
         }
 
         public static class InformationBuilder {
-            private Credentials credentials;
+            private final Credentials credentials;
             private String name;
             private String country;
             private Integer age;

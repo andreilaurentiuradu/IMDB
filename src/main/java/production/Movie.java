@@ -1,8 +1,15 @@
 package production;
 
 public class Movie extends Production {
-    private Double duration;
-    private Integer releaseYear;
+    private String duration;
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
     public Movie(String title) {
         super(title);
@@ -10,8 +17,12 @@ public class Movie extends Production {
 
     @Override
     public void displayInfo() {
-        System.out.println("Movie: " + getTitle()+ "duration: " +
-                duration + " " + "releaseYear: " + releaseYear);
+        printIfNotNull("Movie:", getTitle());
+        printIfNotNull("\tDuration:", String.valueOf(duration));
+
+        displayCommonInfo();
+
+        System.out.println();
     }
 
     @Override

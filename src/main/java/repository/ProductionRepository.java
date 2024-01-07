@@ -1,15 +1,12 @@
 package repository;
 
+import exceptions.InvalidCommandException;
 import production.Production;
 import production.details.Genre;
 import production.details.Rating;
-import user.AccountType;
-import user.Regular;
-import user.User;
-import user.staff.Contributor;
-import user.staff.Staff;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProductionRepository {
     private final List<Production> productions;
@@ -19,58 +16,85 @@ public class ProductionRepository {
     }
 
     public void printAll() {
-        System.out.println("All:");
-
         for (Production p : productions) {
-                System.out.println(p);
+            p.displayInfo();
         }
     }
 
     public void printByGenre(Genre genre) {
         for (Production p : productions) {
             if (p.getGenres().contains(genre)) {
-                System.out.println(p);
+                p.displayInfo();
             }
         }
     }
 
-    public void printByRating(Double number, String type) {
-        System.out.println("By ratings:");
+    public void printByNumberOfRatings(int number, String type) {
+        switch (type) {
+            case "Over":
+                for (Production p : productions) {
+                    if (p.getRatings().size() > number) {
+                        p.displayInfo();
+                    }
+                }
+                break;
+            case "Equal":
+                for (Production p : productions) {
+                    if (p.getRatings().size() == number) {
+                        p.displayInfo();
+                    }
+                }
+                break;
+            case "Under":
+                for (Production p : productions) {
+                    if (p.getRatings().size() < number) {
+                        p.displayInfo();
+                    }
+                }
+                break;
+            default:
+                throw new InvalidCommandException("Invalid filter type");
+        }
+    }
 
-        if (type.equals("Over")) {
-            for (Production p : productions) {
-                if (p.getAverageRating() > number) {
-                    System.out.println(p);
-                }
-            }
-        } else {
-            if (type.equals("Under"))  {
+    public void printByAverageRating(Double number, String type) {
+        switch (type) {
+            case "Over":
                 for (Production p : productions) {
-                    if (p.getAverageRating() < number) {
-                        System.out.println(p);
+                    if (p.getAverageRating() > number) {
+                        p.displayInfo();
                     }
                 }
-            } else {
+                break;
+            case "Equal":
                 for (Production p : productions) {
-                    if (p.getAverageRating().equals(number)) {
-                        System.out.println(p);
+                    if (Objects.equals(p.getAverageRating(), number)) {
+                        p.displayInfo();
                     }
                 }
-            }
+                break;
+            case "Under":
+                for (Production p : productions) {
+                    if (p.getRatings().size() < number) {
+                        p.displayInfo();
+                    }
+                }
+            default:
+                throw new InvalidCommandException("Invalid filter type");
         }
     }
 
     public void printByTitle(String title) {
         for (Production p : productions) {
             if (p.getTitle().contains(title)) {
-                System.out.println(p);
+                p.displayInfo();
             }
         }
     }
 
     public Production searchByTitle(String title) {
         for (Production p : productions) {
-            if(p.getTitle().equals(title))
+            if (p.getTitle().equals(title))
                 return p;
         }
         return null;
