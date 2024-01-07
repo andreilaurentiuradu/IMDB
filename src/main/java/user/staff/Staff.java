@@ -13,9 +13,9 @@ import java.util.SortedSet;
 public abstract class Staff extends User implements StaffInterface {
 
     public List<Request> requests = new ArrayList<>();
-    public final List<MediaIndustry> contributions = new ArrayList<>();
+    public List<MediaIndustry> contributions = new ArrayList<>();
 
-    private SortedSet<MediaIndustry> addedIndustries; // ???????????????????????
+    public SortedSet<MediaIndustry> addedIndustries; // ???????????????????????
 
     public Staff() {
 

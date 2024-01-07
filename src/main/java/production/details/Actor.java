@@ -50,6 +50,13 @@ public class Actor extends MediaIndustry {
         this.biography = biography;
     }
 
+    public void addPerformances(Pair<String, Production> performance) {
+        performances.add(performance);
+    }
+
+    public void addToBiography(String biography) {
+        this.biography = this.biography + " " + biography;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Actor{");

@@ -96,6 +96,7 @@ public class ActionsService {
                     generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
                     break;
                 case 8:
+                    generalService.updateProductionOrActor(currentUser);
                     break;
                 case 9:
                     break;
