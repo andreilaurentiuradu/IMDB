@@ -1,22 +1,12 @@
 package services;
 
 import production.details.Actor;
-import production.details.Genre;
-import repository.ActorRepository;
-import repository.ProductionRepository;
 import user.staff.Staff;
 
 import static services.ActionsService.terminalInteraction;
 import static services.RequestService.updateActorField;
 
 public class ActorService {
-    public final ActorRepository actorRepository;
-    public final ProductionRepository productionRepository;
-
-    public ActorService(ActorRepository actorRepository, ProductionRepository productionRepository) {
-        this.actorRepository = actorRepository;
-        this.productionRepository = productionRepository;
-    }
 
     public void updateActor(Staff currentUser) {
         currentUser.viewMediaIndustryUserCanUpdate();

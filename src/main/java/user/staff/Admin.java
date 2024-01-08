@@ -1,9 +1,6 @@
 package user.staff;
 
 import production.MediaIndustry;
-import production.details.Actor;
-import repository.ActorRepository;
-import repository.ProductionRepository;
 import request.Request;
 import user.AccountType;
 
@@ -38,10 +35,8 @@ public class Admin extends Staff {
     @Override
     public void removeActorSystem(String name) {
         productionRepository.removeProduction(name);
-        System.out.println("Csupreme contriburions: " + SUPREME.getContributions());
-        boolean answer = SUPREME.getContributions().remove(new MediaIndustry(name));
-        System.out.println("Answer is: " + answer);
-        if (answer) {
+
+        if (SUPREME.getContributions().remove(new MediaIndustry(name))) {
             System.out.println(SUPREME.getContributions());
             actorRepository.removeActor(name);
             return;
@@ -59,8 +54,12 @@ public class Admin extends Staff {
     public void viewMediaIndustryUserCanUpdate() {
         System.out.println("Available resources to update:");
 
-        System.out.println(getContributions());
-        System.out.println(SUPREME.getContributions());
+        viewContributions();
+        System.out.println();
+
+        for (MediaIndustry mediaIndustry : SUPREME.getContributions()) {
+            System.out.println(mediaIndustry.value);
+        }
 
         System.out.println();
     }

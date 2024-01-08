@@ -1,17 +1,13 @@
 package user.staff;
 
 import production.MediaIndustry;
-import production.details.Actor;
-import repository.ActorRepository;
-import repository.ProductionRepository;
 import request.Request;
 import request.RequestType;
 import request.RequestsManager;
 
 import java.util.List;
 
-import static repository.UserRepository.SUPREME;
-import static services.ActionsService.*;
+import static services.ActionsService.userRepository;
 
 public class Contributor extends Staff implements RequestsManager {
 
@@ -42,9 +38,7 @@ public class Contributor extends Staff implements RequestsManager {
     @Override
     public void viewMediaIndustryUserCanUpdate() {
         System.out.println("Available resources to update:");
-
-        System.out.println(getContributions());
-
+        viewContributions();
         System.out.println();
     }
 

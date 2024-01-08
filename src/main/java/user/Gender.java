@@ -3,7 +3,7 @@ package user;
 public enum Gender {
     M("Male"), F("Female"), N("N");
 
-    final String label;
+    private final String label;
 
     Gender(String label) {
         this.label = label;

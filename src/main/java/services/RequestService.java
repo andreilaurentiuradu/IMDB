@@ -20,8 +20,8 @@ import static services.ActionsService.terminalInteraction;
 import static services.ProductionService.updateMovie;
 
 public class RequestService {
-    final UserRepository userRepository;
-    final RequestRepository requestRepository;
+    private final UserRepository userRepository;
+    private final RequestRepository requestRepository;
 
     public RequestService(UserRepository userRepository, RequestRepository requestRepository) {
         this.userRepository = userRepository;

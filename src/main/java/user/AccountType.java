@@ -3,7 +3,7 @@ package user;
 public enum AccountType {
     REGULAR("Regular"), CONTRIBUTOR("Contributor"), ADMIN("Admin");
 
-    public final String label;
+    private final String label;
 
     AccountType(String type) {
         label = type;

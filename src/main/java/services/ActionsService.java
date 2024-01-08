@@ -5,11 +5,11 @@ import interaction.MenuBoard;
 import interaction.TerminalInteraction;
 import production.Production;
 import production.details.Actor;
-import request.Request;
 import repository.ActorRepository;
 import repository.ProductionRepository;
 import repository.RequestRepository;
 import repository.UserRepository;
+import request.Request;
 import user.Credentials;
 import user.Regular;
 import user.User;
@@ -23,11 +23,11 @@ public class ActionsService {
 
     static final TerminalInteraction terminalInteraction = new TerminalInteraction();
 
-    final GeneralService generalService;
-    final RequestService requestService;
-    final UserService userService;
-    final ProductionService productionService;
-    final ActorService actorService;
+    private final GeneralService generalService;
+    private final RequestService requestService;
+    private final UserService userService;
+    private final ProductionService productionService;
+    private final ActorService actorService;
 
     public static ActorRepository actorRepository;
     public static ProductionRepository productionRepository;
@@ -45,9 +45,9 @@ public class ActionsService {
 
         generalService = new GeneralService(actorRepository, productionRepository);
         requestService = new RequestService(userRepository, requestRepository);
-        userService = new UserService(userRepository, requestRepository);
+        userService = new UserService(userRepository);
         productionService = new ProductionService(productionRepository, actorRepository);
-        actorService = new ActorService(actorRepository, productionRepository);
+        actorService = new ActorService();
     }
 
     public void manageAdminUser(Admin currentUser) {
@@ -103,8 +103,7 @@ public class ActionsService {
                     basicActions(action, currentUser);
                     break;
                 case 6:
-                    requestService.createOrDiscardRequest((Staff) currentUser);
-                    userService.userRepository.printAllUsers();
+                    requestService.createOrDiscardRequest(currentUser);
                     break;
                 case 7:
                     productionService.addOrRemoveMediaIndustry(currentUser);
@@ -142,7 +141,6 @@ public class ActionsService {
                     break;
                 case 6:
                     requestService.createOrDiscardRequest(currentUser);
-                    userService.userRepository.printAllUsers();
                     break;
                 case 7:
                     productionService.addOrRemoveProductionRating(currentUser);

@@ -3,18 +3,13 @@ package user;
 import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
-import repository.UserRepository;
 import request.Request;
-import user.staff.Staff;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static services.ActionsService.requestRepository;
-import static services.ActionsService.userRepository;
 
 public abstract class User {
     private Information information = new Information();
@@ -176,7 +171,7 @@ public abstract class User {
 
     }
 
-    public void displayAllUserInformation() {
+    private void displayAllUserInformation() {
 
         printIfNotNull("\temail:", information.credentials.getEmail());
         printIfNotNull("\tpassword:", information.credentials.getPassword());
@@ -237,32 +232,16 @@ public abstract class User {
             this.name = name;
         }
 
-        public String getCountry() {
-            return country;
-        }
-
         public void setCountry(String country) {
             this.country = country;
-        }
-
-        public Integer getAge() {
-            return age;
         }
 
         public void setAge(Integer age) {
             this.age = age;
         }
 
-        public Gender getGender() {
-            return gender;
-        }
-
         public void setGender(Gender gender) {
             this.gender = gender;
-        }
-
-        public LocalDateTime getBirthday() {
-            return birthday;
         }
 
         public void setBirthday(LocalDateTime birthday) {

@@ -18,7 +18,7 @@ public abstract class Staff extends User implements StaffInterface {
 
     public final List<Request> requests = new ArrayList<>();
 
-    private final SortedSet<MediaIndustry> contributions = new TreeSet<>(new Comparator<MediaIndustry>() {
+    private final SortedSet<MediaIndustry> contributions = new TreeSet<>(new Comparator<>() {
         @Override
         public int compare(MediaIndustry o1, MediaIndustry o2) {
             return o1.value.compareTo(o2.value);
@@ -27,6 +27,11 @@ public abstract class Staff extends User implements StaffInterface {
 
     public Set<MediaIndustry> getContributions() {
         return contributions;
+    }
+    public void viewContributions() {
+        for (MediaIndustry mediaIndustry : contributions) {
+            System.out.println(mediaIndustry.value);
+        }
     }
 
     @Override
@@ -105,18 +110,16 @@ public abstract class Staff extends User implements StaffInterface {
 
     @Override
     public void removeProductionSystem(String title) {
-        MediaIndustry mediaIndustry = new MediaIndustry(title);
 
         productionRepository.removeProduction(title);
-        getContributions().remove(mediaIndustry);
+        getContributions().remove(new MediaIndustry(title));
     }
 
     @Override
     public void removeActorSystem(String name) {
-        MediaIndustry mediaIndustry = new MediaIndustry(name);
 
         actorRepository.removeActor(name);
-        getContributions().remove(mediaIndustry);
+        getContributions().remove(new MediaIndustry(name));
     }
 
     @Override

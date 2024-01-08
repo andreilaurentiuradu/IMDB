@@ -2,7 +2,6 @@ package services;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import production.MediaIndustry;
-import repository.RequestRepository;
 import repository.UserRepository;
 import user.AccountType;
 import user.Credentials;
@@ -13,12 +12,10 @@ import static services.ActionsService.terminalInteraction;
 
 public class UserService {
 
-    final UserRepository userRepository;
-    final RequestRepository requestRepository;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, RequestRepository requestRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.requestRepository = requestRepository;
     }
 
     public void createOrRemoveUser() {

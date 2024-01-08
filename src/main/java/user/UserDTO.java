@@ -1,7 +1,6 @@
 package user;
 
-import user.staff.Admin;
-import user.staff.Contributor;
+import user.staff.Staff;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,29 +34,19 @@ public class UserDTO {
     }
 
     private User createUserWithType(AccountType accountType) {
+        UserFactory userFactory = new UserFactory();
 
         switch (accountType) {
-            case CONTRIBUTOR: {
-                Contributor user = new Contributor();
-
-                user.addContributions(productionsContribution, actorsContribution);
-                user.addFavorites(favoriteProductions, favoriteActors);
-
-                return user;
-            }
+            case CONTRIBUTOR:
             case ADMIN: {
-                Admin user = new Admin();
-
-                user.addContributions(productionsContribution, actorsContribution);
-                user.addFavorites(favoriteProductions, favoriteActors);
-
-                return user;
+                Staff staff = (Staff)userFactory.createUser(accountType);
+                staff.addContributions(productionsContribution, actorsContribution);
+                staff.addFavorites(favoriteProductions, favoriteActors);
+                return staff;
             }
             case REGULAR: {
-                Regular user = new Regular();
-
+                User user = userFactory.createUser(accountType);
                 user.addFavorites(favoriteProductions, favoriteActors);
-
                 return user;
             }
             default: {
@@ -75,12 +64,13 @@ public class UserDTO {
         public String birthDate;
 
         public User.Information toInformation() {
-            User.Information information = new User.Information();
 
             // setting the credentials
             Credentials credentials = new Credentials();
             credentials.setPassword(this.credentials.password);
             credentials.setEmail(this.credentials.email);
+
+            User.Information information = new User.Information();
             information.setCredentials(credentials);
 
             information.setName(name);
@@ -90,7 +80,7 @@ public class UserDTO {
 
             // setting the birthDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate localDate = LocalDate.parse(this.birthDate, formatter);
+            LocalDate localDate = LocalDate.parse(birthDate, formatter);
             LocalTime localTime = LocalTime.now();
             LocalDateTime birthDate = LocalDateTime.of(localDate, localTime);
             information.setBirthday(birthDate);
@@ -101,14 +91,6 @@ public class UserDTO {
         public static class CredentialsDTO {
             public String email;
             public String password;
-
-            public Credentials toCredentials() {
-                Credentials credentials = new Credentials();
-                credentials.setEmail(email);
-                credentials.setPassword(password);
-
-                return credentials;
-            }
         }
     }
 }

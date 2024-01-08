@@ -165,16 +165,19 @@ public class ProductionService {
 
     private void addMediaIndustry(Staff currentUser) {
         String type = terminalInteraction.readString("Actor/Movie/Series");
-        String value = terminalInteraction.readString("Introduce title/name for adding");
+        String value;
 
         switch (type) {
             case "Movie":
+                value = terminalInteraction.readString("Introduce movie title for adding");
                 currentUser.addProductionSystem(new Movie(value));
                 break;
             case "Series":
+                value = terminalInteraction.readString("Introduce series title for adding");
                 currentUser.addProductionSystem(new Series(value));
                 break;
             case "Actor":
+                value = terminalInteraction.readString("Introduce actor name for adding");
                 currentUser.addActorSystem(new Actor(value));
                 break;
             default:

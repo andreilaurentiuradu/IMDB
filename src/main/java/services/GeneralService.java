@@ -2,19 +2,17 @@ package services;
 
 import exceptions.InvalidCommandException;
 import interaction.MenuBoard;
-import production.Production;
 import production.details.Actor;
 import production.details.Genre;
 import repository.ActorRepository;
 import repository.ProductionRepository;
 import user.User;
-import user.staff.Staff;
 
 import static services.ActionsService.terminalInteraction;
 
 public class GeneralService {
-    final ActorRepository actorRepository;
-    final ProductionRepository productionRepository;
+    private final ActorRepository actorRepository;
+    private final ProductionRepository productionRepository;
 
     public GeneralService(ActorRepository actorRepository, ProductionRepository productionRepository) {
         this.actorRepository = actorRepository;
@@ -81,27 +79,5 @@ public class GeneralService {
             default:
                 throw new InvalidCommandException("Invalid filter option");
         }
-    }
-
-    private void updateJustProductionAsContributor(String title, Staff staff) {
-//        if (staff.isContribution(title)) {
-            Production production = productionRepository.searchByTitle(title);
-            System.out.println("Which field do you want to update? ");
-            String whichField = terminalInteraction.readString("Choose one from: Duration/ReleaseYear", "field");
-            String updateField = terminalInteraction.readString("What is the new value?", "field");
-            switch (whichField) {
-                case "Duration":
-//                    production.setDuration(updateField);
-                    break;
-                case "ReleaseYear":
-                    production.setReleaseYear(Integer.parseInt(updateField));
-                    break;
-                default:
-                    throw new RuntimeException("Field unrecognised");
-            }
-//        } else {
-//            System.out.println("You can't update this production");
-//            throw new RuntimeException("Invalid production");
-//        }
     }
 }
