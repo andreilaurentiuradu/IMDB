@@ -6,16 +6,18 @@ import java.util.List;
 
 public class RequestRepository {
 
+    private final String ADMIN = "ADMIN";
+
     public RequestRepository(List<Request> requests) {
         for (Request request : requests) {
-            if (request.getSolverUsername().equals("ADMIN")) {
+            if (request.getSolverUsername().equals(ADMIN)) {
                 Request.RequestsHolder.addAdminRequest(request);
             }
         }
     }
 
     public void addRequestForAdmin(Request request) {
-        request.setSolverUsername("ADMIN");
+        request.setSolverUsername(ADMIN);
         Request.RequestsHolder.addAdminRequest(request);
     }
 
@@ -24,11 +26,6 @@ public class RequestRepository {
     }
 
     public void removeAdminRequest(Request request) {
-        System.out.println("Before");
-        Request.RequestsHolder.getAdminRequests().forEach(System.out::println); // TODO debug
         Request.RequestsHolder.removeAdminRequest(request);
-
-        System.out.println("After");
-        Request.RequestsHolder.getAdminRequests().forEach(System.out::println);
     }
 }

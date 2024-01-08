@@ -1,6 +1,5 @@
 package services;
 
-import exceptions.InvalidCommandException;
 import production.Movie;
 import production.Production;
 import production.Series;
@@ -10,6 +9,7 @@ import repository.ActorRepository;
 import repository.ProductionRepository;
 import request.Request;
 import user.User;
+import user.experience.RatingExperienceStrategy;
 import user.staff.Admin;
 import user.staff.Staff;
 
@@ -71,6 +71,7 @@ public class ProductionService {
                 break;
             default:
                 System.out.println("Invalid field to update");
+                return;
         }
 
         currentUser.updateProduction(update);
@@ -81,6 +82,7 @@ public class ProductionService {
 
         if (option.equals("Add")) {
             addProductionRating(currentUser);
+            currentUser.displayInfo();
         } else if (option.equals("Remove")) {
             removeProductionRating(currentUser);
         } else {
@@ -108,16 +110,16 @@ public class ProductionService {
         productionRepository.printAll();
     }
 
-    private void addProductionRating(User user) {
+    private void addProductionRating(User currentUser) {
         Rating rating = new Rating();
-        rating.setUsername(user.getUsername());
+        rating.setUsername(currentUser.getUsername());
 
-        productionRepository.viewProductionsTitle();
+        productionRepository.viewUnratedProductionsTitles(currentUser.getUsername());
         String title = terminalInteraction.readString("Which title do you want to rate", "title");
 
         Production production = productionRepository.searchByTitle(title);
 
-        if (productionRepository.isAlreadyRatedByUser(production.getRatings(), user.getUsername()))
+        if (productionRepository.isAlreadyRatedByUser(production.getRatings(), currentUser.getUsername()))
             return;
 
         String grade = terminalInteraction.readString("Rate this production from 1 to 10", "grade");
@@ -131,19 +133,19 @@ public class ProductionService {
         rating.setRating(Integer.parseInt(grade));
         rating.setComment(comment);
 
+        currentUser.addExperience(new RatingExperienceStrategy());
         productionRepository.addRatingAndShowProductionRatings(production, rating);
     }
 
     public void addOrRemoveMediaIndustry(Staff currentUser) {
-        String action;
-        action = terminalInteraction.readString("Add/Remove", "action");
+        String action = terminalInteraction.readString("Add/Remove", "action");
 
         if (action.equals("Remove")) {
             removeMediaIndustry(currentUser);
         } else if (action.equals("Add")) {
             addMediaIndustry(currentUser);
         } else {
-            throw new InvalidCommandException("Invalid operation");
+            System.out.println("Invalid operation");
         }
     }
 

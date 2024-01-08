@@ -8,6 +8,7 @@ import production.Series;
 import production.details.Actor;
 import request.Request;
 import user.User;
+import user.experience.AddMediaIndustryExperienceStrategy;
 
 import java.util.*;
 
@@ -28,6 +29,7 @@ public abstract class Staff extends User implements StaffInterface {
     public Set<MediaIndustry> getContributions() {
         return contributions;
     }
+
     public void viewContributions() {
         for (MediaIndustry mediaIndustry : contributions) {
             System.out.println(mediaIndustry.value);
@@ -38,12 +40,14 @@ public abstract class Staff extends User implements StaffInterface {
     public void addProductionSystem(Production p) {
         productionRepository.addProduction(p);
         contributions.add(p);
+        addExperience(new AddMediaIndustryExperienceStrategy());
     }
 
     @Override
     public void addActorSystem(Actor a) {
         actorRepository.addActor(a);
         contributions.add(a);
+        addExperience(new AddMediaIndustryExperienceStrategy());
     }
 
     public boolean isContributorToMediaIndustry(String value) {

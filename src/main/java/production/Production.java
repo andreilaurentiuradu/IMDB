@@ -23,6 +23,15 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
         this.title = title;
     }
 
+    public boolean isRatedBy(String username) {
+        for (Rating r : ratings) {
+            if (r.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removeProductionRateFromUser(String username) {
         Rating toDelete = null;
 

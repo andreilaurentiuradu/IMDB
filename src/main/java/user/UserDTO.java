@@ -70,20 +70,20 @@ public class UserDTO {
             credentials.setPassword(this.credentials.password);
             credentials.setEmail(this.credentials.email);
 
-            User.Information information = new User.Information();
-            information.setCredentials(credentials);
-
-            information.setName(name);
-            information.setCountry(country);
-            information.setAge(age);
-            information.setGender(Gender.fromLabel(gender));
-
             // setting the birthDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(birthDate, formatter);
             LocalTime localTime = LocalTime.now();
             LocalDateTime birthDate = LocalDateTime.of(localDate, localTime);
-            information.setBirthday(birthDate);
+
+            User.Information information = new User.Information.InformationBuilder()
+                    .setName(name)
+                    .setCountry(country)
+                    .setCredentials(credentials)
+                    .setAge(age)
+                    .setBirthday(birthDate)
+                    .setGender(Gender.fromLabel(gender))
+                    .build();
 
             return information;
         }

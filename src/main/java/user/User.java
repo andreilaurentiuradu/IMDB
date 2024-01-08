@@ -4,6 +4,7 @@ import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
 import request.Request;
+import user.experience.ExperienceStrategy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public abstract class User {
     private List<String> notifications;
     private final List<MediaIndustry> favoriteActors = new ArrayList<>();
     private final List<MediaIndustry> favoriteProductions = new ArrayList<>();
-    private SortedSet<MediaIndustry> favorites = new TreeSet<>(new Comparator<MediaIndustry>() {
+    private SortedSet<MediaIndustry> favorites = new TreeSet<>(new Comparator<>() {
         @Override
         public int compare(MediaIndustry o1, MediaIndustry o2) {
             return o1.value.compareTo(o2.value);
@@ -61,15 +62,15 @@ public abstract class User {
     }
 
     public void addCreatedRequest(Request request) {
-        this.createdRequests.add(request);
+        createdRequests.add(request);
     }
 
     public void removeCreatedRequest(Request request) {
-        this.createdRequests.remove(request);
+        createdRequests.remove(request);
     }
 
     public void setCredentials(String email, String password) {
-        this.information.setCredentials(new Credentials(email, password));
+        information.setCredentials(new Credentials(email, password));
     }
 
     public Information getInformation() {
@@ -117,6 +118,10 @@ public abstract class User {
         this.username = username;
     }
 
+    public void addExperience(ExperienceStrategy experienceStrategy) {
+        experience += experienceStrategy.calculateExperience();
+    }
+
     public int getExperience() {
         return experience;
     }
@@ -138,14 +143,16 @@ public abstract class User {
     }
 
     public void displayInfo() {
-        System.out.println(accountType + " " +  information);
+        System.out.println(accountType);
+        information.displayUserInformation(true);
+        System.out.println("  experience:" + experience);
     }
 
     public void displayNewUserInfo() { // also includes credentials
         System.out.println();
         System.out.println("Created account :" + username + " with type " + accountType);
 
-        displayAllUserInformation();
+        information.displayUserInformation(false);
     }
 
     public void addMediaIndustry(MediaIndustry media) {
@@ -168,32 +175,6 @@ public abstract class User {
         LocalTime localTime = LocalTime.now();
         LocalDateTime birthDate = LocalDateTime.of(localDate, localTime);
         information.setBirthday(birthDate);
-
-    }
-
-    private void displayAllUserInformation() {
-
-        printIfNotNull("\temail:", information.credentials.getEmail());
-        printIfNotNull("\tpassword:", information.credentials.getPassword());
-        printIfNotNull("\tcountry:", information.country);
-
-        if (information.age != null) {
-            System.out.println("\tage:" + information.age);
-        }
-
-        if (information.gender != null) {
-            System.out.println("\tgender:" + information.gender);
-        }
-
-        if (information.birthday != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            System.out.println("\tbirthday:" + information.birthday.format(formatter));
-        }
-    }
-
-    public void printIfNotNull(String message, String value) {
-        if (value != null)
-            System.out.println(message + " " + value);
     }
 
     public static class Information {
@@ -214,6 +195,33 @@ public abstract class User {
             this.age = informationBuilder.age;
             this.gender = informationBuilder.gender;
             this.birthday = informationBuilder.birthday;
+        }
+
+        private void displayUserInformation(boolean confidential) {
+
+            printIfNotNull("\temail:", credentials.getEmail());
+
+            if (!confidential)
+                printIfNotNull("\tpassword:", credentials.getPassword());
+            printIfNotNull("\tcountry:", country);
+
+            if (age != null) {
+                System.out.println("\tage:" + age);
+            }
+
+            if (gender != null) {
+                System.out.println("\tgender:" + gender);
+            }
+
+            if (birthday != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                System.out.println("\tbirthday:" + birthday.format(formatter));
+            }
+        }
+
+        private void printIfNotNull(String message, String value) {
+            if (value != null)
+                System.out.println(message + " " + value);
         }
 
         public Credentials getCredentials() {
@@ -240,24 +248,25 @@ public abstract class User {
             this.age = age;
         }
 
-        public void setGender(Gender gender) {
-            this.gender = gender;
-        }
-
         public void setBirthday(LocalDateTime birthday) {
             this.birthday = birthday;
         }
 
         public static class InformationBuilder {
-            private final Credentials credentials;
+            private Credentials credentials;
             private String name;
             private String country;
             private Integer age;
             private Gender gender;
             private LocalDateTime birthday;
 
-            public InformationBuilder(Credentials credentials) {
+            public Information build() {
+                return new Information(this);
+            }
+
+            public InformationBuilder setCredentials(Credentials credentials) {
                 this.credentials = credentials;
+                return this;
             }
 
             public InformationBuilder setName(String name) {
@@ -280,8 +289,9 @@ public abstract class User {
                 return this;
             }
 
-            public Information build() {
-                return new Information(this);
+            public InformationBuilder setCountry(String country) {
+                this.country = country;
+                return this;
             }
         }
     }

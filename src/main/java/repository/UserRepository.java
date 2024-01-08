@@ -5,7 +5,6 @@ import production.details.Actor;
 import request.Request;
 import user.AccountType;
 import user.Credentials;
-import user.Regular;
 import user.User;
 import user.staff.Admin;
 import user.staff.Staff;
@@ -71,13 +70,6 @@ public class UserRepository {
 
         UserRepository.SUPREME.getContributions().addAll(deletedStaff.getContributions());
         requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
-    }
-
-    public void printAllUsers() {
-        System.out.println("My users list");
-        users.stream().filter(u -> u instanceof Staff).map(u -> (Staff) u).forEach(System.out::println);
-        users.stream().filter(u -> u instanceof Regular).map(u -> (Regular) u).forEach(System.out::println);
-        System.out.println("-----");
     }
 
     public void printAllUsernames() {
@@ -146,7 +138,7 @@ public class UserRepository {
         users.add(user);
     }
 
-    public void removeUser(User user) {
+    private void removeUser(User user) {
         if (user.isStaff()) {
             staffList.remove((Staff) user);
         }

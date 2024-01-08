@@ -53,7 +53,7 @@ public class GeneralService {
         filterProductions(action);
     }
 
-    public void filterProductions(int action) {
+    private void filterProductions(int action) {
         switch (action) {
             case 1:
                 String genre = terminalInteraction.readString("What genre do you want to filter by?\n");

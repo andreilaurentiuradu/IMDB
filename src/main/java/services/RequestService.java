@@ -9,6 +9,7 @@ import request.Request;
 import request.RequestType;
 import request.RequestsManager;
 import user.User;
+import user.experience.SolvedRequestExperienceStrategy;
 import user.staff.Staff;
 
 import java.time.LocalDate;
@@ -76,10 +77,16 @@ public class RequestService {
                 break;
             case MOVIE_ISSUE:
                 updateMovie(requestToSolve, currentUser);
+                User MOVIE_ISSUE_requester = userRepository.findUserByUsername(requestToSolve.getRequesterUsername());
+                MOVIE_ISSUE_requester.addExperience(new SolvedRequestExperienceStrategy());
                 break;
             case ACTOR_ISSUE:
                 Actor newActor = updateActorField(requestToSolve.getActorName());
-                currentUser.updateActor(newActor);
+                if (newActor != null) {
+                    currentUser.updateActor(newActor);
+                    User ACTOR_ISSUE_requester = userRepository.findUserByUsername(requestToSolve.getRequesterUsername());
+                    ACTOR_ISSUE_requester.addExperience(new SolvedRequestExperienceStrategy());
+                }
         }
     }
 
@@ -95,15 +102,16 @@ public class RequestService {
                 String productionName = terminalInteraction.readString("Introduce " + productionType + " title");
 
                 update.addPerformances(productionName, productionType);
-                break;
+                return update;
             case "Biography":
                 String updateField = terminalInteraction.readString("Introduce biography details");
                 update.updateBiography(updateField);
-                break;
+                return update;
             default:
                 System.out.println("Invalid input.");
         }
-        return update;
+
+        return null;
     }
 
     private void rezolveOthersRequestForProduction(Staff currentUser, int option) {

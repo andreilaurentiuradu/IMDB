@@ -154,7 +154,7 @@ public class ActionsService {
         } while (login);
     }
 
-    public void basicActions(int action, User currentUser) {
+    private void basicActions(int action, User currentUser) {
         switch (action) {
             case 1: {
                 generalService.viewProductionDetails();

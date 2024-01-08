@@ -1,12 +1,15 @@
 package commander;
 
 import exceptions.InvalidCommandException;
-import services.ActionsService;
 import helper.LoadData;
 import production.Production;
 import production.details.Actor;
 import request.Request;
-import user.*;
+import services.ActionsService;
+import user.AccountType;
+import user.Credentials;
+import user.Regular;
+import user.User;
 import user.staff.Admin;
 import user.staff.Contributor;
 
@@ -68,7 +71,7 @@ public class IMDB {
         } while (currentUser != null);
     }
 
-    public User login() {
+    private User login() {
         User currentUser;
         do {
             Credentials credentials = action.getCurrentCredentials();

@@ -24,6 +24,6 @@ public class Rating {
 
     @Override
     public String toString() {
-        return "rating:" + value + ", comment:'" + comment;
+        return "your rating:" + value + ", comment:" + comment;
     }
 }

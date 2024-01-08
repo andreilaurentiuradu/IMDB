@@ -66,7 +66,7 @@ public class UserService {
         return userRepository.findUserByCredentials(credentials);
     }
 
-    public void printFavorites(User user) {
+    private void printFavorites(User user) {
         System.out.println("The favorites list:");
         for (MediaIndustry mediaIndustry : user.getFavorites()) {
             System.out.println(mediaIndustry.value);
@@ -88,7 +88,7 @@ public class UserService {
             throw new RuntimeException("Action not found");
         }
 
-        System.out.println("The new favorite list is:"); // TODO debug
-        printFavorites(currentUser);// TODO debug
+        System.out.println("New favorites list:");
+        printFavorites(currentUser);
     }
 }

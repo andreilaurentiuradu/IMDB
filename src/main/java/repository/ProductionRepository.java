@@ -33,10 +33,11 @@ public class ProductionRepository {
         return ratedProductions;
     }
 
-    public void viewProductionsTitle() {
+    public void viewUnratedProductionsTitles(String username) {
         System.out.println();
         for (Production p : productions) {
-            System.out.println(p.getTitle());
+            if (!p.isRatedBy(username))
+                System.out.println(p.getTitle());
         }
         System.out.println();
     }
@@ -105,6 +106,7 @@ public class ProductionRepository {
                         p.displayInfo();
                     }
                 }
+                break;
             default:
                 throw new InvalidCommandException("Invalid filter type");
         }
