@@ -45,4 +45,12 @@ public class ActorRepository {
     public void removeActor(String name) {
         actors.remove(searchByName(name));
     }
+
+    public boolean isActor(String value) {
+        for (Actor actor : actors) {
+           if (actor.getName().equals(value))
+               return true;
+        }
+        return false;
+    }
 }

@@ -19,4 +19,9 @@ public enum Genre {
     }
 
 
+    public static void printAll() {
+        System.out.println(
+                "Action, Adventure, Comedy, Drama, Horror, SF, Fantasy, Romance,\n" +
+                "Mystery, Thriller, Crime, Biography, War, Cooking");
+    }
 }

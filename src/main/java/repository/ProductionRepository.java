@@ -5,6 +5,7 @@ import production.Production;
 import production.details.Genre;
 import production.details.Rating;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,6 +14,35 @@ public class ProductionRepository {
 
     public ProductionRepository(List<Production> productions) {
         this.productions = productions;
+    }
+
+    public List<Production> getProductions() {
+        return productions;
+    }
+
+    public List<Production> getProductionsRatedByUser(String username) {
+        List<Production> ratedProductions = new ArrayList<>();
+
+        for (Production p : productions) {
+            for (Rating r : p.getRatings()) {
+                if (r.getUsername().equals(username)) {
+                    ratedProductions.add(p);
+                    System.out.println(p.getTitle() + "\n" + r);
+                    break;
+                }
+            }
+        }
+
+        System.out.println();
+        return ratedProductions;
+    }
+
+    public void viewProductionsTitle() {
+        System.out.println();
+        for (Production p : productions) {
+            System.out.println(p.getTitle());
+        }
+        System.out.println();
     }
 
     public void printAll() {
@@ -108,13 +138,24 @@ public class ProductionRepository {
         productions.remove(searchByTitle(title));
     }
 
-    public void addRating(String title, String username, Rating rating) {
-        Production production = searchByTitle(title);
+    public void addRatingAndShowProductionRatings(Production production, Rating rating) {
+        production.getRatings().add(rating);
+
+        System.out.println(production.getTitle() + " ratings:");
         for (Rating r : production.getRatings()) {
+            System.out.println(r);
+        }
+    }
+
+    public boolean isAlreadyRatedByUser(List<Rating> ratings, String username) {
+//        only one review for a production per user
+        for (Rating r : ratings) {
             if (r.getUsername().equals(username)) {
-                return;
+                System.out.println("You already rated this production:");
+                System.out.println("\t" + r);
+                return true;
             }
         }
-        production.getRatings().add(rating);
+        return false;
     }
 }

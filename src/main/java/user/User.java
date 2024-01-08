@@ -39,6 +39,19 @@ public abstract class User {
         this.favorites = favorites;
     }
 
+    public List<Request> printRequestsList(List<Request> deletableRequests) {
+        for (int i = 0; i < deletableRequests.size(); i++) {
+            Request request = deletableRequests.get(i);
+            if (!request.solved && !request.canceled) {
+                System.out.print(i + 1 + ")");
+                request.displayRequest();
+            }
+        }
+        System.out.println();
+
+        return deletableRequests;
+    }
+
     public boolean isStaff() {
         return accountType == AccountType.CONTRIBUTOR || accountType == AccountType.ADMIN;
     }

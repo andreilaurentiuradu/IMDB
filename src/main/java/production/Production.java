@@ -1,8 +1,10 @@
 package production;
 
+import production.details.Actor;
 import production.details.Genre;
 import production.details.Rating;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Production extends MediaIndustry implements Comparable<Production> {
@@ -11,7 +13,7 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
     private List<String> actorsNames;
     private List<String> directorsName;
     private List<Genre> genres;
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
     private String plot;
     private Double averageRating;
     private Integer releaseYear;
@@ -19,6 +21,19 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
     public Production(String title) {
         super(title);
         this.title = title;
+    }
+
+    public void removeProductionRateFromUser(String username) {
+        Rating toDelete = null;
+
+        for (Rating r : ratings) {
+            if (r.getUsername().equals(username)){
+                toDelete = r;
+                break;
+            }
+        }
+
+        ratings.remove(toDelete);
     }
 
     public static Production getProductionByTitle(List<Production> productions, String title) {
@@ -102,7 +117,9 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
 
     void displayCommonInfo() {
         printIfNotNull("\tType:", getType());
-        printIfNotNull("\tReleaseYear:", String.valueOf(getReleaseYear()));
+        if (releaseYear != null) {
+            System.out.println("\tReleaseYear:" + getReleaseYear());
+        }
 
         if (getActorsNames() != null) {
             System.out.println("\tActor's name:");
@@ -117,14 +134,28 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
                 System.out.println("\t\t" + name);
             }
         }
-        printIfNotNull("\tAverage rating:", String.valueOf(getAverageRating()));
-        printIfNotNull("\tMovie:", getTitle());
+
+        if (averageRating != null) {
+            System.out.println("\tAverage rating:" + getAverageRating());
+        }
+
         printIfNotNull("\tPlot:", getPlot());
+
+        if (getRatings() != null && !getRatings().isEmpty()) {
+            System.out.println("\tRatings:");
+            for (Rating rating : getRatings()) {
+                System.out.println("\t\t" + rating);
+            }
+        }
     }
 
     public void printIfNotNull(String message, String value) {
         if (value != null)
             System.out.println(message + " " + value);
+    }
+
+    public void addActor(Actor actor) {
+        actorsNames.add(actor.getName());
     }
 }
 

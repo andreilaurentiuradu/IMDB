@@ -1,13 +1,17 @@
 package user.staff;
 
+import production.MediaIndustry;
+import production.details.Actor;
+import repository.ActorRepository;
+import repository.ProductionRepository;
 import request.Request;
 import request.RequestType;
 import request.RequestsManager;
-import user.User;
-import user.staff.Staff;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import static repository.UserRepository.SUPREME;
+import static services.ActionsService.*;
 
 public class Contributor extends Staff implements RequestsManager {
 
@@ -29,4 +33,24 @@ public class Contributor extends Staff implements RequestsManager {
     public void removeRequest(Request r) {
         requests.remove(r);
     }
+
+    @Override
+    public boolean isAllowedToUpdate(String value) {
+        return getContributions().contains(new MediaIndustry(value));
+    }
+
+    @Override
+    public void viewMediaIndustryUserCanUpdate() {
+        System.out.println("Available resources to update:");
+
+        System.out.println(getContributions());
+
+        System.out.println();
+    }
+
+    @Override
+    public List<Request> getResolvableRequests() {
+        List<Request> currentUserRequests = userRepository.findStaffByUsername(getUsername()).requests;
+
+        return printRequestsList(currentUserRequests);    }
 }

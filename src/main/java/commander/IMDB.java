@@ -77,7 +77,8 @@ public class IMDB {
         } while(currentUser == null);
 
         System.out.println("Welcome back " + currentUser.getUsername());
-        System.out.println("User experience: " + currentUser.getExperience());
+        if (currentUser.getAccountType() != AccountType.ADMIN)
+            System.out.println("User experience: " + currentUser.getExperience());
         System.out.println(currentUser.getAccountType());
         return currentUser;
     }

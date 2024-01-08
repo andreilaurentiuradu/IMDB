@@ -1,12 +1,21 @@
 package user.staff;
 
+import javafx.util.Pair;
 import production.MediaIndustry;
+import production.Movie;
+import production.Series;
+import repository.ActorRepository;
+import repository.ProductionRepository;
 import request.Request;
 import production.details.Actor;
 import production.Production;
 import user.User;
 
 import java.util.*;
+
+import static repository.UserRepository.SUPREME;
+import static services.ActionsService.actorRepository;
+import static services.ActionsService.productionRepository;
 
 public abstract class Staff extends User implements StaffInterface {
 
@@ -23,42 +32,16 @@ public abstract class Staff extends User implements StaffInterface {
         return contributions;
     }
 
-    public boolean isContribution(String contribution) {
-        for (MediaIndustry mediaIndustry : contributions) {
-            if (mediaIndustry.value.equals(contribution))
-                return true;
-        }
-        return false;
-    }
-
     @Override
     public void addProductionSystem(Production p) {
+        productionRepository.addProduction(p);
         contributions.add(p);
     }
 
     @Override
     public void addActorSystem(Actor a) {
+        actorRepository.addActor(a);
         contributions.add(a);
-    }
-
-    @Override
-    public void removeProductionSystem(String title) {
-        for (MediaIndustry mediaIndustry : contributions) {
-            if (((Production)(mediaIndustry)).getTitle().equals(title)) {
-                contributions.remove(mediaIndustry);
-                return;
-            }
-        }
-    }
-
-    @Override
-    public void removeActorSystem(String name) {
-        for (MediaIndustry mediaIndustry : contributions) {
-            if (((Actor)(mediaIndustry)).getName().equals(name)) {
-                contributions.remove(mediaIndustry);
-                return;
-            }
-        }
     }
 
     public boolean isContributorToMediaIndustry(String value) {
@@ -72,13 +55,41 @@ public abstract class Staff extends User implements StaffInterface {
     }
 
     @Override
-    public void updateProduction(Production p) {
-
+    public void updateProduction(Production update) {
+        Production production = productionRepository.searchByTitle(update.getTitle());
+        if (update.getReleaseYear() != null) {
+            production.setReleaseYear(update.getReleaseYear());
+        } else if (update.getPlot() != null) {
+            production.setPlot(update.getPlot());
+        }
     }
 
     @Override
-    public void updateActor(Actor a) {
+    public void updateActor(Actor update) {
+        Actor actor = actorRepository.searchByName(update.getName());
 
+        if (update.getBiography() != null) {
+            actor.updateBiography(update.getBiography());
+        }
+
+        if (update.getPerformances().isEmpty()) {
+            return;
+        }
+
+        Production production = productionRepository.searchByTitle(update.getName());
+
+        actor.addPerformances(update.getPerformances().get(0));
+
+        if (production == null) {
+            Pair<String, String> pairTitleType = update.getPerformances().get(0);
+            if (pairTitleType.getValue().equals("Movie")) {
+                productionRepository.addProduction(new Movie(pairTitleType.getKey()));
+            } else {
+                productionRepository.addProduction(new Series(pairTitleType.getKey()));
+            }
+        } else {
+            production.addActor(actor);
+        }
     }
 
     public void addContributions(List<String> actorsName, List<String> productionTitles) {
@@ -96,9 +107,30 @@ public abstract class Staff extends User implements StaffInterface {
     }
 
     @Override
+    public void removeProductionSystem(String title) {
+        MediaIndustry mediaIndustry = new MediaIndustry(title);
+
+        productionRepository.removeProduction(title);
+        getContributions().remove(mediaIndustry);
+    }
+
+    @Override
+    public void removeActorSystem(String name) {
+        MediaIndustry mediaIndustry = new MediaIndustry(name);
+
+        actorRepository.removeActor(name);
+        getContributions().remove(mediaIndustry);
+    }
+
+    @Override
     public String toString() {
         return "username=" + getUsername() +
-                "\n requests=" + requests +
-                "\n Created requests=" + getCreatedRequests();
+                "\n contributions=" + contributions;
+//                "\n requests=" + requests +
+//                "\n Created requests=" + getCreatedRequests();
+    }
+
+    public void addContribution(String username) {
+        contributions.add(new MediaIndustry(username));
     }
 }

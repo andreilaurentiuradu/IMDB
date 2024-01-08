@@ -1,6 +1,8 @@
 package services;
 
 import exceptions.InvalidCommandException;
+import production.Movie;
+import production.details.Actor;
 import request.Request;
 import request.RequestType;
 import request.RequestsManager;
@@ -8,7 +10,6 @@ import repository.RequestRepository;
 import repository.UserRepository;
 import user.AccountType;
 import user.User;
-import user.staff.Admin;
 import user.staff.Staff;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static interaction.MenuBoard.showResolveOthersOptions;
 import static services.ActionsService.terminalInteraction;
+import static services.ProductionService.updateMovie;
 
 public class RequestService {
     UserRepository userRepository;
@@ -28,8 +30,8 @@ public class RequestService {
         this.requestRepository = requestRepository;
     }
 
-    public void resolveRequest(Admin currentUser) {
-        List<Request> availableRequests = getResolvableRequests(currentUser.getUsername());
+    public void resolveRequest(Staff currentUser) {
+        List<Request> availableRequests = currentUser.getResolvableRequests();
 
         Request requestToSolve = getCurrentRequest(availableRequests, "resolve");
         if (requestToSolve == null) {
@@ -42,7 +44,7 @@ public class RequestService {
 
         switch (option) {
             case "Resolve":
-                resolveByType(requestToSolve);
+                resolveByType(requestToSolve, currentUser);
                 requestToSolve.solved = true;
                 break;
             case "Delete":
@@ -50,11 +52,10 @@ public class RequestService {
                 break;
             default:
                 throw new InvalidCommandException("Invalid option");
-
         }
     }
 
-    private void resolveByType(Request requestToSolve) {
+    private void resolveByType(Request requestToSolve, Staff currentUser) {
         switch (requestToSolve.getType()) {
             case DELETE_ACCOUNT:
                 rezolveDeleteAccountRequest(requestToSolve);
@@ -62,23 +63,66 @@ public class RequestService {
             case OTHERS:
                 showResolveOthersOptions();
                 int option = terminalInteraction.chosenOperation();
+
+                System.out.println("Description: " + requestToSolve.getDescription());
+
                 if (option > 0 && option <= 3) {
                     rezolveOthersRequestForUser(requestToSolve, option);
                 } else if (option > 3 && option < 6) {
-                    rezolveOthersRequestForProduction(requestToSolve, option);
+                    rezolveOthersRequestForProduction(currentUser, option);
                 } else {
                     throw new InvalidCommandException("Invalid resolve OTHERS option");
                 }
+
+                requestToSolve.solved = true;
+                break;
+            case MOVIE_ISSUE:
+                updateMovie(requestToSolve, currentUser);
+                break;
+            case ACTOR_ISSUE:
+                Actor newActor = updateActorField(requestToSolve.getActorName());
+                currentUser.updateActor(newActor);
         }
     }
 
-    private void rezolveOthersRequestForProduction(Request requestToSolve, int option) {
+    public static Actor updateActorField(String name) {
+        System.out.println("Which field do you want to update? ");
+        String whichField = terminalInteraction.readString("Choose one from: Performances/Biography");
+
+        Actor update = new Actor(name);
+
+        switch (whichField) {
+            case "Performances":
+                String productionType = terminalInteraction.readString("Movie/Series?");
+                String productionName = terminalInteraction.readString("Introduce " + productionType + " title");
+
+                update.addPerformances(productionName, productionType);
+                break;
+            case "Biography":
+                String updateField = terminalInteraction.readString("Introduce biography details");
+                update.updateBiography(updateField);
+                break;
+            default:
+                System.out.println("Invalid input.");
+        }
+        return update;
+    }
+
+    private void rezolveOthersRequestForProduction(Staff currentUser, int option) {
+        String value = null;
+
         switch (option) {
             case 4:
+                value = terminalInteraction.readString("Introduce movie title for adding");
+                currentUser.addProductionSystem(new Movie(value));
                 break;
             case 5:
+                value = terminalInteraction.readString("Introduce actor name for adding");
+                currentUser.addActorSystem(new Actor(value));
                 break;
         }
+
+        currentUser.addContribution(value);
     }
 
     private void rezolveOthersRequestForUser(Request requestToSolve, int option) {
@@ -143,34 +187,10 @@ public class RequestService {
         requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
     }
 
-    private List<Request> getResolvableRequests(String adminName) {
-        List<Request> availableRequests = new ArrayList<>();
-        List<Request> adminRequests = requestRepository.getAdminRequests();
-        List<Request> currentUserRequests = userRepository.findStaffByUsername(adminName).requests;
-
-        availableRequests.addAll(adminRequests);
-        availableRequests.addAll(currentUserRequests);
-
-        return printRequestsList(availableRequests);
-    }
-
     private List<Request> visualizeDeletableRequests(User currentUser) {
         List<Request> deletableRequests = currentUser.getCreatedRequests();
 
-        return printRequestsList(deletableRequests);
-    }
-
-    private List<Request> printRequestsList(List<Request> deletableRequests) {
-        for (int i = 0; i < deletableRequests.size(); i++) {
-            Request request = deletableRequests.get(i);
-            if (!request.solved && !request.canceled) {
-                System.out.print(i + 1 + ")");
-                request.displayRequest();
-            }
-        }
-        System.out.println();
-
-        return deletableRequests;
+        return currentUser.printRequestsList(deletableRequests);
     }
 
     public void createOrDiscardRequest(User currentUser) {

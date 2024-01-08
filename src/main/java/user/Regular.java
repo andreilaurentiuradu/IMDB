@@ -3,11 +3,6 @@ package user;
 import request.Request;
 import request.RequestType;
 import request.RequestsManager;
-import production.Production;
-import production.details.Rating;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 public class Regular extends User implements RequestsManager {
 

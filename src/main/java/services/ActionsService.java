@@ -15,6 +15,7 @@ import user.Regular;
 import user.User;
 import user.staff.Admin;
 import user.staff.Contributor;
+import user.staff.Staff;
 
 import java.util.List;
 
@@ -25,17 +26,28 @@ public class ActionsService {
     GeneralService generalService;
     RequestService requestService;
     UserService userService;
+    ProductionService productionService;
+    ActorService actorService;
+
+    public static ActorRepository actorRepository;
+    public static ProductionRepository productionRepository;
+    public static UserRepository userRepository;
+
+    public static RequestRepository requestRepository;
 
     public ActionsService(List<User> users, List<Actor> actors, List<Request> requests, List<Production> productions) {
 
-        ActorRepository actorRepository = new ActorRepository(actors);
-        ProductionRepository productionRepository = new ProductionRepository(productions);
-        UserRepository userRepository = new UserRepository(users, requests, productions, actors);
-        RequestRepository requestRepository = new RequestRepository(requests);
+        actorRepository = new ActorRepository(actors);
+        productionRepository = new ProductionRepository(productions);
+        userRepository = new UserRepository(users, requests, productions, actors);
+        requestRepository = new RequestRepository(requests);
+
 
         generalService = new GeneralService(actorRepository, productionRepository);
         requestService = new RequestService(userRepository, requestRepository);
         userService = new UserService(userRepository, requestRepository);
+        productionService = new ProductionService(productionRepository, actorRepository);
+        actorService = new ActorService(actorRepository, productionRepository);
     }
 
     public void manageAdminUser(Admin currentUser) {
@@ -52,16 +64,16 @@ public class ActionsService {
                 case 3:
                 case 4:
                 case 5:
-                    generalActions(action, currentUser);
+                    basicActions(action, currentUser);
                     break;
                 case 6:
-                    generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
+                    productionService.addOrRemoveMediaIndustry(currentUser);
                     break;
                 case 7:
                     requestService.resolveRequest(currentUser);
                     break;
                 case 8:
-                    generalService.updateProductionOrActor(currentUser);
+                    updateProductionOrActor(currentUser);
                     break;
                 case 9:
                     userService.createOrRemoveUser();
@@ -88,21 +100,20 @@ public class ActionsService {
                 case 3:
                 case 4:
                 case 5:
-                    generalActions(action, currentUser);
+                    basicActions(action, currentUser);
                     break;
                 case 6:
-                    requestService.createOrDiscardRequest(currentUser);
+                    requestService.createOrDiscardRequest((Staff) currentUser);
                     userService.userRepository.printAllUsers();
-
                     break;
                 case 7:
-                    generalService.addOrRemoveMediaIndustryFromSystem(currentUser);
+                    productionService.addOrRemoveMediaIndustry(currentUser);
                     break;
                 case 8:
-//                    requestService.resolveRequest(currentUser);
+                    requestService.resolveRequest(currentUser);
                     break;
                 case 9:
-                    generalService.updateProductionOrActor(currentUser);
+                    updateProductionOrActor(currentUser);
                     break;
                 case 10:
                     login = false;
@@ -127,14 +138,14 @@ public class ActionsService {
                 case 3:
                 case 4:
                 case 5:
-                    generalActions(action, currentUser);
+                    basicActions(action, currentUser);
                     break;
                 case 6:
                     requestService.createOrDiscardRequest(currentUser);
                     userService.userRepository.printAllUsers();
                     break;
                 case 7:
-                    generalService.addProductionRating(currentUser);
+                    productionService.addOrRemoveProductionRating(currentUser);
                     break;
                 case 8:
                     login = false;
@@ -145,7 +156,7 @@ public class ActionsService {
         } while (login);
     }
 
-    public void generalActions(int action, User currentUser) {
+    public void basicActions(int action, User currentUser) {
         switch (action) {
             case 1: {
                 generalService.viewProductionDetails();
@@ -190,4 +201,18 @@ public class ActionsService {
     public String exitOrLogout() {
         return terminalInteraction.readString("Exit/Logout?", "services");
     }
+
+    private void updateProductionOrActor(Staff currentUser) {
+        String type = terminalInteraction.readString("Production/Actor");
+
+        if (type.equals("Production")) {
+            productionService.updateProduction(currentUser);
+        } else if (type.equals("Actor")) {
+            actorService.updateActor(currentUser);
+        } else {
+            throw new InvalidCommandException("Invalid operation");
+        }
+    }
+
+
 }

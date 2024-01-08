@@ -18,7 +18,10 @@ public class Movie extends Production {
     @Override
     public void displayInfo() {
         printIfNotNull("Movie:", getTitle());
-        printIfNotNull("\tDuration:", String.valueOf(duration));
+
+        if (duration != null) {
+            System.out.println("\tDuration:" + duration);
+        }
 
         displayCommonInfo();
 

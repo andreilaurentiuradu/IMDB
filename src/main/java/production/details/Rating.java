@@ -2,7 +2,7 @@ package production.details;
 
 public class Rating {
     private String username;
-    private Integer rating;
+    private Integer value;
     private String comment;
 
     public String getUsername() {
@@ -14,7 +14,7 @@ public class Rating {
     }
 
     public void setRating(Integer rating) {
-        this.rating = rating;
+        this.value = rating;
     }
 
     public void setComment(String comment) {
@@ -24,10 +24,6 @@ public class Rating {
 
     @Override
     public String toString() {
-        return "Rating{" +
-                "username='" + username + '\'' +
-                ", rating=" + rating +
-                ", comment='" + comment + '\'' +
-                '}';
+        return "rating:" + value + ", comment:'" + comment;
     }
 }

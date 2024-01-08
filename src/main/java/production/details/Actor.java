@@ -51,18 +51,26 @@ public class Actor extends MediaIndustry {
         performances.add(new Pair<>(key, value));
     }
 
-    public void addToBiography(String biography) {
-        this.biography = this.biography + " " + biography;
+    public void addPerformances(Pair<String, String> pair) {
+        performances.add(pair);
+    }
+
+    public void updateBiography(String biography) {
+        if (this.biography != null) {
+            this.biography += biography;
+        } else {
+            this.biography = biography;
+        }
     }
 
     public void displayActorInfo() {
         System.out.println(name);
 
         if (biography != null)
-            System.out.println("\tBiography" + biography);
+            System.out.println("\tBiography: " + biography);
 
         if (!performances.isEmpty()) {
-            System.out.println("\tPerformances");
+            System.out.println("\tPerformances ");
             for (Pair<String, String> pair : performances) {
                 System.out.println("\t\t" + pair.getValue() + " " + pair.getKey());
             }

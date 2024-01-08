@@ -7,12 +7,13 @@ import java.io.InputStreamReader;
 public class TerminalInteraction {
     private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public String readString(String field) {
+    public String readString(String message) {
+        System.out.println(message);
         String value;
         try {
             value = reader.readLine();
         } catch (IOException e) {
-            throw new RuntimeException("Can't read the " + field + " from terminal", e);
+            throw new RuntimeException("Can't read the from terminal", e);
         }
         return value;
     }
