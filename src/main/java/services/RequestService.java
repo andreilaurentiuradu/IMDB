@@ -3,18 +3,16 @@ package services;
 import exceptions.InvalidCommandException;
 import production.Movie;
 import production.details.Actor;
+import repository.RequestRepository;
+import repository.UserRepository;
 import request.Request;
 import request.RequestType;
 import request.RequestsManager;
-import repository.RequestRepository;
-import repository.UserRepository;
-import user.AccountType;
 import user.User;
 import user.staff.Staff;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import static interaction.MenuBoard.showResolveOthersOptions;
@@ -22,8 +20,8 @@ import static services.ActionsService.terminalInteraction;
 import static services.ProductionService.updateMovie;
 
 public class RequestService {
-    UserRepository userRepository;
-    RequestRepository requestRepository;
+    final UserRepository userRepository;
+    final RequestRepository requestRepository;
 
     public RequestService(UserRepository userRepository, RequestRepository requestRepository) {
         this.userRepository = userRepository;
@@ -160,31 +158,7 @@ public class RequestService {
 
         User deletedUser = userRepository.removeUser(deletedUsername);
 
-        deleteUserDetails(deletedUser);
-    }
-
-    //    TODO delete
-    private void deleteUserDetails(User deletedUser) {
-        userRepository.removeUser(deletedUser);
-
-        for (Request createdRequest : deletedUser.getCreatedRequests()) {
-            createdRequest.canceled = true;
-        }
-
-        userRepository.printAllUsernames();
-
-        if (deletedUser.getAccountType() == AccountType.REGULAR) {
-            return;
-        }
-
-        Staff deletedStaff = (Staff) deletedUser;
-
-        for (Request request : deletedStaff.requests) {
-            requestRepository.addRequestForAdmin(request);
-        }
-
-        UserRepository.SUPREME.getContributions().addAll(deletedStaff.getContributions());
-        requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
+        userRepository.deleteUserDetails(deletedUser);
     }
 
     private List<Request> visualizeDeletableRequests(User currentUser) {

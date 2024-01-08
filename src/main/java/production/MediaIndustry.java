@@ -3,7 +3,7 @@ package production;
 import java.util.Objects;
 
 public class MediaIndustry {
-    public String value; // title or name
+    public final String value; // title or name
 
     public MediaIndustry (String value) {
         this.value = value;

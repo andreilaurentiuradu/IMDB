@@ -1,5 +1,7 @@
 package interaction;
 
+import exceptions.InvalidCommandException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,12 +58,12 @@ public class TerminalInteraction {
             operationNumber = Integer.parseInt(value);
 
             if (operationNumber < 1) {
-                throw new RuntimeException("Invalid operation number");
+                throw new InvalidCommandException("Invalid operation number");
             }
         } catch (IOException e) {
             throw new RuntimeException("Can't read the action from terminal", e);
         } catch (NumberFormatException e) {
-            throw new RuntimeException("Invalid operation number", e);
+            throw new InvalidCommandException("Invalid operation number");
 
         }
 

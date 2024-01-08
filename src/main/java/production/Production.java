@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Production extends MediaIndustry implements Comparable<Production> {
-    String title;
+    final String title;
     private String type;
     private List<String> actorsNames;
     private List<String> directorsName;

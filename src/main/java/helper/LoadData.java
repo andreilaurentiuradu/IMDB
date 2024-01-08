@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoadData {
-    static JsonParse jsonParse = new JsonParse();
+    static final JsonParse jsonParse = new JsonParse();
 
     public static List<Request> loadRequests() {
         List<RequestDTO> requestDTO = jsonParse.parseList("requests.json", RequestDTO.class);

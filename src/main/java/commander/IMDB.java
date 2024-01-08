@@ -14,10 +14,10 @@ import java.util.List;
 
 public class IMDB {
     private static IMDB instance;
-    List<User> users;
-    List<Actor> actors;
-    List<Request> requests;
-    List<Production> productions;
+    final List<User> users;
+    final List<Actor> actors;
+    final List<Request> requests;
+    final List<Production> productions;
 
     private final ActionsService action;
 

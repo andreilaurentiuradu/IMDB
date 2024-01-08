@@ -16,10 +16,6 @@ public class ProductionRepository {
         this.productions = productions;
     }
 
-    public List<Production> getProductions() {
-        return productions;
-    }
-
     public List<Production> getProductionsRatedByUser(String username) {
         List<Production> ratedProductions = new ArrayList<>();
 

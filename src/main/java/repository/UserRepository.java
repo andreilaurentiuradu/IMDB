@@ -3,6 +3,7 @@ package repository;
 import production.Production;
 import production.details.Actor;
 import request.Request;
+import user.AccountType;
 import user.Credentials;
 import user.Regular;
 import user.User;
@@ -11,6 +12,9 @@ import user.staff.Staff;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static services.ActionsService.requestRepository;
+import static services.ActionsService.userRepository;
 
 public class UserRepository {
     private final List<User> users;
@@ -44,6 +48,29 @@ public class UserRepository {
             user.addCreatedRequest(request);
         }
 
+    }
+
+    public void deleteUserDetails(User deletedUser) {
+        userRepository.removeUser(deletedUser);
+
+        for (Request createdRequest : deletedUser.getCreatedRequests()) {
+            createdRequest.canceled = true;
+        }
+
+        userRepository.printAllUsernames();
+
+        if (deletedUser.getAccountType() == AccountType.REGULAR) {
+            return;
+        }
+
+        Staff deletedStaff = (Staff) deletedUser;
+
+        for (Request request : deletedStaff.requests) {
+            requestRepository.addRequestForAdmin(request);
+        }
+
+        UserRepository.SUPREME.getContributions().addAll(deletedStaff.getContributions());
+        requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
     }
 
     public void printAllUsers() {

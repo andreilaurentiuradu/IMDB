@@ -13,8 +13,8 @@ import user.staff.Staff;
 import static services.ActionsService.terminalInteraction;
 
 public class GeneralService {
-    ActorRepository actorRepository;
-    ProductionRepository productionRepository;
+    final ActorRepository actorRepository;
+    final ProductionRepository productionRepository;
 
     public GeneralService(ActorRepository actorRepository, ProductionRepository productionRepository) {
         this.actorRepository = actorRepository;

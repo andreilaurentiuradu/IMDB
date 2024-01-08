@@ -3,13 +3,18 @@ package user;
 import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
+import repository.UserRepository;
 import request.Request;
+import user.staff.Staff;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static services.ActionsService.requestRepository;
+import static services.ActionsService.userRepository;
 
 public abstract class User {
     private Information information = new Information();
@@ -141,6 +146,13 @@ public abstract class User {
         System.out.println(accountType + " " +  information);
     }
 
+    public void displayNewUserInfo() { // also includes credentials
+        System.out.println();
+        System.out.println("Created account :" + username + " with type " + accountType);
+
+        displayAllUserInformation();
+    }
+
     public void addMediaIndustry(MediaIndustry media) {
         favorites.add(media);
     }
@@ -164,8 +176,29 @@ public abstract class User {
 
     }
 
-    public void updateUserExperience(int userExperience) {
-        experience = userExperience;
+    public void displayAllUserInformation() {
+
+        printIfNotNull("\temail:", information.credentials.getEmail());
+        printIfNotNull("\tpassword:", information.credentials.getPassword());
+        printIfNotNull("\tcountry:", information.country);
+
+        if (information.age != null) {
+            System.out.println("\tage:" + information.age);
+        }
+
+        if (information.gender != null) {
+            System.out.println("\tgender:" + information.gender);
+        }
+
+        if (information.birthday != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            System.out.println("\tbirthday:" + information.birthday.format(formatter));
+        }
+    }
+
+    public void printIfNotNull(String message, String value) {
+        if (value != null)
+            System.out.println(message + " " + value);
     }
 
     public static class Information {
@@ -236,17 +269,6 @@ public abstract class User {
             this.birthday = birthday;
         }
 
-        @Override
-        public String toString() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return name +
-                    "\n\t email: " + credentials.getEmail() +
-                    "\n\t country: " + country +
-                    "\n\t age: " + age +
-                    "\n\t gender: " + gender +
-                    "\n\t birthday: " + birthday.format(formatter);
-        }
-
         public static class InformationBuilder {
             private final Credentials credentials;
             private String name;
@@ -261,11 +283,6 @@ public abstract class User {
 
             public InformationBuilder setName(String name) {
                 this.name = name;
-                return this;
-            }
-
-            public InformationBuilder setCountry(String country) {
-                this.country = country;
                 return this;
             }
 
@@ -288,6 +305,5 @@ public abstract class User {
                 return new Information(this);
             }
         }
-
     }
 }

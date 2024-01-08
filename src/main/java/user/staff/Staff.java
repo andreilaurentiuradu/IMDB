@@ -3,23 +3,20 @@ package user.staff;
 import javafx.util.Pair;
 import production.MediaIndustry;
 import production.Movie;
-import production.Series;
-import repository.ActorRepository;
-import repository.ProductionRepository;
-import request.Request;
-import production.details.Actor;
 import production.Production;
+import production.Series;
+import production.details.Actor;
+import request.Request;
 import user.User;
 
 import java.util.*;
 
-import static repository.UserRepository.SUPREME;
 import static services.ActionsService.actorRepository;
 import static services.ActionsService.productionRepository;
 
 public abstract class Staff extends User implements StaffInterface {
 
-    public List<Request> requests = new ArrayList<>();
+    public final List<Request> requests = new ArrayList<>();
 
     private final SortedSet<MediaIndustry> contributions = new TreeSet<>(new Comparator<MediaIndustry>() {
         @Override
@@ -126,8 +123,6 @@ public abstract class Staff extends User implements StaffInterface {
     public String toString() {
         return "username=" + getUsername() +
                 "\n contributions=" + contributions;
-//                "\n requests=" + requests +
-//                "\n Created requests=" + getCreatedRequests();
     }
 
     public void addContribution(String username) {

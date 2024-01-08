@@ -21,13 +21,13 @@ import java.util.List;
 
 public class ActionsService {
 
-    static TerminalInteraction terminalInteraction = new TerminalInteraction();
+    static final TerminalInteraction terminalInteraction = new TerminalInteraction();
 
-    GeneralService generalService;
-    RequestService requestService;
-    UserService userService;
-    ProductionService productionService;
-    ActorService actorService;
+    final GeneralService generalService;
+    final RequestService requestService;
+    final UserService userService;
+    final ProductionService productionService;
+    final ActorService actorService;
 
     public static ActorRepository actorRepository;
     public static ProductionRepository productionRepository;

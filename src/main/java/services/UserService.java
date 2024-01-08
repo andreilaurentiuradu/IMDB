@@ -4,21 +4,17 @@ import org.apache.commons.lang3.RandomStringUtils;
 import production.MediaIndustry;
 import repository.RequestRepository;
 import repository.UserRepository;
-import request.Request;
 import user.AccountType;
 import user.Credentials;
 import user.User;
 import user.UserFactory;
-import user.staff.Staff;
-
-import java.util.Random;
 
 import static services.ActionsService.terminalInteraction;
 
 public class UserService {
 
-    UserRepository userRepository;
-    RequestRepository requestRepository;
+    final UserRepository userRepository;
+    final RequestRepository requestRepository;
 
     public UserService(UserRepository userRepository, RequestRepository requestRepository) {
         this.userRepository = userRepository;
@@ -26,42 +22,46 @@ public class UserService {
     }
 
     public void createOrRemoveUser() {
-        String username = terminalInteraction.readString("Introduce username", "username");
-        User user = userRepository.findUserByUsername(username);
+        String option = terminalInteraction.readString("Create/Remove user?");
 
-        if (user == null) {
-            user = getDataToCreateUser(username);
-            if (userRepository.findUserByUsername(username) != null) {
-                System.out.println("Username already exists");
-                return;
-            }
+        if (option.equals("Create")) {
+            User user = getDataToCreateUser();
 
             userRepository.addUser(user);
-        } else {
+            user.displayNewUserInfo();
+        } else if (option.equals("Remove")) {
             userRepository.printAllUsernames();
 
-            deleteUserDetails(user);
-            System.out.println("Deleting user");
-        }
+            String username = terminalInteraction.readString("Introduce username");
+            User user = userRepository.findUserByUsername(username);
 
+            userRepository.deleteUserDetails(user);
+            System.out.println("Deleting user");
+        } else {
+            System.out.println("Invalid option.");
+        }
     }
 
-    private User getDataToCreateUser(String username) {
+    private User getDataToCreateUser() {
+        String surname = terminalInteraction.readString("Introduce surname");
+        String name = terminalInteraction.readString("Introduce name");
+
+        String username = surname + "_" + name + RandomStringUtils.randomNumeric(5);
+
         User user;
-        System.out.println("Creating user");
 
         String accountTypeLabel = terminalInteraction.readString("Introduce account type: Regular/Contributor/Admin", "accountType");
         AccountType accountType = AccountType.fromLabel(accountTypeLabel);
         user = new UserFactory().createUser(accountType);
 
-        String email = terminalInteraction.readString("Please introduce email: ", "email");
+        String email = terminalInteraction.readString("Please introduce email:");
 
         String password = RandomStringUtils.randomAlphanumeric(20);
-        System.out.println("Generated password is: " + password);
 
         user.setCredentials(email, password);
         user.setUsername(username);
         user.setAccountType(accountType);
+
         return user;
     }
 
@@ -93,29 +93,5 @@ public class UserService {
 
         System.out.println("The new favorite list is:"); // TODO debug
         printFavorites(currentUser);// TODO debug
-    }
-
-//    TODO delete
-    public void deleteUserDetails(User deletedUser) {
-        userRepository.removeUser(deletedUser);
-
-        for (Request createdRequest : deletedUser.getCreatedRequests()) {
-            createdRequest.canceled = true;
-        }
-
-        userRepository.printAllUsernames();
-
-        if (deletedUser.getAccountType() == AccountType.REGULAR) {
-            return;
-        }
-
-        Staff deletedStaff = (Staff) deletedUser;
-
-        for (Request request : deletedStaff.requests) {
-            requestRepository.addRequestForAdmin(request);
-        }
-
-        UserRepository.SUPREME.getContributions().addAll(deletedStaff.getContributions());
-        requestRepository.getAdminRequests().forEach(System.out::println); // DEBUG
     }
 }

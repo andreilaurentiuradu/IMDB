@@ -15,11 +15,11 @@ public class UserDTO {
     public String userType;
     public String username;
     public int experience;
-    public List<String> productionsContribution = new ArrayList<>();
-    public List<String> actorsContribution = new ArrayList<>();
-    public List<String> favoriteProductions = new ArrayList<>();
-    public List<String> favoriteActors = new ArrayList<>();
-    public List<String> notifications = new ArrayList<>();
+    public final List<String> productionsContribution = new ArrayList<>();
+    public final List<String> actorsContribution = new ArrayList<>();
+    public final List<String> favoriteProductions = new ArrayList<>();
+    public final List<String> favoriteActors = new ArrayList<>();
+    public final List<String> notifications = new ArrayList<>();
 
     public User toUser() {
         AccountType accountType = AccountType.fromLabel(userType);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Actor extends MediaIndustry {
-    private String name;
+    private final String name;
     private final List<Pair<String, String>> performances = new ArrayList<>();
     private String biography;
 
@@ -30,10 +30,6 @@ public class Actor extends MediaIndustry {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<Pair<String, String>> getPerformances() {
         return performances;
     }
@@ -41,10 +37,6 @@ public class Actor extends MediaIndustry {
 
     public String getBiography() {
         return biography;
-    }
-
-    public void setBiography(String biography) {
-        this.biography = biography;
     }
 
     public void addPerformances(String key, String value) {
