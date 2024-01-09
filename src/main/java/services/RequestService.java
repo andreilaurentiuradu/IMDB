@@ -1,6 +1,7 @@
 package services;
 
 import exceptions.InvalidCommandException;
+import exceptions.InvalidInputType;
 import production.Movie;
 import production.details.Actor;
 import repository.RequestRepository;
@@ -190,7 +191,7 @@ public class RequestService {
                 discardRequest(currentUser);
                 break;
             default:
-                throw new InvalidCommandException("Invalid operation");
+                System.out.println("Invalid operation! Please try again!");
         }
     }
 
@@ -223,13 +224,17 @@ public class RequestService {
             return null;
         }
 
-        int requestIndex = Integer.parseInt(resolveRequest) - 1;
-        if (requestIndex < 0 || requestIndex > availableRequests.size() || availableRequests.get(requestIndex).solved) {
-            System.out.println("Invalid request number");
-            return null;
-        }
+        try{
+            int requestIndex = Integer.parseInt(resolveRequest) - 1;
+            if (requestIndex < 0 || requestIndex > availableRequests.size() || availableRequests.get(requestIndex).solved) {
+                System.out.println("Invalid request number");
+                return null;
+            }
 
-        return availableRequests.get(requestIndex);
+            return availableRequests.get(requestIndex);
+        } catch (NumberFormatException e) {
+            throw new InvalidInputType("Write No or a number");
+        }
     }
 
     private void notifyAllAdmins(Request request) {
@@ -272,7 +277,8 @@ public class RequestService {
                 Staff resolver = userRepository.findResolverByMediaTypeValue(value);
 
                 if (resolver.getUsername().equals(username)) {
-                    throw new RuntimeException("Can't request to yourself!");
+                    System.out.println("Can't request to yourself!");
+                    return;
                 }
 
                 createdRequest.addObserver(resolver);

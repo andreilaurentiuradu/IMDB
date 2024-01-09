@@ -82,7 +82,7 @@ public class ActionsService {
                     login = false;
                     break;
                 default:
-                    throw new RuntimeException("Action not found");
+                    System.out.println("Action not found! Please try again!");
             }
 
         } while (login);
@@ -149,7 +149,7 @@ public class ActionsService {
                     login = false;
                     break;
                 default:
-                    throw new InvalidCommandException("Action not found");
+                    System.out.println("Action not found! Please try again!");
             }
         } while (login);
     }

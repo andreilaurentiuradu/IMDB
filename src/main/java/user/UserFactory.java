@@ -1,5 +1,6 @@
 package user;
 
+import exceptions.InformationIncompleteException;
 import user.staff.Admin;
 import user.staff.Contributor;
 
@@ -14,7 +15,7 @@ public class UserFactory {
             case CONTRIBUTOR:
                 return new Contributor();
             default:
-                throw new RuntimeException("Invalid AccountType");
+                throw new InformationIncompleteException("Invalid AccountType");
         }
     }
 }

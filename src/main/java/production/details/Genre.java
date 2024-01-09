@@ -12,7 +12,7 @@ public enum Genre {
         try {
             type = Genre.valueOf(label);
         } catch (IllegalArgumentException e) {
-            throw new InvalidCommandException("Invalid request type");
+            throw new InvalidCommandException("Invalid genre");
         }
 
         return type;

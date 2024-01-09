@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.InvalidCommandException;
 import org.apache.commons.lang3.RandomStringUtils;
 import production.MediaIndustry;
 import production.Production;
@@ -40,7 +41,7 @@ public class UserService {
             userRepository.deleteUserDetails(user);
             System.out.println("Deleting user");
         } else {
-            System.out.println("Invalid option.");
+            System.out.println("Invalid option! Please try again!");
         }
     }
 
@@ -90,7 +91,8 @@ public class UserService {
         } else if (action.equals("Remove")) {
             currentUser.removeMediaIndustry(new MediaIndustry(value));
         } else {
-            throw new RuntimeException("Action not found");
+            System.out.println("Invalid action");
+            return;
         }
 
         System.out.println("New favorites list:");

@@ -1,5 +1,6 @@
 package repository;
 
+import exceptions.InformationIncompleteException;
 import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
@@ -132,7 +133,7 @@ public class UserRepository {
                 }
             }
 
-            throw new RuntimeException("Can not find the owner of the resource");
+            throw new InformationIncompleteException("Can not find the owner of the resource");
     }
 
     public void addUser(User user) {

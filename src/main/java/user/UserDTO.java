@@ -1,5 +1,6 @@
 package user;
 
+import exceptions.InformationIncompleteException;
 import user.staff.Staff;
 
 import java.time.LocalDate;
@@ -50,7 +51,7 @@ public class UserDTO {
                 return user;
             }
             default: {
-                throw new RuntimeException("Invalid user");
+                throw new InformationIncompleteException("Invalid user");
             }
         }
     }

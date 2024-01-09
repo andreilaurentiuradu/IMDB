@@ -1,5 +1,6 @@
 package commander;
 
+import exceptions.InformationIncompleteException;
 import exceptions.InvalidCommandException;
 import helper.LoadData;
 import production.Production;
@@ -55,7 +56,7 @@ public class IMDB {
                     action.manageAdminUser((Admin) currentUser);
                     break;
                 default:
-                    throw new RuntimeException("AccountType not specified");
+                    throw new InformationIncompleteException("AccountType not specified");
             }
 
             switch (action.exitOrLogout()) {
@@ -66,7 +67,7 @@ public class IMDB {
                     currentUser = IMDB.getInstance().login();
                     break;
                 default:
-                    throw new InvalidCommandException("Invalid operation");
+                    System.out.println("Invalid action! Please try again!");
             }
         } while (currentUser != null);
     }

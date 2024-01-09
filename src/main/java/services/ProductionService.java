@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.InvalidCommandException;
 import production.Movie;
 import production.Production;
 import production.Series;
@@ -195,7 +196,7 @@ public class ProductionService {
                 currentUser.addActorSystem(new Actor(value));
                 break;
             default:
-                throw new RuntimeException("Invalid input");
+                throw new InvalidCommandException("Invalid input");
         }
 
     }
