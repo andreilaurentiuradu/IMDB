@@ -1,5 +1,6 @@
 package repository;
 
+import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
 import request.Request;
@@ -49,8 +50,8 @@ public class UserRepository {
 
     }
 
-    public List<Staff> getStaffList() {
-        return staffList;
+    public List<User> getUsersList() {
+        return users;
     }
 
     public void deleteUserDetails(User deletedUser) {
@@ -160,5 +161,16 @@ public class UserRepository {
         users.remove(user);
 
         return user;
+    }
+
+    public User findOwnerOfProduction(Production production) {
+        for (User user : users) {
+            if (user.isStaff()) {
+                if (((Staff) user).getContributions().contains(new MediaIndustry(production.getTitle()))) {
+                    return user;
+                }
+            }
+        }
+        return null;
     }
 }

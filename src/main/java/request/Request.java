@@ -32,6 +32,7 @@ public class Request implements Subject {
 
     @Override
     public void notifyObservers(String notification) {
+        System.out.println("NOTIFICAT");
         for (Observer observer : observers) {
             observer.update(notification);
         }

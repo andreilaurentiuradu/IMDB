@@ -2,11 +2,16 @@ package services;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import production.MediaIndustry;
+import production.Production;
+import production.details.Rating;
 import repository.UserRepository;
 import user.AccountType;
 import user.Credentials;
 import user.User;
 import user.UserFactory;
+
+import java.util.Comparator;
+import java.util.List;
 
 import static services.ActionsService.terminalInteraction;
 
@@ -91,4 +96,6 @@ public class UserService {
         System.out.println("New favorites list:");
         printFavorites(currentUser);
     }
+
+
 }

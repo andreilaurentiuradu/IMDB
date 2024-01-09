@@ -8,6 +8,7 @@ import repository.UserRepository;
 import request.Request;
 import request.RequestType;
 import request.RequestsManager;
+import user.AccountType;
 import user.User;
 import user.experience.SolvedRequestExperienceStrategy;
 import user.notifications.Observer;
@@ -232,8 +233,9 @@ public class RequestService {
     }
 
     private void notifyAllAdmins(Request request) {
-        for (User user : userRepository.getStaffList()) {
-            request.addObserver(user);
+        for (User user : userRepository.getUsersList()) {
+            if (user.getAccountType() == AccountType.ADMIN)
+                request.addObserver(user);
         }
         request.notifyObservers("Admins have a new request from " + request.getRequesterUsername());
     }
@@ -256,7 +258,6 @@ public class RequestService {
                 userRepository.addRequestToUserCreatedRequestList(username, createdRequest);
 
                 notifyAllAdmins(createdRequest);
-                createdRequest.notifyObservers("You have a new request from " + createdRequest.getRequesterUsername());
                 createdRequest.addObserver(currentUser);
                 break;
             case ACTOR_ISSUE:

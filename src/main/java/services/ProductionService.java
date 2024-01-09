@@ -7,13 +7,13 @@ import production.details.Actor;
 import production.details.Rating;
 import repository.ActorRepository;
 import repository.ProductionRepository;
+import repository.UserRepository;
 import request.Request;
 import user.User;
 import user.experience.RatingExperienceStrategy;
 import user.staff.Admin;
 import user.staff.Staff;
 
-import java.util.Collections;
 import java.util.List;
 
 import static repository.UserRepository.SUPREME;
@@ -22,10 +22,12 @@ import static services.ActionsService.terminalInteraction;
 public class ProductionService {
     private final ProductionRepository productionRepository;
     private final ActorRepository actorRepository;
+    private final UserRepository userRepository;
 
-    public ProductionService(ProductionRepository productionRepository, ActorRepository actorRepository) {
+    public ProductionService(ProductionRepository productionRepository, ActorRepository actorRepository, UserRepository userRepository) {
         this.productionRepository = productionRepository;
         this.actorRepository = actorRepository;
+        this.userRepository = userRepository;
     }
 
     public void updateProduction(Staff currentUser) {
@@ -135,10 +137,10 @@ public class ProductionService {
         rating.setRating(Integer.parseInt(grade));
         rating.setComment(comment);
 
-        // ToDO add owner as observer????
-//        if (production.getRatings().isEmpty()) {
-//            rating.addObserver();
-//        }
+        if (production.getRatings().isEmpty()) {
+            User owner = userRepository.findOwnerOfProduction(production);
+            rating.addObserver(owner);
+        }
 
         rating.notifyObservers("The user: " + currentUser.getUsername() + " added a rating for " + production.getTitle());
         rating.addObserver(currentUser);
@@ -197,4 +199,5 @@ public class ProductionService {
         }
 
     }
+
 }

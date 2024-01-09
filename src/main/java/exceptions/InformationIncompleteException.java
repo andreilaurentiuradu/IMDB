@@ -1,4 +1,8 @@
 package exceptions;
 
-public class InformationIncompleteException {
+public class InformationIncompleteException extends RuntimeException{
+    public InformationIncompleteException(String message) {
+        super(message);
+    }
+
 }

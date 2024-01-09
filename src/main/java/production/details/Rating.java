@@ -52,7 +52,7 @@ public class Rating implements Subject {
     }
     @Override
     public String toString() {
-        return "your rating:" + value + ", comment:" + comment;
+        return "rating:" + value + ", comment:" + comment + " username:" + username;
     }
 
 

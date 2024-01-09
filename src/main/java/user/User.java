@@ -122,7 +122,8 @@ public abstract class User implements Observer {
     }
 
     public void addExperience(ExperienceStrategy experienceStrategy) {
-        experience += experienceStrategy.calculateExperience();
+        if(accountType != AccountType.ADMIN)
+            experience += experienceStrategy.calculateExperience();
     }
 
     public int getExperience() {

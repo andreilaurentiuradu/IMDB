@@ -56,8 +56,9 @@ public class GeneralService {
     private void filterProductions(int action) {
         switch (action) {
             case 1:
-                String genre = terminalInteraction.readString("What genre do you want to filter by?\n");
-                Genre.printAll();
+                String genre = terminalInteraction.readString("What genre do you want to filter by?\n"+
+                        "Action, Adventure, Comedy, Drama, Horror, SF, Fantasy, Romance,\n" +
+                        "Mystery, Thriller, Crime, Biography, War, Cooking");
 
                 productionRepository.printByGenre(Genre.getGenreType(genre));
                 break;

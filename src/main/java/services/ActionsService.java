@@ -46,7 +46,7 @@ public class ActionsService {
         generalService = new GeneralService(actorRepository, productionRepository);
         requestService = new RequestService(userRepository, requestRepository);
         userService = new UserService(userRepository);
-        productionService = new ProductionService(productionRepository, actorRepository);
+        productionService = new ProductionService(productionRepository, actorRepository, userRepository);
         actorService = new ActorService();
     }
 

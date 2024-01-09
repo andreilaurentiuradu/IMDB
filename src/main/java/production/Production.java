@@ -3,10 +3,14 @@ package production;
 import production.details.Actor;
 import production.details.Genre;
 import production.details.Rating;
+import user.AccountType;
 import user.User;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import static services.ActionsService.userRepository;
 
 public abstract class Production extends MediaIndustry implements Comparable<Production> {
     final String title;
@@ -161,9 +165,7 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
 
         if (getRatings() != null && !getRatings().isEmpty()) {
             System.out.println("\tRatings:");
-            for (Rating rating : getRatings()) {
-                System.out.println("\t\t" + rating);
-            }
+            displayReviewsByUserExperience();
         }
     }
 
@@ -176,5 +178,32 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
         actorsNames.add(actor.getName());
     }
 
+    private void displayReviewsByUserExperience() {
+        List<Rating> ratings = getRatings();
+        ratings.sort(new Comparator<Rating>() {
+            @Override
+            public int compare(Rating o1, Rating o2) {
+                User user1 = userRepository.findUserByUsername(o1.getUsername());
+                User user2 = userRepository.findUserByUsername(o2.getUsername());
+
+                if (user1.getAccountType() == AccountType.ADMIN) {
+                    if (user2.getAccountType() == AccountType.ADMIN) {
+                        return user1.getUsername().compareTo(user2.getUsername());
+                    }
+                    return -1;
+                }
+
+                if (user2.getAccountType() == AccountType.ADMIN) {
+                    return 1;
+                }
+
+                return user2.getExperience() - user1.getExperience();
+            }
+        });
+
+        for (Rating rating : getRatings()) {
+            System.out.println("\t\t" + rating);
+        }
+    }
 }
 
