@@ -36,6 +36,10 @@ public abstract class Staff extends User implements StaffInterface {
         }
     }
 
+    public void  update(String notification) {
+        getNotifications().add(notification);
+    }
+
     @Override
     public void addProductionSystem(Production p) {
         productionRepository.addProduction(p);

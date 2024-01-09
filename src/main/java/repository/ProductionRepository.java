@@ -6,6 +6,7 @@ import production.details.Genre;
 import production.details.Rating;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -138,12 +139,14 @@ public class ProductionRepository {
 
     public void addRatingAndShowProductionRatings(Production production, Rating rating) {
         production.getRatings().add(rating);
+        production.updateAverageRating();
 
         System.out.println(production.getTitle() + " ratings:");
         for (Rating r : production.getRatings()) {
             System.out.println(r);
         }
     }
+
 
     public boolean isAlreadyRatedByUser(List<Rating> ratings, String username) {
 //        only one review for a production per user

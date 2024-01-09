@@ -49,6 +49,10 @@ public class UserRepository {
 
     }
 
+    public List<Staff> getStaffList() {
+        return staffList;
+    }
+
     public void deleteUserDetails(User deletedUser) {
         userRepository.removeUser(deletedUser);
 

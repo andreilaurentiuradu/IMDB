@@ -6,6 +6,11 @@ import request.RequestsManager;
 
 public class Regular extends User implements RequestsManager {
 
+    public void  update(String notification) {
+        getNotifications().add(notification);
+    }
+
+
     @Override
     public Request createRequest(RequestType type, String description, String username, String value) {
 

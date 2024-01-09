@@ -5,6 +5,7 @@ import production.Production;
 import production.details.Actor;
 import request.Request;
 import user.experience.ExperienceStrategy;
+import user.notifications.Observer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public abstract class User {
+public abstract class User implements Observer {
     private Information information = new Information();
     private AccountType accountType;
     private String username;
@@ -97,7 +98,9 @@ public abstract class User {
             favoriteProductions.add(new MediaIndustry(s));
         }
     }
-
+    public static User logout() {
+        return null;
+    }
     public void setInformation(Information information) {
         this.information = information;
     }
@@ -251,6 +254,7 @@ public abstract class User {
         public void setBirthday(LocalDateTime birthday) {
             this.birthday = birthday;
         }
+
 
         public static class InformationBuilder {
             private Credentials credentials;

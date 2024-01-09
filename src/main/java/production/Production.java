@@ -3,6 +3,7 @@ package production;
 import production.details.Actor;
 import production.details.Genre;
 import production.details.Rating;
+import user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +33,17 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
         return false;
     }
 
-    public void removeProductionRateFromUser(String username) {
+    public void removeProductionRateFromUser(User user) {
         Rating toDelete = null;
 
         for (Rating r : ratings) {
-            if (r.getUsername().equals(username)){
+            if (r.getUsername().equals(user.getUsername())){
                 toDelete = r;
                 break;
             }
         }
 
+        toDelete.removeObserver(user);
         ratings.remove(toDelete);
     }
 
@@ -124,6 +126,13 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
 
     public abstract void displayInfo();
 
+    public void updateAverageRating() {
+        double sum = 0;
+        for (Rating rating : getRatings()) {
+            sum += rating.getValue();
+        }
+        setAverageRating(sum / getRatings().size());
+    }
     void displayCommonInfo() {
         printIfNotNull("\tType:", getType());
         if (releaseYear != null) {
@@ -166,5 +175,6 @@ public abstract class Production extends MediaIndustry implements Comparable<Pro
     public void addActor(Actor actor) {
         actorsNames.add(actor.getName());
     }
+
 }
 

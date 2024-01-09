@@ -1,9 +1,22 @@
 package production.details;
 
-public class Rating {
+import user.notifications.Observer;
+import user.notifications.Subject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+
+public class Rating implements Subject {
+    private final List<Observer> observers = new ArrayList<>();
     private String username;
     private Integer value;
     private String comment;
+
+    public Integer getValue() {
+        return value;
+    }
 
     public String getUsername() {
         return username;
@@ -21,9 +34,26 @@ public class Rating {
         this.comment = comment;
     }
 
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
 
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String notification) {
+        for (Observer observer : observers) {
+            observer.update(notification);
+        }
+    }
     @Override
     public String toString() {
         return "your rating:" + value + ", comment:" + comment;
     }
+
+
 }

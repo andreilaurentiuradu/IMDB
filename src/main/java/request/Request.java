@@ -1,14 +1,41 @@
 package request;
 
+import user.notifications.Observer;
+import user.notifications.Subject;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Request {
+public class Request implements Subject {
+    public final List<Observer> observers = new ArrayList<>();
     private RequestType type;
     private LocalDateTime creationDate;
     private String productionName;
+    private String actorName;
+    private String description;
+    private String requesterUsername;
+    private String solverUsername;
+    public boolean solved;
+    public boolean canceled;
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String notification) {
+        for (Observer observer : observers) {
+            observer.update(notification);
+        }
+    }
 
     public String getRequesterUsername() {
         return requesterUsername;
@@ -16,18 +43,6 @@ public class Request {
 
     public void setRequesterUsername(String requesterUsername) {
         this.requesterUsername = requesterUsername;
-    }
-
-    private String actorName;
-    private String description;
-    private String requesterUsername;
-    private String solverUsername;
-     public boolean solved;
-
-     public boolean canceled;
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
     }
 
     public void setCreationDate(LocalDateTime creationDate) {

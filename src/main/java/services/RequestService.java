@@ -10,6 +10,7 @@ import request.RequestType;
 import request.RequestsManager;
 import user.User;
 import user.experience.SolvedRequestExperienceStrategy;
+import user.notifications.Observer;
 import user.staff.Staff;
 
 import java.time.LocalDate;
@@ -45,9 +46,11 @@ public class RequestService {
             case "Resolve":
                 resolveByType(requestToSolve, currentUser);
                 requestToSolve.solved = true;
+                requestToSolve.notifyObservers("The request with description " + requestToSolve.getDescription() + " WAS SOLVED by " +currentUser.getUsername());
                 break;
             case "Delete":
                 ((RequestsManager) currentUser).removeRequest(requestToSolve);
+                requestToSolve.notifyObservers("The request with description " + requestToSolve.getDescription() + " WAS DELETED by " + currentUser.getUsername());
                 break;
             default:
                 throw new InvalidCommandException("Invalid option");
@@ -205,6 +208,7 @@ public class RequestService {
         if (requestToCancel.getSolverUsername().equals("ADMIN"))
             requestRepository.removeAdminRequest(requestToCancel);
 
+        requestToCancel.notifyObservers("The request with description " + requestToCancel.getDescription() + ", WAS CANCELED");
         currentUser.removeCreatedRequest(requestToCancel);
     }
 
@@ -227,7 +231,12 @@ public class RequestService {
         return availableRequests.get(requestIndex);
     }
 
-
+    private void notifyAllAdmins(Request request) {
+        for (User user : userRepository.getStaffList()) {
+            request.addObserver(user);
+        }
+        request.notifyObservers("Admins have a new request from " + request.getRequesterUsername());
+    }
     private void createRequest(User currentUser) {
         String readType = terminalInteraction.readString("What kind of request? " +
                 "DELETE_ACCOUNT/ACTOR_ISSUE/MOVIE_ISSUE/OTHERS", "type");
@@ -245,6 +254,10 @@ public class RequestService {
                 createdRequest = ((RequestsManager) currentUser).createRequest(type, readDescription, username, null);
                 requestRepository.addRequestForAdmin(createdRequest);
                 userRepository.addRequestToUserCreatedRequestList(username, createdRequest);
+
+                notifyAllAdmins(createdRequest);
+                createdRequest.notifyObservers("You have a new request from " + createdRequest.getRequesterUsername());
+                createdRequest.addObserver(currentUser);
                 break;
             case ACTOR_ISSUE:
                 value = terminalInteraction.readString("Introduce Actor name", "actor name");
@@ -261,10 +274,15 @@ public class RequestService {
                     throw new RuntimeException("Can't request to yourself!");
                 }
 
+                createdRequest.addObserver(resolver);
+                createdRequest.notifyObservers("You have a new request from " + createdRequest.getRequesterUsername());
+                createdRequest.addObserver(currentUser);
+
                 createdRequest.setSolverUsername(resolver.getUsername());
                 resolver.addRequest(createdRequest);
                 currentUser.addCreatedRequest(createdRequest);
         }
+
 
         createdRequest.displayRequest();
     }

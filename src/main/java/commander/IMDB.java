@@ -60,7 +60,7 @@ public class IMDB {
 
             switch (action.exitOrLogout()) {
                 case "Exit":
-                    currentUser = null;
+                    currentUser = User.logout();
                     break;
                 case "Logout":
                     currentUser = IMDB.getInstance().login();

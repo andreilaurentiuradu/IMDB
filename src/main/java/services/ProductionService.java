@@ -13,6 +13,7 @@ import user.experience.RatingExperienceStrategy;
 import user.staff.Admin;
 import user.staff.Staff;
 
+import java.util.Collections;
 import java.util.List;
 
 import static repository.UserRepository.SUPREME;
@@ -103,11 +104,12 @@ public class ProductionService {
 
         for (Production p : ratedProductions) {
             if (p.getTitle().equals(title)) {
-                p.removeProductionRateFromUser(currentUser.getUsername());
+                p.removeProductionRateFromUser(currentUser);
             }
         }
 
         productionRepository.printAll();
+
     }
 
     private void addProductionRating(User currentUser) {
@@ -132,6 +134,14 @@ public class ProductionService {
         String comment = terminalInteraction.readString("Add a comment");
         rating.setRating(Integer.parseInt(grade));
         rating.setComment(comment);
+
+        // ToDO add owner as observer????
+//        if (production.getRatings().isEmpty()) {
+//            rating.addObserver();
+//        }
+
+        rating.notifyObservers("The user: " + currentUser.getUsername() + " added a rating for " + production.getTitle());
+        rating.addObserver(currentUser);
 
         currentUser.addExperience(new RatingExperienceStrategy());
         productionRepository.addRatingAndShowProductionRatings(production, rating);
@@ -185,5 +195,6 @@ public class ProductionService {
             default:
                 throw new RuntimeException("Invalid input");
         }
+
     }
 }
