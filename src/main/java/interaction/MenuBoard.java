@@ -32,6 +32,7 @@ public class MenuBoard {
 
     private static void showGeneralActions() {
         System.out.println("\nChoose action by pressing the correspondent number:");
+        System.out.println("0) View a video");
         System.out.println("1) View productions details");
         System.out.println("2) View actors details");
         System.out.println("3) View notifications");

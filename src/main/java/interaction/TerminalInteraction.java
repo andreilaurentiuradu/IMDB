@@ -57,7 +57,7 @@ public class TerminalInteraction {
             String value = reader.readLine();
             operationNumber = Integer.parseInt(value);
 
-            if (operationNumber < 1) {
+            if (operationNumber < 0) {
                 throw new InvalidCommandException("Invalid operation number");
             }
         } catch (IOException e) {

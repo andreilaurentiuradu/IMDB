@@ -3,6 +3,7 @@ package services;
 import exceptions.InvalidCommandException;
 import interaction.MenuBoard;
 import interaction.TerminalInteraction;
+import production.MediaIndustry;
 import production.Production;
 import production.details.Actor;
 import repository.ActorRepository;
@@ -59,6 +60,7 @@ public class ActionsService {
             int action = terminalInteraction.chosenOperation();
 
             switch (action) {
+                case 0:
                 case 1:
                 case 2:
                 case 3:
@@ -95,6 +97,7 @@ public class ActionsService {
             int action = terminalInteraction.chosenOperation();
 
             switch (action) {
+                case 0:
                 case 1:
                 case 2:
                 case 3:
@@ -132,6 +135,7 @@ public class ActionsService {
             int action = terminalInteraction.chosenOperation();
 
             switch (action) {
+                case 0:
                 case 1:
                 case 2:
                 case 3:
@@ -156,6 +160,10 @@ public class ActionsService {
 
     private void basicActions(int action, User currentUser) {
         switch (action) {
+            case 0: {
+                generalService.searchForVideo();
+                break;
+            }
             case 1: {
                 generalService.viewProductionDetails();
                 break;

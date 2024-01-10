@@ -2,6 +2,7 @@ package services;
 
 import exceptions.InvalidCommandException;
 import interaction.MenuBoard;
+import production.MediaIndustry;
 import production.details.Actor;
 import production.details.Genre;
 import repository.ActorRepository;
@@ -98,5 +99,11 @@ public class GeneralService {
             default:
                 throw new InvalidCommandException("Invalid filter option");
         }
+    }
+
+    public void searchForVideo() {
+        String value = terminalInteraction.readString("What do you want to search", "video");
+        MediaIndustry mediaIndustry = new MediaIndustry(value);
+        mediaIndustry.searchVideo();
     }
 }
