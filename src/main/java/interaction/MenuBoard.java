@@ -44,7 +44,12 @@ public class MenuBoard {
         System.out.println("1) Genre");
         System.out.println("2) Number of ratings");
         System.out.println("3) Average grade");
-        System.out.println("4) Don't filter");
+        System.out.println("4) Show Movies");
+        System.out.println("5) Show Series");
+        System.out.println("6) Actors");
+        System.out.println("7) Released after");
+        System.out.println("8) Directors");
+        System.out.println("9) Don't filter");
     }
 
     public static void showResolveOthersOptions() {

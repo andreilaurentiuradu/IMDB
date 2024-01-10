@@ -6,7 +6,6 @@ import production.details.Genre;
 import production.details.Rating;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -158,5 +157,40 @@ public class ProductionRepository {
             }
         }
         return false;
+    }
+
+    public void printAllMovies() {
+        for (Production p : productions) {
+            if (p.getType().equals("Movie"))
+                p.displayInfo();
+        }
+    }
+
+    public void printAllSeries() {
+        for (Production p : productions) {
+            if (p.getType().equals("Series"))
+                p.displayInfo();
+        }
+    }
+
+    public void printProductionByActorName(String name) {
+        for (Production p : productions) {
+            if (p.getActorsNames().contains(name))
+                p.displayInfo();
+        }
+    }
+
+    public void printProductionAfterReleaseYear(Integer releaseYear) {
+        for (Production p : productions) {
+            if (p.getReleaseYear() != null && p.getReleaseYear() > releaseYear)
+                p.displayInfo();
+        }
+    }
+
+    public void printProductionByDirectorName(String directorName) {
+        for (Production p : productions) {
+            if (p.getDirectorsName().contains(directorName))
+                p.displayInfo();
+        }
     }
 }

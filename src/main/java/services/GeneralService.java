@@ -75,6 +75,24 @@ public class GeneralService {
                 productionRepository.printByAverageRating(Double.valueOf(ratingGrade), ratingType);
                 break;
             case 4:
+                productionRepository.printAllMovies();
+                break;
+            case 5:
+                productionRepository.printAllSeries();
+                break;
+            case 6:
+                String actorName = terminalInteraction.readString("Which actor?", "name");
+                productionRepository.printProductionByActorName(actorName);
+                break;
+            case 7:
+                Integer releaseYear = terminalInteraction.readInt("After which year?");
+                productionRepository.printProductionAfterReleaseYear(releaseYear);
+                break;
+            case 8:
+                String directorName = terminalInteraction.readString("Which director?", "name");
+                productionRepository.printProductionByDirectorName(directorName);
+                break;
+            case 9:
                 productionRepository.printAll();
                 break;
             default:
