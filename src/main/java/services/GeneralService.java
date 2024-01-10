@@ -103,6 +103,20 @@ public class GeneralService {
 
     public void searchForVideo() {
         String value = terminalInteraction.readString("What do you want to search", "video");
+
+        // Convertim șirul într-un array de caractere
+        char[] chs = value.toCharArray();
+
+        // Construim un nou șir fără spații
+        StringBuilder textFaraSpatii = new StringBuilder();
+
+        // Iterăm prin array-ul de caractere și adăugăm caracterele non-spațiu la noul șir
+        for (char ch : chs) {
+            if (ch != ' ') {
+                textFaraSpatii.append(ch);
+            }
+        }
+        value = textFaraSpatii.toString();
         MediaIndustry mediaIndustry = new MediaIndustry(value);
         mediaIndustry.searchVideo();
     }
